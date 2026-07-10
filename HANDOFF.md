@@ -1,9 +1,7 @@
-# EasyFind Property Solutions — Project Handoff
+# EasyFind Property Solutions — Project Handoff & Sanity Report
 
 Single-page marketing website for **EasyFind Property Solutions**, a Bangalore-based residential real-estate services firm (rentals, sales, property management, NRI assistance, investment advisory, relocation).
 
-**Live preview:** https://id-preview--9045953c-32f3-4b5d-be83-6881ad9241b2.lovable.app
-**Repo:** https://github.com/zeideasyfind-droid/easyfind-webhost
 **Built with:** Lovable · TanStack Start v1 (React 19 + Vite 7) · Tailwind CSS v4 · TypeScript strict.
 
 ---
@@ -113,14 +111,29 @@ bun run build     # Production build (SSR + static assets)
 - **Primary:** Lovable auto-publishes from the connected GitHub repo on every push.
 - **Alternative static host (Render.com Static Site):**
   - Build command: `bun run build`
-  - Publish directory: `dist/`
+  - Publish directory: `./dist`
 - **Environment variables:** none required today. When form submission is wired up, store any API keys as Lovable secrets — never commit them.
 
-## 9. GitHub sync
+## 9. Repository Sanitary Check & Risks
 
-This project is connected via Lovable's two-way GitHub integration to `zeideasyfind-droid/easyfind-webhost`. Every accepted change in Lovable pushes to `main` automatically; pushes to `main` from GitHub sync back into Lovable. No manual `git push` is needed from either side.
+A full repository sanitary check was performed prior to deployment. Here are the findings:
 
-## 10. Conventions for future edits
+### ✅ Safe & Clean
+- **No Secrets/Keys**: No hardcoded API keys, passwords, tokens, or credentials were found in the source code.
+- **No Debug Code**: No `console.log`, `console.warn`, or debug statements remain in the production code.
+- **No TODOs in Code**: All TODOs are properly documented in this HANDOFF.md and not hardcoded as `// TODO` comments in the source files.
+- **Clean History**: The git history is linear and clean (17 commits).
+
+### ⚠️ Risks & Blockers for External Deployment
+1. **Lovable Asset Pipeline**: The logo (`easyfind-logo.jpg`) is currently referenced via `/__l5e/assets-v1/...`. This path relies on Lovable's internal asset delivery network. When deploying to a static host like Render, this path will break unless the image is moved to the `public/` directory and the reference in `src/routes/__root.tsx` is updated.
+2. **OG/Twitter Images**: The Open Graph and Twitter meta images in `src/routes/__root.tsx` are currently pointing to a Lovable-specific R2 bucket URL (`https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/...`). This URL may expire or become inaccessible once the project is disconnected from Lovable.
+3. **Accidental Artifacts**: The `gws generate-skills` command accidentally generated `skills/` and `docs/` folders within the repo root. These are untracked by git (untracked files) but should be added to `.gitignore` to prevent accidental commits of non-project artifacts.
+
+## 10. GitHub sync
+
+This project is connected via Lovable's two-way GitHub integration to `zeideasyfind-droid/github-repo-lister`. Every accepted change in Lovable pushes to `main` automatically; pushes to `main` from GitHub sync back into Lovable. No manual `git push` is needed from either side.
+
+## 11. Conventions for future edits
 
 - Keep all page content in `src/routes/index.tsx` unless a section grows past ~150 lines — then extract to `src/components/`.
 - Never hardcode `text-white` / `bg-black` / hex utility classes in components; use the `NAVY`/`GOLD`/`SURFACE`/`TEXT`/`MUTED`/`BORDER` constants or the semantic Tailwind tokens from `styles.css`.
@@ -129,5 +142,4 @@ This project is connected via Lovable's two-way GitHub integration to `zeideasyf
 - When adding new routes, create `src/routes/<name>.tsx` and give each its own `head()` with unique title + description.
 
 ---
-
 _Last updated: 2026-07-10._

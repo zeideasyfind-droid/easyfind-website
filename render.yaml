@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: easyfind-website
+    runtime: static
+    buildCommand: bun run build
+    staticPublishPath: ./dist
