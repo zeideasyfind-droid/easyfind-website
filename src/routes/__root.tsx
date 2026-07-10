@@ -85,13 +85,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "End-to-end residential real estate services in Bangalore. Rental, Sales, Property Management, NRI Assistance, and more." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "EasyFind Property Solutions | Property Services in Bangalore" },
+      { name: "twitter:description", content: "End-to-end residential real estate services in Bangalore. Rental, Sales, Property Management, NRI Assistance, and more." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/002f887c-d77b-4e47-a9fb-1fe5a87fc371/id-preview-5f6024ef--9045953c-32f3-4b5d-be83-6881ad9241b2.lovable.app-1783717161779.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/002f887c-d77b-4e47-a9fb-1fe5a87fc371/id-preview-5f6024ef--9045953c-32f3-4b5d-be83-6881ad9241b2.lovable.app-1783717161779.png" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: logoAsset.url, type: "image/jpeg" },
+      { rel: "icon", href: "/__l5e/assets-v1/4e78c359-ddcb-4fe1-bfa9-0ddd676651bb/easyfind-logo.jpg", type: "image/x-icon" },
       { rel: "canonical", href: "https://easyfindprops.com" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
