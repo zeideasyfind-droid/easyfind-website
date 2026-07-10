@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import logoAsset from "../assets/easyfind-logo.jpg.asset.json";
 import {
   Home,
   TrendingUp,
@@ -197,8 +198,6 @@ function scrollToId(id: string) {
 }
 
 function Logo({ light = false }: { light?: boolean }) {
-  const bg = light ? "#ffffff" : NAVY;
-  const fg = light ? NAVY : "#ffffff";
   return (
     <a
       href="#hero"
@@ -206,20 +205,23 @@ function Logo({ light = false }: { light?: boolean }) {
         e.preventDefault();
         scrollToId("#hero");
       }}
-      className="flex items-center gap-3"
+      className="flex items-center"
       aria-label="EasyFind Property Solutions home"
     >
       <span
-        className="flex h-10 w-10 items-center justify-center rounded-lg font-extrabold"
-        style={{ background: bg, color: fg, letterSpacing: "-0.02em" }}
+        className="flex items-center justify-center overflow-hidden"
+        style={{
+          background: light ? "#ffffff" : "transparent",
+          borderRadius: light ? 10 : 0,
+          padding: light ? "6px 10px" : 0,
+        }}
       >
-        EF
-      </span>
-      <span
-        className="font-semibold tracking-tight"
-        style={{ color: light ? "#ffffff" : NAVY, fontSize: 16 }}
-      >
-        EasyFind Property Solutions
+        <img
+          src={logoAsset.url}
+          alt="EasyFind Property Solutions"
+          style={{ height: light ? 44 : 48, width: "auto", display: "block" }}
+          loading="eager"
+        />
       </span>
     </a>
   );
