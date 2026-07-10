@@ -31,8 +31,8 @@ export const Route = createFileRoute("/")({
 });
 
 const BUSINESS_CONFIG = {
-  phone: "+91 XXXXX XXXXX",
-  email: "hello@easyfindprops.com",
+  phone: "+91 91483 38801",
+  email: "zeid.easyfind@gmail.com",
   googleMapsUrl: "https://maps.app.goo.gl/Z211hsPcT1g9ZJ9U8",
   address: "Prestige Atlanta, 1, 80 Feet Rd, Koramangala 8th Block, Bengaluru 560034",
   stats: {
@@ -263,14 +263,33 @@ function Nav() {
             </a>
           ))}
         </nav>
-        <button
-          className="md:hidden"
-          aria-label="Open menu"
-          onClick={() => setOpen(true)}
-          style={{ color: NAVY }}
+        <div className="flex items-center gap-2 md:hidden">
+          <a
+            href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`}
+            aria-label="Call EasyFind"
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold"
+            style={{ background: GOLD, color: NAVY }}
+          >
+            <Phone size={14} />
+            Call
+          </a>
+          <button
+            aria-label="Open menu"
+            onClick={() => setOpen(true)}
+            className="inline-flex items-center justify-center rounded-md p-1.5"
+            style={{ color: NAVY }}
+          >
+            <Menu size={26} />
+          </button>
+        </div>
+        <a
+          href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`}
+          className="hidden items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold md:inline-flex"
+          style={{ background: GOLD, color: NAVY }}
         >
-          <Menu size={26} />
-        </button>
+          <Phone size={16} />
+          {BUSINESS_CONFIG.phone}
+        </a>
       </div>
 
       {open && (
