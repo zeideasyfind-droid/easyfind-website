@@ -1085,42 +1085,223 @@ function LeadForm() {
 
 function Footer() {
   return (
-    <footer className="py-16" style={{ background: NAVY, borderTop: `1px solid ${BORDER}` }}>
+    <footer
+      className="pt-20 pb-10 text-white"
+      style={{ background: NAVY, borderTop: `4px solid ${GOLD}` }}
+    >
       <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <div className="flex flex-col items-center justify-between gap-10 md:flex-row">
-          <div className="flex flex-col items-center md:items-start">
-            <Logo />
-            <p className="mt-6 max-w-xs text-center text-sm leading-relaxed text-white/60 md:text-left">
-              Bangalore's most trusted property partner. We simplify your real estate journey from
-              start to finish.
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4 lg:gap-16">
+          {/* Column 1: Brand & Hours */}
+          <div className="flex flex-col space-y-6">
+            <div>
+              <Logo light={true} />
+            </div>
+            <p className="text-sm leading-relaxed text-white/70">
+              Bengaluru's premier independent property consulting agency. We simplify property
+              search, management, and transactions with verified listings and professional trust.
             </p>
+            <div className="space-y-3 pt-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider" style={{ color: GOLD }}>
+                Office Hours
+              </h4>
+              <ul className="space-y-2 text-sm text-white/60">
+                <li className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: GOLD }} />
+                  <span>Mon - Sat: 9:00 AM - 7:30 PM</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
+                  <span>Sunday: 10:00 AM - 5:00 PM</span>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div className="flex flex-wrap justify-center gap-x-12 gap-y-6">
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToId(l.href);
-                }}
-                className="text-sm font-semibold transition-colors hover:text-gold"
-                style={{ color: "#fff" }}
-              >
-                {l.label}
-              </a>
-            ))}
+
+          {/* Column 2: Our Services */}
+          <div className="flex flex-col space-y-5">
+            <h3 className="text-lg font-bold tracking-tight" style={{ color: GOLD }}>
+              Our Services
+            </h3>
+            <ul className="flex flex-col space-y-3 text-sm text-white/70">
+              <li>
+                <a
+                  href="#services"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToId("#services");
+                  }}
+                  className="transition-colors hover:text-white"
+                >
+                  Premium Rental Services
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#services"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToId("#services");
+                  }}
+                  className="transition-colors hover:text-white"
+                >
+                  Property Buy & Sell
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#services"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToId("#services");
+                  }}
+                  className="transition-colors hover:text-white"
+                >
+                  Property Management
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#services"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToId("#services");
+                  }}
+                  className="transition-colors hover:text-white"
+                >
+                  Tenant Management
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#services"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToId("#services");
+                  }}
+                  className="transition-colors hover:text-white"
+                >
+                  Legal Handover Support
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Prime Localities */}
+          <div className="flex flex-col space-y-5">
+            <h3 className="text-lg font-bold tracking-tight" style={{ color: GOLD }}>
+              Service Areas
+            </h3>
+            <ul className="grid grid-cols-1 gap-3 text-sm text-white/70">
+              <li className="flex items-center gap-2">
+                <MapPin size={14} style={{ color: GOLD }} />
+                <span>Koramangala</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <MapPin size={14} style={{ color: GOLD }} />
+                <span>HSR Layout</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <MapPin size={14} style={{ color: GOLD }} />
+                <span>Indiranagar</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <MapPin size={14} style={{ color: GOLD }} />
+                <span>Bellandur</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <MapPin size={14} style={{ color: GOLD }} />
+                <span>Sarjapur Road</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <MapPin size={14} style={{ color: GOLD }} />
+                <span>Whitefield</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: Reach Us */}
+          <div className="flex flex-col space-y-5">
+            <h3 className="text-lg font-bold tracking-tight" style={{ color: GOLD }}>
+              Contact Us
+            </h3>
+            <div className="flex flex-col space-y-4 text-sm text-white/70">
+              <div className="flex items-start gap-2.5">
+                <MapPin size={18} className="mt-0.5 shrink-0" style={{ color: GOLD }} />
+                <a
+                  href={BUSINESS_CONFIG.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors leading-relaxed"
+                >
+                  A Block, Prestige Atlanta, 1, 80 Feet Rd, Koramangala, Bengaluru 560034
+                </a>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Phone size={16} className="shrink-0" style={{ color: GOLD }} />
+                <a
+                  href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`}
+                  className="hover:text-white transition-colors"
+                >
+                  {BUSINESS_CONFIG.phone}
+                </a>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Mail size={16} className="shrink-0" style={{ color: GOLD }} />
+                <a
+                  href={`mailto:${BUSINESS_CONFIG.email}`}
+                  className="hover:text-white transition-colors break-all"
+                >
+                  {BUSINESS_CONFIG.email}
+                </a>
+              </div>
+            </div>
+
+            {/* Quick Links / Menu */}
+            <div className="pt-2">
+              <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-white/50">
+                {NAV_LINKS.map((l) => (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToId(l.href);
+                    }}
+                    className="hover:text-white transition-colors"
+                  >
+                    {l.label}
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Real Estate Trust Disclaimer */}
         <div
-          className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row"
-          style={{ borderColor: "rgba(255,255,255,0.1)" }}
+          className="mt-16 border-t pt-6 text-center text-xs text-white/40 leading-relaxed"
+          style={{ borderColor: "rgba(255,255,255,0.08)" }}
         >
-          <div className="text-xs font-medium text-gray-400">
+          <p className="max-w-4xl mx-auto">
+            Disclaimer: EasyFind Property Solutions is an independent real estate advisory firm.
+            While we strive to provide accurate, verified, and up-to-date information regarding
+            property rentals, sales, and management in Bengaluru, all transactions and agreements
+            are subject to direct verification between parties. Service operations are compliant
+            with local Karnataka state real estate regulations.
+          </p>
+        </div>
+
+        {/* Bottom Bar */}
+        <div
+          className="mt-8 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row"
+          style={{ borderColor: "rgba(255,255,255,0.08)" }}
+        >
+          <div className="text-xs font-medium text-white/50">
             © 2026 EasyFind Property Solutions. All rights reserved.
           </div>
-          <div className="text-xs font-bold uppercase tracking-widest text-white/20">
-            Built with trust in Bangalore.
+          <div className="text-xs font-bold uppercase tracking-widest text-white/30">
+            Designed for trust in Bengaluru
           </div>
         </div>
       </div>
