@@ -10,8 +10,6 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import logoAsset from "../assets/easyfind-logo.jpg.asset.json";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
   return (
@@ -39,7 +37,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    // reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
   return (
@@ -87,15 +85,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "EasyFind Property Solutions | Property Services in Bangalore" },
       { name: "twitter:description", content: "End-to-end residential real estate services in Bangalore. Rental, Sales, Property Management, NRI Assistance, and more." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/002f887c-d77b-4e47-a9fb-1fe5a87fc371/id-preview-5f6024ef--9045953c-32f3-4b5d-be83-6881ad9241b2.lovable.app-1783717161779.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/002f887c-d77b-4e47-a9fb-1fe5a87fc371/id-preview-5f6024ef--9045953c-32f3-4b5d-be83-6881ad9241b2.lovable.app-1783717161779.png" },
+      { property: "og:image", content: "/easyfind-logo.jpg" },
+      { name: "twitter:image", content: "/easyfind-logo.jpg" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/__l5e/assets-v1/4e78c359-ddcb-4fe1-bfa9-0ddd676651bb/easyfind-logo.jpg", type: "image/x-icon" },
+      { rel: "icon", href: "/easyfind-logo.jpg", type: "image/x-icon" },
       { rel: "canonical", href: "https://easyfindprops.com" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },

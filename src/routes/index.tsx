@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import ContactForm from "../components/ContactForm";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
-import logoAsset from "../assets/easyfind-logo.jpg.asset.json";
 import {
   Home,
   TrendingUp,
@@ -217,7 +217,7 @@ function Logo({ light = false }: { light?: boolean }) {
         }}
       >
         <img
-          src={logoAsset.url}
+          src="/easyfind-logo.jpg"
           alt="EasyFind Property Solutions"
           style={{ height: light ? 44 : 48, width: "auto", display: "block" }}
           loading="eager"
@@ -352,152 +352,24 @@ function SectionTitle({ children, light = false }: { children: ReactNode; light?
   );
 }
 
-function useLeadForm() {
-  const [submitted, setSubmitted] = useState(false);
-  const handle = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
-  return { submitted, handle };
-}
 
-function HeroForm() {
-  const { submitted, handle } = useLeadForm();
-  return (
-    <form
-      onSubmit={handle}
-      className="w-full rounded-2xl bg-white p-6 md:p-7"
-      style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.15)" }}
-      aria-label="Quick contact form"
-    >
-      <h3 className="mb-4 text-lg font-bold" style={{ color: NAVY }}>
-        Talk to Our Expert
-      </h3>
-      <div className="space-y-3">
-        <Input label="Name" name="name" required />
-        <PhoneInput />
-        <Select
-          label="Requirement"
-          name="requirement"
-          required
-          options={["Looking to Rent", "Looking to Buy", "Looking to Sell", "Property Management", "Tenant Support"]}
-        />
-        <button type="submit" className="w-full rounded-lg py-3 font-bold transition-transform hover:-translate-y-0.5" style={{ background: GOLD, color: NAVY }}>
-          Get a Call Back
-        </button>
-        {submitted && (
-          <p className="text-sm font-medium" style={{ color: "#0a7f3f" }}>
-            ✓ Thank you! We'll call you shortly.
-          </p>
-        )}
-      </div>
-    </form>
-  );
-}
 
-function Input({ label, name, required, type = "text", placeholder }: { label: string; name: string; required?: boolean; type?: string; placeholder?: string }) {
-  return (
-    <label className="block">
-      <span className="mb-1 block text-xs font-medium" style={{ color: TEXT }}>{label}{required && " *"}</span>
-      <input
-        name={name}
-        type={type}
-        required={required}
-        placeholder={placeholder}
-        className="w-full rounded-lg px-3 py-2.5 text-sm outline-none transition-colors"
-        style={{ border: `1px solid ${BORDER}`, color: TEXT, background: "#fff" }}
-        onFocus={(e) => (e.currentTarget.style.borderColor = NAVY)}
-        onBlur={(e) => (e.currentTarget.style.borderColor = BORDER)}
-      />
-    </label>
-  );
-}
 
-function Textarea({ label, name, rows = 3, placeholder }: { label: string; name: string; rows?: number; placeholder?: string }) {
-  return (
-    <label className="block">
-      <span className="mb-1 block text-xs font-medium" style={{ color: TEXT }}>{label}</span>
-      <textarea
-        name={name}
-        rows={rows}
-        placeholder={placeholder}
-        className="w-full rounded-lg px-3 py-2.5 text-sm outline-none"
-        style={{ border: `1px solid ${BORDER}`, color: TEXT, background: "#fff" }}
-        onFocus={(e) => (e.currentTarget.style.borderColor = NAVY)}
-        onBlur={(e) => (e.currentTarget.style.borderColor = BORDER)}
-      />
-    </label>
-  );
-}
 
-function PhoneInput() {
-  return (
-    <label className="block">
-      <span className="mb-1 block text-xs font-medium" style={{ color: TEXT }}>Phone Number *</span>
-      <div className="flex items-stretch overflow-hidden rounded-lg" style={{ border: `1px solid ${BORDER}` }}>
-        <span className="flex items-center px-3 text-sm font-medium" style={{ background: SURFACE, color: TEXT, borderRight: `1px solid ${BORDER}` }}>+91</span>
-        <input
-          name="phone"
-          type="tel"
-          required
-          pattern="[0-9]{10}"
-          placeholder="10-digit mobile"
-          className="w-full px-3 py-2.5 text-sm outline-none"
-          style={{ color: TEXT }}
-        />
-      </div>
-    </label>
-  );
-}
 
-function Select({ label, name, options, required }: { label: string; name: string; options: string[]; required?: boolean }) {
-  return (
-    <label className="block">
-      <span className="mb-1 block text-xs font-medium" style={{ color: TEXT }}>{label}{required && " *"}</span>
-      <select
-        name={name}
-        required={required}
-        defaultValue=""
-        className="w-full rounded-lg px-3 py-2.5 text-sm outline-none"
-        style={{ border: `1px solid ${BORDER}`, color: TEXT, background: "#fff" }}
-      >
-        <option value="" disabled>Select...</option>
-        {options.map((o) => (
-          <option key={o} value={o}>{o}</option>
-        ))}
-      </select>
-    </label>
-  );
-}
 
 function Hero() {
   return (
-    <section id="hero" className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24" style={{ background: NAVY }}>
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-30"
-        style={{
-          background: `radial-gradient(1200px 500px at 20% 0%, rgba(201,168,76,0.15), transparent 60%), linear-gradient(135deg, ${NAVY} 0%, #0f2740 100%)`,
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(45deg, #fff 0 1px, transparent 1px 22px)",
-        }}
-      />
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-5 md:grid-cols-[1.2fr_1fr] md:gap-14 md:px-8">
-        <div>
-          <span
-            className="inline-flex items-center rounded-full px-4 py-1.5 text-xs font-medium"
-            style={{ border: `1px solid ${GOLD}`, color: GOLD, background: "rgba(201,168,76,0.08)" }}
-          >
-            Trusted by Property Buyers, Tenants & Owners Across Bangalore
-          </span>
+    <section id="hero" className="relative flex min-h-[90vh] items-center pt-24 md:pt-32" style={{ background: NAVY }}>
+      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)", backgroundSize: "32px 32px" }} />
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 md:grid-cols-2 md:px-8">
+        <div className="flex flex-col justify-center">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-white/90">
+            <span className="flex h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+            Bangalore's Trusted Property Partner
+          </div>
           <h1
-            className="mt-5 font-bold text-white"
+            className="font-bold text-white"
             style={{
               fontFamily: "'Playfair Display', Inter, serif",
               fontSize: "clamp(34px, 5.5vw, 60px)",
@@ -530,7 +402,7 @@ function Hero() {
           </div>
         </div>
         <div className="md:pt-2">
-          <HeroForm />
+          <ContactForm />
         </div>
       </div>
     </section>
@@ -857,43 +729,31 @@ function Contact() {
     <section id="contact" className="py-16 md:py-24" style={{ background: "#fff" }}>
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <SectionLabel>Get In Touch</SectionLabel>
-        <SectionTitle>We&apos;re Based in Bangalore</SectionTitle>
-        <div className="mt-12 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-14">
-          <div className="space-y-6">
-            <ContactRow icon={MapPin} title="Office Address">
-              Prestige Atlanta, 1, 80 Feet Rd,<br />
-              Koramangala 8th Block,<br />
-              Bengaluru, Karnataka 560034
-            </ContactRow>
-            <ContactRow icon={Phone} title="Phone">
-              <a href={`tel:${BUSINESS_CONFIG.phone.replace(/\s/g, "")}`} style={{ color: TEXT }}>{BUSINESS_CONFIG.phone}</a>
-            </ContactRow>
-            <ContactRow icon={Mail} title="Email">
-              <a href={`mailto:${BUSINESS_CONFIG.email}`} style={{ color: TEXT }}>{BUSINESS_CONFIG.email}</a>
-            </ContactRow>
-            <ContactRow icon={Star} title="Google Business">
-              <a
-                href={BUSINESS_CONFIG.googleMapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-semibold hover:underline"
-                style={{ color: GOLD }}
-              >
-                View Our Google Business Profile <ArrowRight size={14} />
-              </a>
-            </ContactRow>
+        <SectionTitle>We're Just a Message Away</SectionTitle>
+        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div className="rounded-xl bg-white p-6 text-center" style={{ border: `1px solid ${BORDER}` }}>
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background: SURFACE, color: NAVY }}>
+              <Phone size={24} />
+            </div>
+            <h3 className="text-lg font-bold" style={{ color: NAVY }}>Call Us</h3>
+            <p className="mt-2 text-sm" style={{ color: MUTED }}>Available 10 AM - 7 PM</p>
+            <a href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`} className="mt-3 block font-bold" style={{ color: GOLD }}>{BUSINESS_CONFIG.phone}</a>
           </div>
-          <div className="overflow-hidden rounded-xl" style={{ border: `1px solid ${BORDER}` }}>
-            <iframe
-              title="EasyFind Property Solutions on Google Maps"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.7241!2d77.6186!3d12.9216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae15229e6c1a61%3A0x26a05f018e301661!2sEasyFind%20Property%20Solutions!5e0!3m2!1sen!2sin!4v1699000000000"
-              width="100%"
-              height="360"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
+          <div className="rounded-xl bg-white p-6 text-center" style={{ border: `1px solid ${BORDER}` }}>
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background: SURFACE, color: NAVY }}>
+              <Mail size={24} />
+            </div>
+            <h3 className="text-lg font-bold" style={{ color: NAVY }}>Email Us</h3>
+            <p className="mt-2 text-sm" style={{ color: MUTED }}>We'll reply within 24h</p>
+            <a href={`mailto:${BUSINESS_CONFIG.email}`} className="mt-3 block font-bold" style={{ color: GOLD }}>{BUSINESS_CONFIG.email}</a>
+          </div>
+          <div className="rounded-xl bg-white p-6 text-center" style={{ border: `1px solid ${BORDER}` }}>
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background: SURFACE, color: NAVY }}>
+              <MapPin size={24} />
+            </div>
+            <h3 className="text-lg font-bold" style={{ color: NAVY }}>Visit Us</h3>
+            <p className="mt-2 text-sm" style={{ color: MUTED }}>Koramangala, Bangalore</p>
+            <a href={BUSINESS_CONFIG.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="mt-3 block font-bold" style={{ color: GOLD }}>View on Maps</a>
           </div>
         </div>
       </div>
@@ -901,69 +761,36 @@ function Contact() {
   );
 }
 
-function ContactRow({ icon: Icon, title, children }: { icon: LucideIcon; title: string; children: ReactNode }) {
-  return (
-    <div className="flex gap-4">
-      <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg" style={{ background: SURFACE, color: NAVY }}>
-        <Icon size={22} />
-      </span>
-      <div>
-        <div className="text-xs font-semibold uppercase" style={{ color: MUTED, letterSpacing: "0.15em" }}>{title}</div>
-        <div className="mt-1 text-base" style={{ color: TEXT, lineHeight: 1.6 }}>{children}</div>
-      </div>
-    </div>
-  );
-}
-
 function Footer() {
   return (
-    <footer style={{ background: NAVY, color: "#fff" }}>
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 md:grid-cols-3 md:px-8">
-        <div>
-          <Logo light />
-          <p className="mt-3 italic" style={{ color: GOLD, fontSize: 14 }}>
-            Find. Own. Manage. All Under One Roof.
-          </p>
-        </div>
-        <div>
-          <div className="mb-3 text-xs font-semibold uppercase" style={{ letterSpacing: "0.15em", color: "rgba(255,255,255,0.7)" }}>Quick Links</div>
-          <ul className="space-y-2 text-sm">
-            {[
-              { l: "Services", h: "#services" },
-              { l: "How It Works", h: "#how-it-works" },
-              { l: "Reviews", h: "#reviews" },
-              { l: "Contact", h: "#contact" },
-            ].map((x) => (
-              <li key={x.h}>
-                <a
-                  href={x.h}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToId(x.h);
-                  }}
-                  className="transition-colors"
-                  style={{ color: "#fff" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = GOLD)}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#fff")}
-                >
-                  {x.l}
-                </a>
-              </li>
+    <footer className="py-12" style={{ background: SURFACE, borderTop: `1px solid ${BORDER}` }}>
+      <div className="mx-auto max-w-7xl px-5 md:px-8">
+        <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
+          <Logo />
+          <nav className="flex flex-wrap justify-center gap-x-8 gap-y-4">
+            {NAV_LINKS.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToId(l.href);
+                }}
+                className="text-sm font-medium transition-colors"
+                style={{ color: NAVY }}
+              >
+                {l.label}
+              </a>
             ))}
-          </ul>
+          </nav>
         </div>
-        <div>
-          <div className="mb-3 text-xs font-semibold uppercase" style={{ letterSpacing: "0.15em", color: "rgba(255,255,255,0.7)" }}>Our Location</div>
-          <p className="text-sm" style={{ color: "rgba(255,255,255,0.8)", lineHeight: 1.6 }}>
-            Prestige Atlanta, Koramangala 8th Block<br />
-            Bengaluru, Karnataka 560034
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row" style={{ borderColor: BORDER }}>
+          <p className="text-sm" style={{ color: MUTED }}>
+            © {new Date().getFullYear()} EasyFind Property Solutions. All rights reserved.
           </p>
-        </div>
-      </div>
-      <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", background: "#14304d" }}>
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-5 text-xs md:flex-row md:px-8" style={{ color: "rgba(255,255,255,0.6)" }}>
-          <div>© 2026 EasyFind Property Solutions. All Rights Reserved.</div>
-          <div>easyfindprops.com</div>
+          <p className="text-xs" style={{ color: MUTED }}>
+            Built with trust in Bangalore.
+          </p>
         </div>
       </div>
     </footer>
@@ -972,19 +799,17 @@ function Footer() {
 
 function Index() {
   return (
-    <div style={{ fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif", color: TEXT, background: "#fff" }}>
+    <main className="min-h-screen bg-white selection:bg-[#C9A84C]/30 selection:text-[#1A3A5C]">
       <Nav />
-      <main>
-        <Hero />
-        <TrackRecord />
-        <Services />
-        <HowItWorks />
-        <WhyUs />
-        <Reviews />
-        <LeadForm />
-        <Contact />
-      </main>
+      <Hero />
+      <TrackRecord />
+      <Services />
+      <HowItWorks />
+      <WhyUs />
+      <Reviews />
+      <LeadForm />
+      <Contact />
       <Footer />
-    </div>
+    </main>
   );
 }
