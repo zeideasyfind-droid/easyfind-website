@@ -10,6 +10,7 @@ import {
 import { type ReactNode } from "react";
 import { HelmetProvider } from "react-helmet-async";
 
+import "../styles.css";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
