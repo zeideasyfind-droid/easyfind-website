@@ -1,14 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  Outlet,
-  Link,
-  createRootRouteWithContext,
-  useRouter,
-  HeadContent,
-  Scripts,
-} from "@tanstack/react-router";
-import { type ReactNode } from "react";
-import { HelmetProvider } from "react-helmet-async";
+import { Outlet, Link, createRootRouteWithContext, useRouter } from "@tanstack/react-router";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 import "../styles.css";
 
@@ -70,73 +62,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "EasyFind Property Solutions | Bangalore's Trusted Property Partner" },
-      {
-        name: "description",
-        content:
-          "Find, Own, and Manage property in Bangalore. Professional rental services, property management, and investment advisory with 4.9★ rating.",
-      },
-      { name: "author", content: "EasyFind Property Solutions" },
-      {
-        property: "og:title",
-        content: "EasyFind Property Solutions | Bangalore's Trusted Property Partner",
-      },
-      {
-        property: "og:description",
-        content:
-          "Find, Own, and Manage property in Bangalore. Professional rental services, property management, and investment advisory with 4.9★ rating.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://easyfindprops.com" },
-      { property: "og:image", content: "https://easyfindprops.com/og-image.jpg" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      { name: "twitter:card", content: "summary_large_image" },
-      {
-        name: "twitter:title",
-        content: "EasyFind Property Solutions | Bangalore's Trusted Property Partner",
-      },
-      {
-        name: "twitter:description",
-        content:
-          "Find, Own, and Manage property in Bangalore. Professional rental services, property management, and investment advisory with 4.9★ rating.",
-      },
-      { name: "twitter:image", content: "https://easyfindprops.com/og-image.jpg" },
-    ],
-    links: [
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-      { rel: "canonical", href: "https://easyfindprops.com" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap",
-      },
-    ],
-  }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
-
-function RootShell({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
@@ -144,6 +73,48 @@ function RootComponent() {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>EasyFind Property Solutions | Bangalore's Trusted Property Partner</title>
+          <meta
+            name="description"
+            content="Find, Own, and Manage property in Bangalore. Professional rental services, property management, and investment advisory with 4.9★ rating."
+          />
+          <meta name="author" content="EasyFind Property Solutions" />
+          <meta
+            property="og:title"
+            content="EasyFind Property Solutions | Bangalore's Trusted Property Partner"
+          />
+          <meta
+            property="og:description"
+            content="Find, Own, and Manage property in Bangalore. Professional rental services, property management, and investment advisory with 4.9★ rating."
+          />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://easyfindprops.com" />
+          <meta property="og:image" content="https://easyfindprops.com/og-image.jpg" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta
+            name="twitter:title"
+            content="EasyFind Property Solutions | Bangalore's Trusted Property Partner"
+          />
+          <meta
+            name="twitter:description"
+            content="Find, Own, and Manage property in Bangalore. Professional rental services, property management, and investment advisory with 4.9★ rating."
+          />
+          <meta name="twitter:image" content="https://easyfindprops.com/og-image.jpg" />
+
+          <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+          <link rel="canonical" href="https://easyfindprops.com" />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+          />
+        </Helmet>
         <Outlet />
       </QueryClientProvider>
     </HelmetProvider>

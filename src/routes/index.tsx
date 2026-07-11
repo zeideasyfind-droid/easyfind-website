@@ -1044,8 +1044,10 @@ function LeadForm() {
                     Visit Us
                   </div>
                   <div className="mt-1 text-sm leading-relaxed text-gray-500">
-                    Prestige Atlanta, 1, 80 Feet Rd,<br />
-                    Koramangala 8th Block,<br />
+                    Prestige Atlanta, 1, 80 Feet Rd,
+                    <br />
+                    Koramangala 8th Block,
+                    <br />
                     Bengaluru, Karnataka 560034
                   </div>
                   <a
