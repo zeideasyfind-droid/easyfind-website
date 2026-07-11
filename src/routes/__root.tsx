@@ -11,7 +11,6 @@ import { type ReactNode } from "react";
 import { HelmetProvider } from "react-helmet-async";
 
 import "../styles.css";
-import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
   return (
@@ -109,11 +108,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: "https://easyfindprops.com/og-image.jpg" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      { rel: "icon", href: "/easyfind-logo.jpg", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "canonical", href: "https://easyfindprops.com" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
@@ -149,7 +144,6 @@ function RootComponent() {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
       </QueryClientProvider>
     </HelmetProvider>
