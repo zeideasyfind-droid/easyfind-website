@@ -1,173 +1,187 @@
 import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { CheckCircle2 } from "lucide-react";
 import { NAVY, GOLD } from "@/routes/index";
+import { submitLead } from "@/lib/submitLead";
 
+// Hero "Talk to Our Expert" form — compact 3-field lead capture.
+// State is fully local; this component never reads from or writes to any
+// other form's state.
 const ContactForm: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    requirement: "",
-    location: "",
-    budget: "",
-    details: "",
-  });
-
-  const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [requirement, setRequirement] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [succeeded, setSucceeded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmissionStatus("Submitting...");
+    if (isSubmitting) return;
 
-    const formUrl =
-      "https://docs.google.com/forms/d/e/1FAIpQLSeyRnYIMCl3ouDgMfGkZBK57ccIeIk6e6nlYmoZubRaoLdOsA/formResponse";
-    const payload = new URLSearchParams();
-    payload.append("entry.647419092", formData.name);
-    payload.append("entry.1504466253", formData.phone);
-    payload.append("entry.1645082311", formData.requirement);
-    payload.append("entry.616237414", formData.location);
-    payload.append("entry.1733021043", formData.budget);
-    payload.append("entry.1656301094", formData.details);
-    payload.append("entry.128907828", "Website Hero Form");
+    const trimmedName = name.trim();
+    const digits = phone.replace(/\D/g, "");
+    if (!trimmedName) {
+      setError("Please enter your name.");
+      return;
+    }
+    if (digits.length !== 10) {
+      setError("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+    if (!requirement) {
+      setError("Please select a requirement.");
+      return;
+    }
 
+    setError(null);
+    setIsSubmitting(true);
     try {
-      await fetch(formUrl, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: payload.toString(),
+      await submitLead({
+        name: trimmedName,
+        phone: `+91 ${digits}`,
+        requirement,
+        source: "Website Hero Form",
       });
-      setSubmissionStatus("Form submitted successfully!");
-      setFormData({
-        name: "",
-        phone: "",
-        requirement: "",
-        location: "",
-        budget: "",
-        details: "",
-      });
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setSubmissionStatus("Failed to submit form. Please try again.");
+      setSucceeded(true);
+      setName("");
+      setPhone("");
+      setRequirement("");
+    } catch (err) {
+      console.error("Hero form submission failed:", err);
+      setError("Something went wrong. Please try again or call us.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const labelClass = "block text-sm font-semibold mb-1.5";
-  const inputClass =
-    "w-full border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-sm";
+  const inputBase =
+    "w-full rounded-lg border bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-transparent focus:ring-2 focus:ring-amber-400 disabled:opacity-60";
+
+  if (succeeded) {
+    return (
+      <div
+        className="rounded-2xl bg-white p-8 text-center shadow-xl"
+        role="status"
+        aria-live="polite"
+      >
+        <div
+          className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full"
+          style={{ background: "#ECFDF5", color: "#059669" }}
+        >
+          <CheckCircle2 size={30} />
+        </div>
+        <h3 className="text-lg font-bold" style={{ color: NAVY }}>
+          Thank you! We'll call you back shortly.
+        </h3>
+        <p className="mt-2 text-sm text-gray-500">
+          Our team will reach out on the number you shared.
+        </p>
+        <button
+          type="button"
+          onClick={() => setSucceeded(false)}
+          className="mt-6 rounded-lg px-5 py-2 text-sm font-semibold"
+          style={{ background: GOLD, color: NAVY }}
+        >
+          Send another enquiry
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-xl bg-white p-6 shadow-xl">
-      <div>
-        <label htmlFor="name" className={labelClass}>
-          Name
-        </label>
-        <Input
-          type="text"
-          name="name"
-          id="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-          placeholder="Your full name"
-          className={inputClass}
-        />
-      </div>
-      <div>
-        <label htmlFor="phone" className={labelClass}>
-          Phone
-        </label>
-        <Input
-          type="tel"
-          name="phone"
-          id="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          required
-          placeholder="+91 XXXXX XXXXX"
-          className={inputClass}
-        />
-      </div>
-      <div>
-        <label htmlFor="requirement" className={labelClass}>
-          Requirement
-        </label>
-        <Input
-          type="text"
-          name="requirement"
-          id="requirement"
-          value={formData.requirement}
-          onChange={handleChange}
-          required
-          placeholder="e.g. 2BHK rental in Koramangala"
-          className={inputClass}
-        />
-      </div>
-      <div>
-        <label htmlFor="location" className={labelClass}>
-          Location
-        </label>
-        <Input
-          type="text"
-          name="location"
-          id="location"
-          value={formData.location}
-          onChange={handleChange}
-          placeholder="e.g. Koramangala, HSR Layout"
-          className={inputClass}
-        />
-      </div>
-      <div>
-        <label htmlFor="budget" className={labelClass}>
-          Budget
-        </label>
-        <Input
-          type="text"
-          name="budget"
-          id="budget"
-          value={formData.budget}
-          onChange={handleChange}
-          placeholder="e.g. ₹30,000/month or ₹80 Lakhs"
-          className={inputClass}
-        />
-      </div>
-      <div>
-        <label htmlFor="details" className={labelClass}>
-          Details
-        </label>
-        <Textarea
-          name="details"
-          id="details"
-          value={formData.details}
-          onChange={handleChange}
-          rows={4}
-          placeholder="Anything else we should know?"
-          className={inputClass}
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full rounded-lg py-3 text-base font-bold shadow-md transition-transform hover:-translate-y-0.5"
-        style={{ background: GOLD, color: NAVY }}
-      >
-        Submit
-      </button>
-      {submissionStatus && (
-        <p
-          className="mt-3 text-center text-sm font-medium"
-          style={{
-            color: submissionStatus.includes("successfully") ? "#0a7f3f" : "#dc2626",
-          }}
+    <form
+      onSubmit={handleSubmit}
+      noValidate
+      className="rounded-2xl bg-white p-6 shadow-xl md:p-7"
+      aria-label="Talk to our expert"
+    >
+      <h3 className="mb-5 text-lg font-bold" style={{ color: NAVY }}>
+        Talk to Our Expert
+      </h3>
+
+      <div className="space-y-4">
+        <div>
+          <label htmlFor="hero-name" className="mb-1.5 block text-xs font-semibold text-gray-600">
+            Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            id="hero-name"
+            type="text"
+            autoComplete="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            disabled={isSubmitting}
+            className={inputBase}
+            style={{ borderColor: "#E5E7EB" }}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="hero-phone" className="mb-1.5 block text-xs font-semibold text-gray-600">
+            Phone Number <span className="text-red-500">*</span>
+          </label>
+          <div className="flex items-stretch gap-2">
+            <span
+              className="inline-flex items-center rounded-lg border px-3 text-sm font-semibold text-gray-700"
+              style={{ borderColor: "#E5E7EB", background: "#F8F9FB" }}
+            >
+              +91
+            </span>
+            <input
+              id="hero-phone"
+              type="tel"
+              inputMode="numeric"
+              autoComplete="tel-national"
+              maxLength={10}
+              placeholder="10-digit mobile"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+              disabled={isSubmitting}
+              className={inputBase}
+              style={{ borderColor: "#E5E7EB" }}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="hero-requirement"
+            className="mb-1.5 block text-xs font-semibold text-gray-600"
+          >
+            Requirement <span className="text-red-500">*</span>
+          </label>
+          <select
+            id="hero-requirement"
+            value={requirement}
+            onChange={(e) => setRequirement(e.target.value)}
+            disabled={isSubmitting}
+            className={inputBase}
+            style={{ borderColor: "#E5E7EB" }}
+          >
+            <option value="">Select...</option>
+            <option>Looking to Rent</option>
+            <option>Looking to Buy</option>
+            <option>Looking to Sell</option>
+            <option>Property Management</option>
+            <option>Investment Advisory</option>
+          </select>
+        </div>
+
+        {error && (
+          <p className="text-sm font-medium text-red-600" role="alert">
+            {error}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full rounded-lg py-3.5 text-base font-bold shadow-md transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+          style={{ background: GOLD, color: NAVY }}
         >
-          {submissionStatus}
-        </p>
-      )}
+          {isSubmitting ? "Sending..." : "Get a Call Back"}
+        </button>
+      </div>
     </form>
   );
 };

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Helmet } from "react-helmet-async";
 import ContactForm from "../components/ContactForm";
+import { submitLead } from "../lib/submitLead";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import {
   Home,
@@ -24,6 +25,7 @@ import {
   Menu,
   X,
   ArrowRight,
+  CheckCircle2,
   type LucideIcon,
 } from "lucide-react";
 
@@ -783,38 +785,57 @@ function Reviews() {
 }
 
 function LeadForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    type: "Looking to Rent",
-    location: "",
-    budget: "",
-    details: "",
-  });
+  // Independent state — never reads from or writes to the hero form.
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [type, setType] = useState("Looking to Rent");
+  const [location, setLocation] = useState("");
+  const [budget, setBudget] = useState("");
+  const [details, setDetails] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [succeeded, setSucceeded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const formUrl =
-      "https://docs.google.com/forms/d/e/1FAIpQLSeyRnYIMCl3ouDgMfGkZBK57ccIeIk6e6nlYmoZubRaoLdOsA/formResponse";
-    const payload = new URLSearchParams();
-    payload.append("entry.647419092", formData.name);
-    payload.append("entry.1504466253", formData.phone);
-    payload.append("entry.1645082311", formData.type);
-    payload.append("entry.616237414", formData.location);
-    payload.append("entry.1733021043", formData.budget);
-    payload.append("entry.1656301094", formData.details);
-    payload.append("entry.128907828", "Footer Lead Form");
+    if (isSubmitting) return;
 
-    fetch(formUrl, { method: "POST", mode: "no-cors", body: payload });
-    alert("Thank you! We will get back to you shortly.");
-    setFormData({
-      name: "",
-      phone: "",
-      type: "Looking to Rent",
-      location: "",
-      budget: "",
-      details: "",
-    });
+    const trimmedName = name.trim();
+    const digits = phone.replace(/\D/g, "");
+    if (!trimmedName) {
+      setError("Please enter your name.");
+      return;
+    }
+    if (digits.length < 10) {
+      setError("Please enter a valid mobile number.");
+      return;
+    }
+
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      await submitLead({
+        name: trimmedName,
+        phone: digits.length === 10 ? `+91 ${digits}` : phone,
+        requirement: type,
+        location,
+        budget,
+        details,
+        source: "Website Bottom Enquiry Form",
+      });
+      setSucceeded(true);
+      setName("");
+      setPhone("");
+      setType("Looking to Rent");
+      setLocation("");
+      setBudget("");
+      setDetails("");
+    } catch (err) {
+      console.error("Bottom form submission failed:", err);
+      setError("Something went wrong. Please try again or call us.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputStyle = {
@@ -842,72 +863,115 @@ function LeadForm() {
             <p className="mb-8 text-base" style={{ color: MUTED }}>
               Fill in the form and our team will reach out shortly.
             </p>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  required
-                  style={inputStyle}
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                />
-                <input
-                  type="tel"
-                  placeholder="Phone Number"
-                  required
-                  style={inputStyle}
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                />
-              </div>
-              <select
-                style={inputStyle}
-                value={formData.type}
-                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+            {succeeded ? (
+              <div
+                className="rounded-2xl border p-8 text-center"
+                role="status"
+                aria-live="polite"
+                style={{ borderColor: BORDER, background: SURFACE }}
               >
-                <option>Looking to Rent</option>
-                <option>Looking to Buy</option>
-                <option>Looking to Sell</option>
-                <option>Property Management</option>
-                <option>Tenant Support</option>
-                <option>Investment Advisory</option>
-                <option>Relocation Help</option>
-              </select>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <input
-                  type="text"
-                  placeholder="Preferred Location"
-                  style={inputStyle}
-                  value={formData.location}
-                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                />
-                <input
-                  type="text"
-                  placeholder="Budget"
-                  style={inputStyle}
-                  value={formData.budget}
-                  onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                />
+                <div
+                  className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full"
+                  style={{ background: "#ECFDF5", color: "#059669" }}
+                >
+                  <CheckCircle2 size={30} />
+                </div>
+                <h3 className="text-lg font-bold" style={{ color: NAVY }}>
+                  Thank you! We've received your requirement.
+                </h3>
+                <p className="mt-2 text-sm text-gray-500">Our team will get back to you shortly.</p>
+                <button
+                  type="button"
+                  onClick={() => setSucceeded(false)}
+                  className="mt-6 rounded-lg px-5 py-2 text-sm font-semibold"
+                  style={{ background: GOLD, color: NAVY }}
+                >
+                  Submit another requirement
+                </button>
               </div>
-              <textarea
-                placeholder="Additional Details"
-                rows={4}
-                style={inputStyle}
-                value={formData.details}
-                onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-              />
-              <button
-                type="submit"
-                className="w-full rounded-lg py-4 text-base font-bold shadow-lg transition-transform hover:-translate-y-0.5"
-                style={{ background: GOLD, color: NAVY }}
-              >
-                Submit Requirement
-              </button>
-              <p className="text-center text-xs font-medium text-gray-400">
-                We will get back to you shortly. No spam. No sharing of your data.
-              </p>
-            </form>
+            ) : (
+              <form onSubmit={handleSubmit} noValidate className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    required
+                    style={inputStyle}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    disabled={isSubmitting}
+                    autoComplete="name"
+                  />
+                  <input
+                    type="tel"
+                    placeholder="Phone Number"
+                    required
+                    style={inputStyle}
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    disabled={isSubmitting}
+                    autoComplete="tel"
+                    inputMode="tel"
+                  />
+                </div>
+                <select
+                  style={inputStyle}
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                  disabled={isSubmitting}
+                >
+                  <option>Looking to Rent</option>
+                  <option>Looking to Buy</option>
+                  <option>Looking to Sell</option>
+                  <option>Property Management</option>
+                  <option>Tenant Support</option>
+                  <option>Investment Advisory</option>
+                  <option>Relocation Help</option>
+                </select>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <input
+                    type="text"
+                    placeholder="Preferred Location"
+                    style={inputStyle}
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    disabled={isSubmitting}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Budget"
+                    style={inputStyle}
+                    value={budget}
+                    onChange={(e) => setBudget(e.target.value)}
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <textarea
+                  placeholder="Additional Details"
+                  rows={4}
+                  style={inputStyle}
+                  value={details}
+                  onChange={(e) => setDetails(e.target.value)}
+                  disabled={isSubmitting}
+                />
+                {error && (
+                  <p className="text-sm font-medium text-red-600" role="alert">
+                    {error}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full rounded-lg py-4 text-base font-bold shadow-lg transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+                  style={{ background: GOLD, color: NAVY }}
+                >
+                  {isSubmitting ? "Sending..." : "Submit Requirement"}
+                </button>
+                <p className="text-center text-xs font-medium text-gray-400">
+                  We will get back to you shortly. No spam. No sharing of your data.
+                </p>
+              </form>
+            )}
           </div>
           <div>
             <SectionLabel>Get In Touch</SectionLabel>
