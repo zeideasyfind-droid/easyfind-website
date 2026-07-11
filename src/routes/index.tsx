@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Helmet } from "react-helmet-async";
 import ContactForm from "../components/ContactForm";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import {
@@ -34,7 +35,8 @@ const BUSINESS_CONFIG = {
   phone: "+91 91483 38801",
   email: "zeid.easyfind@gmail.com",
   googleMapsUrl: "https://maps.app.goo.gl/Z211hsPcT1g9ZJ9U8",
-  address: "A Block, Prestige Atlanta, 1, 80 Feet Rd, 3rd Block, Koramangala 8th Block, Bengaluru 560034",
+  address:
+    "A Block, Prestige Atlanta, 1, 80 Feet Rd, 3rd Block, Koramangala 8th Block, Bengaluru 560034",
   stats: {
     clients: "500+",
     rating: "4.9★",
@@ -169,12 +171,36 @@ const REVIEWS = [
 ];
 
 const WHY_US = [
-  { icon: MapPin, title: "Local Expertise in Bangalore", body: "Deep knowledge of Bangalore's micro-markets, localities, and pricing." },
-  { icon: Shield, title: "Verified Clients & Genuine Requirements", body: "We work only with serious buyers, tenants, and owners." },
-  { icon: Zap, title: "Fast Response & Quick Turnaround", body: "No waiting around — we respond fast and close faster." },
-  { icon: Layers, title: "End-to-End Handling", body: "One team for the entire journey — no hand-offs, no confusion." },
-  { icon: Settings, title: "Property Management Support", body: "We stay involved after the deal — managing your property long-term." },
-  { icon: MessageCircle, title: "Transparent Communication", body: "You're always in the loop — no surprises, no hidden steps." },
+  {
+    icon: MapPin,
+    title: "Local Expertise in Bangalore",
+    body: "Deep knowledge of Bangalore's micro-markets, localities, and pricing.",
+  },
+  {
+    icon: Shield,
+    title: "Verified Clients & Genuine Requirements",
+    body: "We work only with serious buyers, tenants, and owners.",
+  },
+  {
+    icon: Zap,
+    title: "Fast Response & Quick Turnaround",
+    body: "No waiting around — we respond fast and close faster.",
+  },
+  {
+    icon: Layers,
+    title: "End-to-End Handling",
+    body: "One team for the entire journey — no hand-offs, no confusion.",
+  },
+  {
+    icon: Settings,
+    title: "Property Management Support",
+    body: "We stay involved after the deal — managing your property long-term.",
+  },
+  {
+    icon: MessageCircle,
+    title: "Transparent Communication",
+    body: "You're always in the loop — no surprises, no hidden steps.",
+  },
 ];
 
 const NAV_LINKS = [
@@ -238,90 +264,129 @@ function Nav() {
   }, []);
 
   return (
-    <header
-      className="fixed inset-x-0 top-0 z-40 bg-white transition-shadow"
-      style={{
-        borderBottom: scrolled ? `1px solid ${BORDER}` : "1px solid transparent",
-        boxShadow: scrolled ? "0 2px 16px rgba(0,0,0,0.05)" : "none",
-      }}
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
-        <Logo />
-        <nav className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToId(l.href);
-              }}
-              className="text-sm font-medium transition-colors"
-              style={{ color: NAVY }}
-            >
-              {l.label}
-            </a>
-          ))}
-        </nav>
-        <div className="flex items-center gap-2 md:hidden">
-          <a
-            href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`}
-            aria-label="Call EasyFind"
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold"
-            style={{ background: GOLD, color: NAVY }}
-          >
-            <Phone size={14} />
-            Call
-          </a>
-          <button
-            aria-label="Open menu"
-            onClick={() => setOpen(true)}
-            className="inline-flex items-center justify-center rounded-md p-1.5"
-            style={{ color: NAVY }}
-          >
-            <Menu size={26} />
-          </button>
-        </div>
-        <a
-          href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`}
-          className="hidden items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold md:inline-flex"
-          style={{ background: GOLD, color: NAVY }}
-        >
-          <Phone size={16} />
-          {BUSINESS_CONFIG.phone}
-        </a>
-      </div>
-
-      {open && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-white md:hidden">
-          <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: `1px solid ${BORDER}` }}>
-            <Logo />
-            <button aria-label="Close menu" onClick={() => setOpen(false)} style={{ color: NAVY }}>
-              <X size={26} />
-            </button>
-          </div>
-          <div className="flex flex-1 flex-col items-center justify-center gap-8">
+    <>
+      <Helmet>
+        <title>EasyFind Property Solutions | Bangalore's Trusted Property Partner</title>
+        <meta
+          name="description"
+          content="Bangalore's most trusted property partner for rental services, sales, management, and NRI assistance. Find, own, and manage properties with ease."
+        />
+        <meta
+          name="keywords"
+          content="Bangalore real estate, property management Bangalore, rental services Bangalore, NRI property assistance, buy sell property Bangalore"
+        />
+        <meta
+          property="og:title"
+          content="EasyFind Property Solutions | Bangalore's Trusted Property Partner"
+        />
+        <meta
+          property="og:description"
+          content="Find. Own. Manage. All under one roof. Expert property services across Bangalore."
+        />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://easyfindproperties.in" />
+      </Helmet>
+      <header
+        className="fixed inset-x-0 top-0 z-40 bg-white transition-shadow"
+        style={{
+          borderBottom: scrolled ? `1px solid ${BORDER}` : "1px solid transparent",
+          boxShadow: scrolled ? "0 2px 16px rgba(0,0,0,0.05)" : "none",
+        }}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
+          <Logo />
+          <nav className="hidden items-center gap-8 md:flex">
             {NAV_LINKS.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={(e) => {
                   e.preventDefault();
-                  setOpen(false);
-                  setTimeout(() => scrollToId(l.href), 50);
+                  scrollToId(l.href);
                 }}
-                className="text-2xl font-semibold"
-                style={{ color: NAVY, borderBottom: `2px solid transparent` }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderBottomColor = GOLD)}
-                onMouseLeave={(e) => (e.currentTarget.style.borderBottomColor = "transparent")}
+                className="text-sm font-medium transition-colors"
+                style={{ color: NAVY }}
               >
                 {l.label}
               </a>
             ))}
+          </nav>
+          <div className="flex items-center gap-2 md:hidden">
+            <a
+              href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`}
+              aria-label="Call EasyFind"
+              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold"
+              style={{ background: GOLD, color: NAVY }}
+            >
+              <Phone size={14} />
+              Call
+            </a>
+            <button
+              aria-label="Open menu"
+              onClick={() => setOpen(true)}
+              className="inline-flex items-center justify-center rounded-md p-1.5"
+              style={{ color: NAVY }}
+            >
+              <Menu size={26} />
+            </button>
           </div>
+          <a
+            href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`}
+            className="hidden items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold md:inline-flex"
+            style={{ background: GOLD, color: NAVY }}
+          >
+            <Phone size={16} />
+            {BUSINESS_CONFIG.phone}
+          </a>
         </div>
-      )}
-    </header>
+
+        {open && (
+          <div className="fixed inset-0 z-50 flex flex-col bg-white md:hidden">
+            <div
+              className="flex items-center justify-between px-5 py-4"
+              style={{ borderBottom: `1px solid ${BORDER}` }}
+            >
+              <Logo />
+              <button
+                aria-label="Close menu"
+                onClick={() => setOpen(false)}
+                style={{ color: NAVY }}
+              >
+                <X size={26} />
+              </button>
+            </div>
+            <div className="flex flex-1 flex-col items-center justify-center gap-8 px-5">
+              {NAV_LINKS.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setOpen(false);
+                    setTimeout(() => scrollToId(l.href), 50);
+                  }}
+                  className="w-full text-center text-2xl font-semibold py-2"
+                  style={{ color: NAVY, borderBottom: `2px solid transparent` }}
+                  onMouseEnter={(e) => (e.currentTarget.style.borderBottomColor = GOLD)}
+                  onMouseLeave={(e) => (e.currentTarget.style.borderBottomColor = "transparent")}
+                >
+                  {l.label}
+                </a>
+              ))}
+              <a
+                href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`}
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-lg font-bold shadow-lg"
+                style={{ background: GOLD, color: NAVY }}
+                onClick={() => setOpen(false)}
+              >
+                <Phone size={20} />
+                {BUSINESS_CONFIG.phone}
+              </a>
+            </div>
+          </div>
+        )}
+      </header>
+    </>
   );
 }
 
@@ -354,10 +419,21 @@ function SectionTitle({ children, light = false }: { children: ReactNode; light?
 
 function Hero() {
   return (
-    <section id="hero" className="relative flex min-h-[90vh] items-center pt-24 md:pt-32" style={{ background: NAVY }}>
-      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)", backgroundSize: "32px 32px" }} />
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 md:grid-cols-2 md:px-8">
-        <div className="flex flex-col justify-center">
+    <section
+      id="hero"
+      className="relative flex min-h-[90vh] items-center pt-24 md:pt-32"
+      style={{ background: NAVY }}
+    >
+      <div
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)",
+          backgroundSize: "32px 32px",
+        }}
+      />
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 lg:grid-cols-2 md:px-8">
+        <div className="flex flex-col justify-center text-center lg:text-left items-center lg:items-start">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-white/90">
             <span className="flex h-2 w-2 rounded-full bg-green-400 animate-pulse" />
             Bangalore's Trusted Property Partner
@@ -375,8 +451,13 @@ function Hero() {
             <br />
             <span style={{ color: GOLD }}>All Under One Roof.</span>
           </h1>
-          <p className="mt-5 max-w-xl text-base md:text-lg" style={{ color: "rgba(255,255,255,0.75)", lineHeight: 1.65 }}>
-            From finding the right home to managing and selling your property, EasyFind Property Solutions handles it all across Bangalore. We help owners and clients move faster, avoid delays, and make the right decisions.
+          <p
+            className="mt-5 max-w-xl text-base md:text-lg"
+            style={{ color: "rgba(255,255,255,0.75)", lineHeight: 1.65 }}
+          >
+            From finding the right home to managing and selling your property, EasyFind Property
+            Solutions handles it all across Bangalore. We help owners and clients move faster, avoid
+            delays, and make the right decisions.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <button
@@ -389,7 +470,11 @@ function Hero() {
             <button
               onClick={() => scrollToId("#how-it-works")}
               className="rounded-lg px-6 py-3 font-semibold transition-colors"
-              style={{ border: "1px solid rgba(255,255,255,0.5)", color: "#fff", background: "transparent" }}
+              style={{
+                border: "1px solid rgba(255,255,255,0.5)",
+                color: "#fff",
+                background: "transparent",
+              }}
             >
               How It Works
             </button>
@@ -420,11 +505,18 @@ function TrackRecord() {
               <div className="mx-auto mb-3 h-px w-10" style={{ background: GOLD }} />
               <div
                 className="font-extrabold"
-                style={{ color: NAVY, fontSize: "clamp(32px, 4vw, 48px)", lineHeight: 1, letterSpacing: "-0.02em" }}
+                style={{
+                  color: NAVY,
+                  fontSize: "clamp(32px, 4vw, 48px)",
+                  lineHeight: 1,
+                  letterSpacing: "-0.02em",
+                }}
               >
                 {s.n}
               </div>
-              <div className="mt-2 text-sm md:text-base" style={{ color: MUTED }}>{s.l}</div>
+              <div className="mt-2 text-sm md:text-base" style={{ color: MUTED }}>
+                {s.l}
+              </div>
             </div>
           ))}
         </div>
@@ -442,9 +534,16 @@ function ServiceModal({ service, onClose }: { service: Service; onClose: () => v
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-navy/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl md:p-8">
-        <button onClick={onClose} className="absolute right-4 top-4 p-2 text-navy/40 hover:text-navy">
+      <div
+        className="absolute inset-0 backdrop-blur-sm"
+        style={{ background: "rgba(26, 58, 92, 0.6)" }}
+        onClick={onClose}
+      />
+      <div className="relative w-full max-w-lg overflow-y-auto max-h-[90vh] rounded-2xl bg-white p-6 shadow-2xl md:p-8">
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 p-2 text-navy/40 hover:text-navy"
+        >
           <X size={24} />
         </button>
         <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-surface text-navy">
@@ -453,7 +552,9 @@ function ServiceModal({ service, onClose }: { service: Service; onClose: () => v
         <h3 className="mt-6 text-2xl font-bold text-navy">{service.name}</h3>
         <p className="mt-3 text-muted leading-relaxed">{service.desc}</p>
         <div className="mt-8">
-          <h4 className="text-sm font-bold uppercase tracking-wider text-navy/40">Key Deliverables</h4>
+          <h4 className="text-sm font-bold uppercase tracking-wider text-navy/40">
+            Key Deliverables
+          </h4>
           <ul className="mt-4 space-y-3">
             {service.bullets.map((b) => (
               <li key={b} className="flex items-start gap-3 text-sm font-medium text-navy/80">
@@ -499,16 +600,30 @@ function Services() {
                   border: `1px solid ${BORDER}`,
                   boxShadow: "0 2px 16px rgba(0,0,0,0.04)",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 12px 32px rgba(26,58,92,0.12)")}
-                onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 2px 16px rgba(0,0,0,0.04)")}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.boxShadow = "0 12px 32px rgba(26,58,92,0.12)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.boxShadow = "0 2px 16px rgba(0,0,0,0.04)")
+                }
                 aria-label={`View details for ${s.name}`}
               >
-                <span className="flex h-11 w-11 items-center justify-center rounded-lg" style={{ background: SURFACE, color: NAVY }}>
+                <span
+                  className="flex h-11 w-11 items-center justify-center rounded-lg"
+                  style={{ background: SURFACE, color: NAVY }}
+                >
                   <Icon size={22} />
                 </span>
-                <h3 className="mt-4 text-base font-bold" style={{ color: NAVY }}>{s.name}</h3>
-                <p className="mt-2 text-sm" style={{ color: MUTED, lineHeight: 1.55 }}>{s.desc}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold" style={{ color: GOLD }}>
+                <h3 className="mt-4 text-base font-bold" style={{ color: NAVY }}>
+                  {s.name}
+                </h3>
+                <p className="mt-2 text-sm" style={{ color: MUTED, lineHeight: 1.55 }}>
+                  {s.desc}
+                </p>
+                <span
+                  className="mt-4 inline-flex items-center gap-1 text-sm font-semibold"
+                  style={{ color: GOLD }}
+                >
                   View Details <ArrowRight size={14} />
                 </span>
               </button>
@@ -523,34 +638,53 @@ function Services() {
 
 function HowItWorks() {
   const steps = [
-    { icon: MessageSquare, n: "01", t: "Share Your Requirement", b: "Tell us what you need — property type, area, budget, and timeline." },
-    { icon: Search, n: "02", t: "We Understand Your Need", b: "Our team listens, asks the right questions, and maps a clear plan for you." },
-    { icon: CheckCircle, n: "03", t: "We Handle Everything Till Closure", b: "From shortlisting and visits to negotiation, paperwork, and handover." },
+    {
+      icon: MessageSquare,
+      n: "01",
+      t: "Share Your Requirement",
+      b: "Tell us what you need — property type, area, budget, and timeline.",
+    },
+    {
+      icon: Search,
+      n: "02",
+      t: "We Understand Your Need",
+      b: "Our team listens, asks the right questions, and maps a clear plan for you.",
+    },
+    {
+      icon: CheckCircle,
+      n: "03",
+      t: "We Handle Everything Till Closure",
+      b: "From shortlisting and visits to negotiation, paperwork, and handover.",
+    },
   ];
   return (
     <section id="how-it-works" className="py-16 md:py-24" style={{ background: SURFACE }}>
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <SectionLabel>The Process</SectionLabel>
         <SectionTitle>Simple. Clear. Handled.</SectionTitle>
-        <div className="relative mt-12 grid grid-cols-1 gap-10 md:grid-cols-3">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-[16%] right-[16%] top-8 hidden h-px md:block"
-            style={{ backgroundImage: `linear-gradient(to right, ${GOLD} 40%, transparent 40%)`, backgroundSize: "12px 1px", opacity: 0.4 }}
-          />
-          {steps.map((s) => {
+        <div className="relative mt-12 grid grid-cols-1 gap-12 lg:grid-cols-3">
+          {steps.map((s, idx) => {
             const Icon = s.icon;
             return (
-              <div key={s.n} className="relative text-center">
-                <span
-                  className="relative z-10 mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white"
-                  style={{ border: `1px solid ${BORDER}`, color: NAVY }}
+              <div key={s.n} className="relative z-10 flex flex-col items-center text-center">
+                <div
+                  className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl shadow-lg"
+                  style={{ background: "#fff", color: GOLD }}
                 >
-                  <Icon size={26} />
-                </span>
-                <div className="mt-4 font-bold" style={{ color: GOLD, letterSpacing: "0.1em" }}>{s.n}</div>
-                <h3 className="mt-1 text-lg font-bold" style={{ color: NAVY }}>{s.t}</h3>
-                <p className="mx-auto mt-2 max-w-xs text-sm" style={{ color: MUTED, lineHeight: 1.6 }}>{s.b}</p>
+                  <Icon size={32} />
+                </div>
+                <div className="mb-2 text-sm font-bold" style={{ color: GOLD }}>
+                  {s.n}
+                </div>
+                <h3 className="mb-3 text-xl font-bold" style={{ color: NAVY }}>
+                  {s.t}
+                </h3>
+                <p className="text-sm leading-relaxed" style={{ color: MUTED }}>
+                  {s.b}
+                </p>
+                {idx < 2 && (
+                  <div className="absolute left-full top-10 hidden w-full border-t-2 border-dashed border-gray-200 lg:block" />
+                )}
               </div>
             );
           })}
@@ -566,17 +700,24 @@ function WhyUs() {
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <SectionLabel>Why EasyFind</SectionLabel>
         <SectionTitle>Built on Trust. Driven by Results.</SectionTitle>
-        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-x-10 md:gap-y-10">
+        <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {WHY_US.map((w) => {
             const Icon = w.icon;
             return (
-              <div key={w.title} className="flex gap-4">
-                <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg" style={{ background: SURFACE, color: NAVY }}>
-                  <Icon size={22} />
-                </span>
+              <div key={w.title} className="flex gap-5">
+                <div
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
+                  style={{ background: SURFACE, color: GOLD }}
+                >
+                  <Icon size={24} />
+                </div>
                 <div>
-                  <h3 className="text-base font-bold" style={{ color: NAVY }}>{w.title}</h3>
-                  <p className="mt-1 text-sm" style={{ color: MUTED, lineHeight: 1.6 }}>{w.body}</p>
+                  <h3 className="text-lg font-bold" style={{ color: NAVY }}>
+                    {w.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed" style={{ color: MUTED }}>
+                    {w.body}
+                  </p>
                 </div>
               </div>
             );
@@ -593,44 +734,47 @@ function Reviews() {
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <SectionLabel>What Our Clients Say</SectionLabel>
         <SectionTitle>4.9★ Rating with 110+ Reviews</SectionTitle>
-        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
-          {REVIEWS.map((r, i) => (
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+          {REVIEWS.map((r) => (
             <div
-              key={i}
-              className="rounded-xl bg-white p-6 md:p-7"
-              style={{ border: `1px solid ${BORDER}`, boxShadow: "0 2px 16px rgba(0,0,0,0.04)" }}
+              key={r.name}
+              className="rounded-2xl bg-white p-8 shadow-sm"
+              style={{ border: `1px solid ${BORDER}` }}
             >
-              <div className="flex gap-0.5" aria-label="5 star rating">
-                {[0, 1, 2, 3, 4].map((n) => (
-                  <Star key={n} size={16} fill={GOLD} stroke={GOLD} />
+              <div className="mb-4 flex gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={16} fill={GOLD} color={GOLD} />
                 ))}
               </div>
-              <p className="mt-3 italic" style={{ color: MUTED, lineHeight: 1.65 }}>
-                &ldquo;{r.text}&rdquo;
+              <p className="text-base italic leading-relaxed" style={{ color: TEXT }}>
+                “{r.text}”
               </p>
-              <div className="mt-4">
-                <div className="text-sm font-bold" style={{ color: NAVY }}>{r.name}</div>
-                <div className="text-xs" style={{ color: MUTED }}>Google Review</div>
+              <div className="mt-6 flex items-center justify-between">
+                <div className="font-bold" style={{ color: NAVY }}>
+                  {r.name}
+                </div>
+                <div className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                  Google Review
+                </div>
               </div>
             </div>
           ))}
         </div>
-        <div className="mt-10 text-center">
+        <div className="mt-12 text-center">
           <a
             href={BUSINESS_CONFIG.googleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold transition-colors"
-            style={{ border: `1.5px solid ${GOLD}`, color: NAVY, background: "transparent" }}
+            className="inline-flex items-center gap-2 rounded-lg border-2 px-6 py-3 font-bold transition-colors"
+            style={{ borderColor: GOLD, color: NAVY }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = GOLD;
-              e.currentTarget.style.color = NAVY;
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = "transparent";
             }}
           >
-            View All Reviews on Google <ArrowRight size={16} />
+            View All Reviews on Google
           </a>
         </div>
       </div>
@@ -639,74 +783,89 @@ function Reviews() {
 }
 
 function LeadForm() {
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    type: "Looking to Rent",
+    location: "",
+    budget: "",
+    details: "",
+  });
 
-  const handle = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
-    setSubmitError(false);
-    setSubmitted(false);
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
     const formUrl =
       "https://docs.google.com/forms/d/e/1FAIpQLSeyRnYIMCl3ouDgMfGkZBK57ccIeIk6e6nlYmoZubRaoLdOsA/formResponse";
     const payload = new URLSearchParams();
-    payload.append("entry.647419092", formData.get("name") as string);
-    payload.append("entry.1504466253", formData.get("phone") as string);
-    payload.append("entry.1645082311", formData.get("requirement") as string);
-    payload.append("entry.616237414", formData.get("location") as string);
-    payload.append("entry.1733021043", formData.get("budget") as string);
-    payload.append("entry.1656301094", formData.get("details") as string);
-    payload.append("entry.128907828", formData.get("requirement") as string);
+    payload.append("entry.647419092", formData.name);
+    payload.append("entry.1504466253", formData.phone);
+    payload.append("entry.1645082311", formData.type);
+    payload.append("entry.616237414", formData.location);
+    payload.append("entry.1733021043", formData.budget);
+    payload.append("entry.1656301094", formData.details);
+    payload.append("entry.128907828", "Footer Lead Form");
 
-    try {
-      await fetch(formUrl, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: payload.toString(),
-      });
-      setSubmitted(true);
-      form.reset();
-      setTimeout(() => setSubmitted(false), 5000);
-    } catch (error) {
-      console.error("Lead form submission error:", error);
-      setSubmitError(true);
-    } finally {
-      setSubmitting(false);
-    }
+    fetch(formUrl, { method: "POST", mode: "no-cors", body: payload });
+    alert("Thank you! We will get back to you shortly.");
+    setFormData({
+      name: "",
+      phone: "",
+      type: "Looking to Rent",
+      location: "",
+      budget: "",
+      details: "",
+    });
+  };
+
+  const inputStyle = {
+    width: "100%",
+    padding: "12px 16px",
+    borderRadius: "8px",
+    border: `1px solid ${BORDER}`,
+    background: "#fff",
+    fontSize: "14px",
+    outline: "none",
   };
 
   return (
-    <section id="lead-form" className="py-16 md:py-24" style={{ background: NAVY }}>
-      <div className="mx-auto max-w-3xl px-5 md:px-8">
-        <SectionTitle light>Tell Us What You&apos;re Looking For</SectionTitle>
-        <p className="mt-3 text-center" style={{ color: "rgba(255,255,255,0.75)" }}>
-          Fill in the form and our team will reach out shortly.
-        </p>
-        <form
-          onSubmit={handle}
-          className="mt-10 rounded-2xl bg-white p-6 md:p-8"
-          style={{ boxShadow: "0 30px 80px rgba(0,0,0,0.25)" }}
-        >
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-navy/40">Name</label>
-              <input required name="name" className="rounded-lg border border-border bg-surface px-4 py-3 text-navy focus:border-gold focus:outline-none" />
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-navy/40">Phone Number</label>
-              <input required type="tel" name="phone" className="rounded-lg border border-border bg-surface px-4 py-3 text-navy focus:border-gold focus:outline-none" />
-            </div>
-            <div className="md:col-span-2 flex flex-col gap-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-navy/40">Requirement Type</label>
-              <select required name="requirement" className="rounded-lg border border-border bg-surface px-4 py-3 text-navy focus:border-gold focus:outline-none">
+    <section id="contact" className="py-16 md:py-24" style={{ background: "#fff" }}>
+      <div className="mx-auto max-w-7xl px-5 md:px-8">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
+          <div id="lead-form">
+            <SectionLabel>Contact Us</SectionLabel>
+            <h2
+              className="mb-6 font-bold"
+              style={{ color: NAVY, fontSize: "clamp(28px, 4vw, 40px)", lineHeight: 1.15 }}
+            >
+              Tell Us What You're Looking For
+            </h2>
+            <p className="mb-8 text-base" style={{ color: MUTED }}>
+              Fill in the form and our team will reach out shortly.
+            </p>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <input
+                  type="text"
+                  placeholder="Name"
+                  required
+                  style={inputStyle}
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+                <input
+                  type="tel"
+                  placeholder="Phone Number"
+                  required
+                  style={inputStyle}
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                />
+              </div>
+              <select
+                style={inputStyle}
+                value={formData.type}
+                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              >
                 <option>Looking to Rent</option>
                 <option>Looking to Buy</option>
                 <option>Looking to Sell</option>
@@ -715,94 +874,131 @@ function LeadForm() {
                 <option>Investment Advisory</option>
                 <option>Relocation Help</option>
               </select>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <input
+                  type="text"
+                  placeholder="Preferred Location"
+                  style={inputStyle}
+                  value={formData.location}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                />
+                <input
+                  type="text"
+                  placeholder="Budget"
+                  style={inputStyle}
+                  value={formData.budget}
+                  onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                />
+              </div>
+              <textarea
+                placeholder="Additional Details"
+                rows={4}
+                style={inputStyle}
+                value={formData.details}
+                onChange={(e) => setFormData({ ...formData, details: e.target.value })}
+              />
+              <button
+                type="submit"
+                className="w-full rounded-lg py-4 text-base font-bold shadow-lg transition-transform hover:-translate-y-0.5"
+                style={{ background: GOLD, color: NAVY }}
+              >
+                Submit Requirement
+              </button>
+              <p className="text-center text-xs font-medium text-gray-400">
+                We will get back to you shortly. No spam. No sharing of your data.
+              </p>
+            </form>
+          </div>
+          <div>
+            <SectionLabel>Get In Touch</SectionLabel>
+            <h2
+              className="mb-10 font-bold"
+              style={{ color: NAVY, fontSize: "clamp(28px, 4vw, 40px)", lineHeight: 1.15 }}
+            >
+              We're Just a Message Away
+            </h2>
+            <div className="space-y-10">
+              <div className="flex gap-6">
+                <div
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full"
+                  style={{ background: SURFACE, color: NAVY }}
+                >
+                  <Phone size={24} />
+                </div>
+                <div>
+                  <div className="text-sm font-bold uppercase tracking-wider text-gray-400">
+                    Call Us
+                  </div>
+                  <div className="mt-1 text-sm text-gray-500">Available 10 AM - 7 PM</div>
+                  <a
+                    href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`}
+                    className="mt-2 block text-xl font-bold"
+                    style={{ color: NAVY }}
+                  >
+                    {BUSINESS_CONFIG.phone}
+                  </a>
+                </div>
+              </div>
+              <div className="flex gap-6">
+                <div
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full"
+                  style={{ background: SURFACE, color: NAVY }}
+                >
+                  <Mail size={24} />
+                </div>
+                <div>
+                  <div className="text-sm font-bold uppercase tracking-wider text-gray-400">
+                    Email Us
+                  </div>
+                  <div className="mt-1 text-sm text-gray-500">We'll reply within 24h</div>
+                  <a
+                    href={`mailto:${BUSINESS_CONFIG.email}`}
+                    className="mt-2 block text-xl font-bold"
+                    style={{ color: NAVY }}
+                  >
+                    {BUSINESS_CONFIG.email}
+                  </a>
+                </div>
+              </div>
+              <div className="flex gap-6">
+                <div
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full"
+                  style={{ background: SURFACE, color: NAVY }}
+                >
+                  <MapPin size={24} />
+                </div>
+                <div>
+                  <div className="text-sm font-bold uppercase tracking-wider text-gray-400">
+                    Visit Us
+                  </div>
+                  <div className="mt-1 text-sm text-gray-500">Koramangala, Bangalore</div>
+                  <a
+                    href={BUSINESS_CONFIG.googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 block font-bold"
+                    style={{ color: GOLD }}
+                  >
+                    View on Maps
+                  </a>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-navy/40">Preferred Location</label>
-              <input name="location" placeholder="e.g. Koramangala, HSR Layout" className="rounded-lg border border-border bg-surface px-4 py-3 text-navy focus:border-gold focus:outline-none" />
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-navy/40">Budget</label>
-              <input name="budget" placeholder="e.g. ₹30,000/month or ₹80 Lakhs" className="rounded-lg border border-border bg-surface px-4 py-3 text-navy focus:border-gold focus:outline-none" />
-            </div>
-            <div className="md:col-span-2 flex flex-col gap-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-navy/40">Additional Details</label>
-              <textarea name="details" rows={3} placeholder="Anything else we should know?" className="rounded-lg border border-border bg-surface px-4 py-3 text-navy focus:border-gold focus:outline-none" />
+            <div
+              className="mt-16 overflow-hidden rounded-2xl shadow-xl"
+              style={{ border: `1px solid ${BORDER}` }}
+            >
+              <iframe
+                title="Office Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.4847368668495!2d77.62215847587636!3d12.94079861555562!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1443729d585d%3A0x7211hsPcT1g9ZJ9U8!2sEasyFind%20Property%20Solutions!5e0!3m2!1sen!2sin!4v1710321234567!5m2!1sen!2sin"
+                width="100%"
+                height="300"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+              />
             </div>
           </div>
-          <button
-            type="submit"
-            className="mt-6 w-full rounded-lg py-3.5 text-base font-bold transition-transform hover:-translate-y-0.5"
-            style={{
-              background: GOLD,
-              color: NAVY,
-              opacity: submitting ? 0.7 : 1,
-              cursor: submitting ? "not-allowed" : undefined,
-            }}
-            disabled={submitting}
-          >
-            {submitting ? "Submitting..." : "Submit Requirement"}
-          </button>
-          {submitted && (
-            <p className="mt-4 text-center text-sm font-medium" style={{ color: "#0a7f3f" }}>
-              ✅ Thank you! We will get back to you shortly.
-            </p>
-          )}
-          {submitError && (
-            <p className="mt-4 text-center text-sm font-medium" style={{ color: "#dc2626" }}>
-              Unable to submit. Please try again or call us directly.
-            </p>
-          )}
-          <p className="mt-4 text-center text-xs" style={{ color: MUTED }}>
-            We will get back to you shortly. No spam. No sharing of your data.
-          </p>
-        </form>
-      </div>
-    </section>
-  );
-}
-
-function Contact() {
-  return (
-    <section id="contact" className="py-16 md:py-24" style={{ background: "#fff" }}>
-      <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <SectionLabel>Get In Touch</SectionLabel>
-        <SectionTitle>We're Just a Message Away</SectionTitle>
-        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-          <div className="rounded-xl bg-white p-6 text-center" style={{ border: `1px solid ${BORDER}` }}>
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background: SURFACE, color: NAVY }}>
-              <Phone size={24} />
-            </div>
-            <h3 className="text-lg font-bold" style={{ color: NAVY }}>Call Us</h3>
-            <p className="mt-2 text-sm" style={{ color: MUTED }}>Available 10 AM - 7 PM</p>
-            <a href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`} className="mt-3 block font-bold" style={{ color: GOLD }}>{BUSINESS_CONFIG.phone}</a>
-          </div>
-          <div className="rounded-xl bg-white p-6 text-center" style={{ border: `1px solid ${BORDER}` }}>
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background: SURFACE, color: NAVY }}>
-              <Mail size={24} />
-            </div>
-            <h3 className="text-lg font-bold" style={{ color: NAVY }}>Email Us</h3>
-            <p className="mt-2 text-sm" style={{ color: MUTED }}>We'll reply within 24h</p>
-            <a href={`mailto:${BUSINESS_CONFIG.email}`} className="mt-3 block font-bold" style={{ color: GOLD }}>{BUSINESS_CONFIG.email}</a>
-          </div>
-          <div className="rounded-xl bg-white p-6 text-center" style={{ border: `1px solid ${BORDER}` }}>
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background: SURFACE, color: NAVY }}>
-              <MapPin size={24} />
-            </div>
-            <h3 className="text-lg font-bold" style={{ color: NAVY }}>Visit Us</h3>
-            <p className="mt-2 text-sm" style={{ color: MUTED }}>Koramangala, Bangalore</p>
-            <a href={BUSINESS_CONFIG.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="mt-3 block font-bold" style={{ color: GOLD }}>View on Maps</a>
-          </div>
-        </div>
-        <div className="mt-16 overflow-hidden rounded-2xl shadow-xl" style={{ border: `1px solid ${BORDER}` }}>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.312688467123!2d77.61629347576562!3d12.93877578737338!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae15229e6c1a61%3A0x26a05f018e301661!2sEasyFind%20Property%20Solutions!5e0!3m2!1sen!2sin!4v1752206400000!5m2!1sen!2sin"
-            width="100%"
-            height="450"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
         </div>
       </div>
     </section>
@@ -811,11 +1007,17 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="py-12" style={{ background: SURFACE, borderTop: `1px solid ${BORDER}` }}>
+    <footer className="bg-white py-16" style={{ borderTop: `1px solid ${BORDER}` }}>
       <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
-          <Logo />
-          <nav className="flex flex-wrap justify-center gap-x-8 gap-y-4">
+        <div className="flex flex-col items-center justify-between gap-10 md:flex-row">
+          <div className="flex flex-col items-center md:items-start">
+            <Logo />
+            <p className="mt-6 max-w-xs text-center text-sm leading-relaxed text-gray-500 md:text-left">
+              Bangalore's most trusted property partner. We simplify your real estate journey from
+              start to finish.
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-x-12 gap-y-6">
             {NAV_LINKS.map((l) => (
               <a
                 key={l.href}
@@ -824,21 +1026,24 @@ function Footer() {
                   e.preventDefault();
                   scrollToId(l.href);
                 }}
-                className="text-sm font-medium transition-colors"
+                className="text-sm font-semibold transition-colors hover:text-gold"
                 style={{ color: NAVY }}
               >
                 {l.label}
               </a>
             ))}
-          </nav>
+          </div>
         </div>
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row" style={{ borderColor: BORDER }}>
-          <p className="text-sm" style={{ color: MUTED }}>
-            © {new Date().getFullYear()} EasyFind Property Solutions. All rights reserved.
-          </p>
-          <p className="text-xs" style={{ color: MUTED }}>
+        <div
+          className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row"
+          style={{ borderColor: BORDER }}
+        >
+          <div className="text-xs font-medium text-gray-400">
+            © 2026 EasyFind Property Solutions. All rights reserved.
+          </div>
+          <div className="text-xs font-bold uppercase tracking-widest text-gray-300">
             Built with trust in Bangalore.
-          </p>
+          </div>
         </div>
       </div>
     </footer>
@@ -847,17 +1052,18 @@ function Footer() {
 
 function Index() {
   return (
-    <main className="min-h-screen bg-white selection:bg-[#C9A84C]/30 selection:text-[#1A3A5C]">
+    <div className="min-h-screen bg-white" style={{ color: TEXT, fontFamily: "Inter, sans-serif" }}>
       <Nav />
-      <Hero />
-      <TrackRecord />
-      <Services />
-      <HowItWorks />
-      <WhyUs />
-      <Reviews />
-      <LeadForm />
-      <Contact />
+      <main>
+        <Hero />
+        <TrackRecord />
+        <Services />
+        <HowItWorks />
+        <WhyUs />
+        <Reviews />
+        <LeadForm />
+      </main>
       <Footer />
-    </main>
+    </div>
   );
 }

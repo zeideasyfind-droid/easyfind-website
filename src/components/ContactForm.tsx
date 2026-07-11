@@ -15,9 +15,7 @@ const ContactForm: React.FC = () => {
 
   const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -65,10 +63,7 @@ const ContactForm: React.FC = () => {
     "w-full border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-sm";
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4 rounded-xl bg-white p-6 shadow-xl"
-    >
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-xl bg-white p-6 shadow-xl">
       <div>
         <label htmlFor="name" className={labelClass}>
           Name

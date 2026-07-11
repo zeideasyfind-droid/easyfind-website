@@ -7,7 +7,8 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
+import { HelmetProvider } from "react-helmet-async";
 
 import appCss from "../styles.css?url";
 
@@ -36,9 +37,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    // reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -77,18 +75,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "EasyFind Property Solutions | Bangalore's Trusted Property Partner" },
-      { name: "description", content: "Find, Own, and Manage property in Bangalore. Professional rental services, property management, and investment advisory with 4.9★ rating." },
+      {
+        name: "description",
+        content:
+          "Find, Own, and Manage property in Bangalore. Professional rental services, property management, and investment advisory with 4.9★ rating.",
+      },
       { name: "author", content: "EasyFind Property Solutions" },
-      { property: "og:title", content: "EasyFind Property Solutions | Bangalore's Trusted Property Partner" },
-      { property: "og:description", content: "Find, Own, and Manage property in Bangalore. Professional rental services, property management, and investment advisory with 4.9★ rating." },
+      {
+        property: "og:title",
+        content: "EasyFind Property Solutions | Bangalore's Trusted Property Partner",
+      },
+      {
+        property: "og:description",
+        content:
+          "Find, Own, and Manage property in Bangalore. Professional rental services, property management, and investment advisory with 4.9★ rating.",
+      },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://easyfindprops.com" },
       { property: "og:image", content: "https://easyfindprops.com/og-image.jpg" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "EasyFind Property Solutions | Bangalore's Trusted Property Partner" },
-      { name: "twitter:description", content: "Find, Own, and Manage property in Bangalore. Professional rental services, property management, and investment advisory with 4.9★ rating." },
+      {
+        name: "twitter:title",
+        content: "EasyFind Property Solutions | Bangalore's Trusted Property Partner",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Find, Own, and Manage property in Bangalore. Professional rental services, property management, and investment advisory with 4.9★ rating.",
+      },
       { name: "twitter:image", content: "https://easyfindprops.com/og-image.jpg" },
     ],
     links: [
@@ -100,7 +116,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "canonical", href: "https://easyfindprops.com" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -127,9 +146,11 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 }

@@ -1,24 +1,21 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 export default defineConfig({
-
-  plugins: [
-    TanStackRouterVite(),
-    react(),
-  ],
+  plugins: [TanStackRouterVite(), react()],
   resolve: {
     alias: {
       "@": "/src",
     },
   },
   css: {
-    lightningcss: false,
+    transformer: "postcss",
   },
+
   build: {
     rollupOptions: {
-      external: ['node:async_hooks'],
+      external: ["node:async_hooks"],
     },
   },
 });
