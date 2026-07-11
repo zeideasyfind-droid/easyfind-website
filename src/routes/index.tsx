@@ -34,11 +34,11 @@ const BUSINESS_CONFIG = {
   phone: "+91 91483 38801",
   email: "zeid.easyfind@gmail.com",
   googleMapsUrl: "https://maps.app.goo.gl/Z211hsPcT1g9ZJ9U8",
-  address: "Prestige Atlanta, 1, 80 Feet Rd, Koramangala 8th Block, Bengaluru 560034",
+  address: "A Block, Prestige Atlanta, 1, 80 Feet Rd, 3rd Block, Koramangala 8th Block, Bengaluru 560034",
   stats: {
     clients: "500+",
-    rating: "4.7★",
-    years: "8+",
+    rating: "4.9★",
+    years: "5+",
     deals: "1000+",
   },
 };
@@ -151,20 +151,20 @@ const SERVICES: Service[] = [
 
 const REVIEWS = [
   {
-    text: "It is extremely great to work with you guys. Your team was very helpful and professional throughout the entire process. Found the perfect property within my budget. Highly recommended!",
-    name: "Satisfied Client",
+    text: "They are very helpful and professional. They showed us good flats and even negotiated the rent on our behalf. They ensured all the rules and regulations of the owners were easily communicated to us before the token payment. Highly recommend them.",
+    name: "Rishabh Kejariwal",
   },
   {
-    text: "EasyFind helped me find a great tenant for my property in Koramangala within 2 weeks. The entire process was smooth and professional. Will definitely use their services again.",
-    name: "Property Owner, Koramangala",
+    text: "Excellent brokerage service. Parvez, in particular, was extremely professional and guided us impeccably to make our premises rental process smooth and hassle-free. Everything was managed in a very short time.",
+    name: "Randhir Singh",
   },
   {
-    text: "As an NRI, managing my Bangalore property was a constant worry. EasyFind's team took complete ownership — tenant management, rent collection, maintenance. Complete peace of mind.",
-    name: "NRI Property Owner",
+    text: "Parvez helped us find a flat in just 2-3 days. He was able to pick exactly what we were looking for and showed us houses that met our criteria. Appreciate the quick service!",
+    name: "Kirit",
   },
   {
-    text: "Quick response, genuine requirements, and transparent process. They understood exactly what I was looking for and helped me close in record time. Exceptional service.",
-    name: "Home Buyer, Bangalore",
+    text: "I just moved to Bangalore from the USA. Finding an apartment here is no easy task! After meeting several realtors and seeing MANY apartments, fate led me to Ahmed. He showed me three places and the third one was perfect.",
+    name: "Greenstar Goddess",
   },
 ];
 
@@ -352,12 +352,6 @@ function SectionTitle({ children, light = false }: { children: ReactNode; light?
   );
 }
 
-
-
-
-
-
-
 function Hero() {
   return (
     <section id="hero" className="relative flex min-h-[90vh] items-center pt-24 md:pt-32" style={{ background: NAVY }}>
@@ -443,60 +437,40 @@ function ServiceModal({ service, onClose }: { service: Service; onClose: () => v
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
+    return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const Icon = service.icon;
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center px-4"
-      style={{ background: "rgba(0,0,0,0.5)" }}
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label={service.name}
-    >
-      <div
-        className="relative w-full max-w-xl rounded-2xl bg-white p-6 md:p-8"
-        onClick={(e) => e.stopPropagation()}
-        style={{ boxShadow: "0 30px 80px rgba(0,0,0,0.3)" }}
-      >
-        <button
-          aria-label="Close"
-          onClick={onClose}
-          className="absolute right-4 top-4 rounded-md p-1"
-          style={{ color: NAVY }}
-        >
-          <X size={22} />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-navy/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl md:p-8">
+        <button onClick={onClose} className="absolute right-4 top-4 p-2 text-navy/40 hover:text-navy">
+          <X size={24} />
         </button>
-        <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-lg" style={{ background: SURFACE, color: NAVY }}>
-            <Icon size={22} />
-          </span>
-          <h3 className="font-bold" style={{ color: NAVY, fontSize: 22 }}>{service.name}</h3>
+        <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-surface text-navy">
+          <service.icon size={28} />
         </div>
-        <ul className="mt-5 space-y-2.5">
-          {service.bullets.map((b) => (
-            <li key={b} className="flex items-start gap-3 text-sm md:text-base" style={{ color: TEXT }}>
-              <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{ background: NAVY }} />
-              {b}
-            </li>
-          ))}
-        </ul>
+        <h3 className="mt-6 text-2xl font-bold text-navy">{service.name}</h3>
+        <p className="mt-3 text-muted leading-relaxed">{service.desc}</p>
+        <div className="mt-8">
+          <h4 className="text-sm font-bold uppercase tracking-wider text-navy/40">Key Deliverables</h4>
+          <ul className="mt-4 space-y-3">
+            {service.bullets.map((b) => (
+              <li key={b} className="flex items-start gap-3 text-sm font-medium text-navy/80">
+                <CheckCircle size={18} className="mt-0.5 shrink-0 text-gold" />
+                {b}
+              </li>
+            ))}
+          </ul>
+        </div>
         <button
           onClick={() => {
             onClose();
-            setTimeout(() => scrollToId("#lead-form"), 60);
+            scrollToId("#lead-form");
           }}
-          className="mt-6 w-full rounded-lg py-3 font-bold"
-          style={{ background: GOLD, color: NAVY }}
+          className="mt-10 w-full rounded-xl bg-gold py-4 font-bold text-navy transition-transform hover:scale-[1.02]"
         >
-          Talk to Our Expert
+          Enquire About This Service
         </button>
       </div>
     </div>
@@ -618,7 +592,7 @@ function Reviews() {
     <section id="reviews" className="py-16 md:py-24" style={{ background: SURFACE }}>
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <SectionLabel>What Our Clients Say</SectionLabel>
-        <SectionTitle>4.7★ Rating Across Platforms</SectionTitle>
+        <SectionTitle>4.9★ Rating with 110+ Reviews</SectionTitle>
         <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
           {REVIEWS.map((r, i) => (
             <div
@@ -665,7 +639,13 @@ function Reviews() {
 }
 
 function LeadForm() {
-  const { submitted, handle } = useLeadForm();
+  const [submitted, setSubmitted] = useState(false);
+  const handle = (e: FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 5000);
+  };
+
   return (
     <section id="lead-form" className="py-16 md:py-24" style={{ background: NAVY }}>
       <div className="mx-auto max-w-3xl px-5 md:px-8">
@@ -679,28 +659,37 @@ function LeadForm() {
           style={{ boxShadow: "0 30px 80px rgba(0,0,0,0.25)" }}
         >
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Input label="Name" name="name" required />
-            <PhoneInput />
-            <div className="md:col-span-2">
-              <Select
-                label="Requirement Type"
-                name="requirement"
-                required
-                options={[
-                  "Looking to Rent",
-                  "Looking to Buy",
-                  "Looking to Sell",
-                  "Property Management",
-                  "Tenant Support",
-                  "Investment Advisory",
-                  "Relocation Help",
-                ]}
-              />
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-navy/40">Name</label>
+              <input required name="name" className="rounded-lg border border-border bg-surface px-4 py-3 text-navy focus:border-gold focus:outline-none" />
             </div>
-            <Input label="Preferred Location in Bangalore" name="location" placeholder="e.g. Koramangala, HSR Layout" />
-            <Input label="Budget" name="budget" placeholder="e.g. ₹30,000/month or ₹80 Lakhs" />
-            <div className="md:col-span-2">
-              <Textarea label="Additional Details" name="details" placeholder="Anything else we should know?" />
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-navy/40">Phone Number</label>
+              <input required type="tel" name="phone" className="rounded-lg border border-border bg-surface px-4 py-3 text-navy focus:border-gold focus:outline-none" />
+            </div>
+            <div className="md:col-span-2 flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-navy/40">Requirement Type</label>
+              <select required name="requirement" className="rounded-lg border border-border bg-surface px-4 py-3 text-navy focus:border-gold focus:outline-none">
+                <option>Looking to Rent</option>
+                <option>Looking to Buy</option>
+                <option>Looking to Sell</option>
+                <option>Property Management</option>
+                <option>Tenant Support</option>
+                <option>Investment Advisory</option>
+                <option>Relocation Help</option>
+              </select>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-navy/40">Preferred Location</label>
+              <input name="location" placeholder="e.g. Koramangala, HSR Layout" className="rounded-lg border border-border bg-surface px-4 py-3 text-navy focus:border-gold focus:outline-none" />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-navy/40">Budget</label>
+              <input name="budget" placeholder="e.g. ₹30,000/month or ₹80 Lakhs" className="rounded-lg border border-border bg-surface px-4 py-3 text-navy focus:border-gold focus:outline-none" />
+            </div>
+            <div className="md:col-span-2 flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-navy/40">Additional Details</label>
+              <textarea name="details" rows={3} placeholder="Anything else we should know?" className="rounded-lg border border-border bg-surface px-4 py-3 text-navy focus:border-gold focus:outline-none" />
             </div>
           </div>
           <button
@@ -755,6 +744,17 @@ function Contact() {
             <p className="mt-2 text-sm" style={{ color: MUTED }}>Koramangala, Bangalore</p>
             <a href={BUSINESS_CONFIG.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="mt-3 block font-bold" style={{ color: GOLD }}>View on Maps</a>
           </div>
+        </div>
+        <div className="mt-16 overflow-hidden rounded-2xl shadow-xl" style={{ border: `1px solid ${BORDER}` }}>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m12!1m3!1d3888.312688467123!2d77.61629347576562!3d12.93877578737338!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae15229e6c1a61%3A0x26a05f018e301661!2sEasyFind%20Property%20Solutions!5e0!3m2!1sen!2sin!4v1720658700000!5m2!1sen!2sin"
+            width="100%"
+            height="450"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
       </div>
     </section>
