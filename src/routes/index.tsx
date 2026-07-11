@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Helmet } from "react-helmet-async";
 import ContactForm from "../components/ContactForm";
+import { submitLead } from "../lib/submitLead";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import {
   Home,
@@ -24,6 +25,7 @@ import {
   Menu,
   X,
   ArrowRight,
+  CheckCircle2,
   type LucideIcon,
 } from "lucide-react";
 
