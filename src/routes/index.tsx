@@ -743,188 +743,123 @@ function WhyUs() {
   );
 }
 
-type Neighborhood = {
+type Cluster = {
   id: string;
   name: string;
-  tagline: string;
-  badge: string;
-  avgRent: string;
-  demand: string;
-  yieldRange: string;
-  connectivity: number;
-  socialScore: number;
-  demandScore: number;
-  parks: string[];
-  perks: string[];
-  typicalPrice: number;
-  typicalRent: number;
-  typicalMaint: number;
+  positioning: string;
+  localities: string[];
+  anchors: string[];
+  brokerNote: string;
+  span: string; // asymmetric bento sizing
 };
 
-const EAST_BANGALORE_NEIGHBORHOODS: Neighborhood[] = [
+// NOTE: Rent scenarios, demand profile, yield estimates and broker feedback
+// are intentionally left as placeholders. Cluster names, locality groupings
+// and anchors are structural — the owner should confirm & replace copy below
+// with real, verified data before publishing quantitative claims.
+const EAST_BLR_CLUSTERS: Cluster[] = [
   {
-    id: "whitefield",
-    name: "Whitefield",
-    tagline: "The Crown Jewel of Bengaluru's Tech Economy",
-    badge: "The Original IT Hub",
-    avgRent: "₹38,000 - ₹48,000",
-    demand: "Very High",
-    yieldRange: "4.5% - 5.2%",
-    connectivity: 92,
-    socialScore: 94,
-    demandScore: 95,
-    parks: ["ITPL", "GR Tech Park", "Sigma Tech Park", "Brigade Tech Gardens"],
-    perks: [
-      "Seamless purple line metro connectivity directly into office sectors",
-      "Proximity to high-end social spots: Phoenix Marketcity & VR Bengaluru",
-      "Home to elite international schools and premium gated townships",
-    ],
-    typicalPrice: 11000000,
-    typicalRent: 42000,
-    typicalMaint: 36000,
+    id: "whitefield-itpl",
+    name: "Whitefield & ITPL Corridor",
+    positioning: "Established IT township — mature social infrastructure, premium gated societies.",
+    localities: ["Whitefield Main", "ITPL", "Kundalahalli", "Varthur Road"],
+    anchors: ["ITPL", "Brigade Tech Gardens", "Sigma Tech Park"],
+    brokerNote: "To be confirmed by EasyFind ground team.",
+    span: "sm:col-span-4",
   },
   {
-    id: "bellandur-orr",
-    name: "Bellandur / Outer Ring Road (ORR)",
-    tagline: "The Hyper-Growth Business Corridor",
-    badge: "The High-Density Tech Belt",
-    avgRent: "₹45,000 - ₹58,000",
-    demand: "Extremely High",
-    yieldRange: "4.8% - 5.5%",
-    connectivity: 95,
-    socialScore: 90,
-    demandScore: 98,
-    parks: ["RMZ Ecospace", "Embassy TechVillage", "Cessna Business Park", "Prestige Tech Park"],
-    perks: [
-      "Highest rental demand density in India with minimal vacancy cycles",
-      "Immediate, walking-distance access to multinational tech giants",
-      "Upcoming ORR metro line to provide unprecedented connectivity",
-    ],
-    typicalPrice: 13500000,
-    typicalRent: 52000,
-    typicalMaint: 48000,
+    id: "orr-tech-belt",
+    name: "ORR Tech Belt",
+    positioning: "Bangalore's densest office corridor — walk-to-work rentals, high tenant churn.",
+    localities: ["Bellandur", "Kadubeesanahalli", "Marathahalli", "Kaikondrahalli"],
+    anchors: ["Embassy TechVillage", "RMZ Ecospace", "Prestige Tech Park"],
+    brokerNote: "To be confirmed by EasyFind ground team.",
+    span: "sm:col-span-2",
   },
   {
-    id: "sarjapur-road",
-    name: "Sarjapur Road",
-    tagline: "The Premier Premium Residential & Education Hub",
-    badge: "Families & Elite School Belt",
-    avgRent: "₹35,000 - ₹44,000",
-    demand: "High",
-    yieldRange: "4.3% - 5.0%",
-    connectivity: 88,
-    socialScore: 96,
-    demandScore: 90,
-    parks: ["Wipro Campus", "RGA Tech Park", "Exora Business Park"],
-    perks: [
-      "Access to Bangalore's finest educational institutes (Greenwood, TISB)",
-      "Excellent cross-corridor connectivity linking Electronic City, ORR, and HSR Layout",
-      "Wide, spacious luxury villa communities and premium green layout projects",
-    ],
-    typicalPrice: 9500000,
-    typicalRent: 38000,
-    typicalMaint: 30000,
+    id: "sarjapur-corridor",
+    name: "Sarjapur Road Corridor",
+    positioning: "Family & school belt — newer townships, villa communities, growing tech hubs.",
+    localities: ["Sarjapur Road", "Kasavanahalli", "Harlur", "Haralur Road"],
+    anchors: ["Wipro Sarjapur", "RGA Tech Park", "International Schools cluster"],
+    brokerNote: "To be confirmed by EasyFind ground team.",
+    span: "sm:col-span-3",
   },
   {
-    id: "marathahalli",
-    name: "Marathahalli",
-    tagline: "The Central Transit and Commercial Core",
-    badge: "The Transit Hub",
-    avgRent: "₹30,000 - ₹38,000",
-    demand: "Very High",
-    yieldRange: "4.4% - 5.1%",
-    connectivity: 94,
-    socialScore: 88,
-    demandScore: 92,
-    parks: ["Prestige Tech Park", "JP Morgan Campus", "Salarpuria Hallmark"],
-    perks: [
-      "Unmatched geographic centrality connecting East and South Bangalore seamlessly",
-      "Extremely robust local commerce, markets, and hypermarket options",
-      "High rentability across both mid-income and luxury categories",
-    ],
-    typicalPrice: 8500000,
-    typicalRent: 34000,
-    typicalMaint: 24000,
+    id: "hoodi-mahadevapura",
+    name: "Hoodi & Mahadevapura",
+    positioning: "Mid-premium residential pockets adjacent to Whitefield — value-focused tenants.",
+    localities: ["Hoodi", "Brookefield", "Mahadevapura", "KR Puram"],
+    anchors: ["SAP Labs", "Prestige Shantiniketan", "Purple Line Metro"],
+    brokerNote: "To be confirmed by EasyFind ground team.",
+    span: "sm:col-span-3",
   },
   {
-    id: "hoodi-brookfield",
-    name: "Hoodi & Brookfield",
-    tagline: "The Modern Mid-Premium Residential Oasis",
-    badge: "Strategic Tech Slices",
-    avgRent: "₹32,000 - ₹40,000",
-    demand: "High",
-    yieldRange: "4.2% - 4.9%",
-    connectivity: 90,
-    socialScore: 92,
-    demandScore: 88,
-    parks: ["SAP Labs", "Vydehi Hospital & Research", "SJR I-Park"],
-    perks: [
-      "Quiet, peaceful residential communities with abundant green pockets",
-      "Direct Metro transit convenience (Hoodi Junction station nearby)",
-      "Highly attractive price points relative to primary Whitefield sectors",
-    ],
-    typicalPrice: 9000000,
-    typicalRent: 35000,
-    typicalMaint: 28000,
+    id: "indiranagar-domlur",
+    name: "Indiranagar & Old Airport Road",
+    positioning: "Established central-east — heritage neighbourhoods, F&B destinations, boutique inventory.",
+    localities: ["Indiranagar", "Domlur", "Old Airport Road", "CV Raman Nagar"],
+    anchors: ["Diamond District", "Embassy Golf Links", "Purple Line Metro"],
+    brokerNote: "To be confirmed by EasyFind ground team.",
+    span: "sm:col-span-6",
   },
 ];
 
+function TBCChip({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full border border-dashed px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/60 border-white/20">
+      <span className="h-1.5 w-1.5 rounded-full bg-[#C9A84C]/70" />
+      {children}
+    </span>
+  );
+}
+
 function EastBangaloreBento({
-  onSelectYieldPreset,
   onSelectFormPrefill,
 }: {
-  onSelectYieldPreset: (price: number, rent: number, maintenance: number) => void;
   onSelectFormPrefill: (type: string, location: string, details: string) => void;
 }) {
-  const [selectedId, setSelectedId] = useState("whitefield");
-  const selected =
-    EAST_BANGALORE_NEIGHBORHOODS.find((n) => n.id === selectedId) ||
-    EAST_BANGALORE_NEIGHBORHOODS[0];
+  const [selectedId, setSelectedId] = useState<string>(EAST_BLR_CLUSTERS[0].id);
+  const selected = EAST_BLR_CLUSTERS.find((c) => c.id === selectedId) || EAST_BLR_CLUSTERS[0];
 
   return (
-    <section id="east-bangalore" className="py-16 md:py-24" style={{ background: SURFACE }}>
+    <section id="east-bangalore" className="py-20 md:py-28" style={{ background: SURFACE }}>
       <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <SectionLabel>East Bengaluru Hotspots</SectionLabel>
-        <SectionTitle>Interactive Neighborhood Bento Grid</SectionTitle>
+        <SectionLabel>East Bengaluru Focus</SectionLabel>
+        <SectionTitle>The East Bangalore Rental Map</SectionTitle>
         <p
           className="mx-auto mt-4 max-w-2xl text-center text-sm md:text-base leading-relaxed"
           style={{ color: MUTED }}
         >
-          Click on any neighborhood block below to explore real-time rental trends, nearby tech
-          parks, yields, and connectivity indices in East Bangalore.
+          Five curated clusters we work in every day. Rent scenarios, demand profiles and broker
+          feedback are being verified with our ground team — pick a cluster to preview the
+          structure.
         </p>
 
-        <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-12">
-          {/* Left Column: Bento Grid of 5 neighborhoods (lg:col-span-7) */}
+        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-12">
+          {/* Left: Bento of clusters */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-6 lg:col-span-7">
-            {EAST_BANGALORE_NEIGHBORHOODS.map((n) => {
-              const isSelected = n.id === selectedId;
-
-              // Let's vary the span classes for an asymmetrical "bento" feel
-              let spanClass = "sm:col-span-3";
-              if (n.id === "sarjapur-road") spanClass = "sm:col-span-4";
-              if (n.id === "marathahalli") spanClass = "sm:col-span-2";
-              if (n.id === "hoodi-brookfield") spanClass = "sm:col-span-6";
-
+            {EAST_BLR_CLUSTERS.map((c) => {
+              const isSelected = c.id === selectedId;
               return (
                 <button
-                  key={n.id}
-                  onClick={() => setSelectedId(n.id)}
-                  className={`group relative flex flex-col justify-between rounded-2xl p-6 text-left transition-all duration-300 ${spanClass} ${
+                  key={c.id}
+                  onClick={() => setSelectedId(c.id)}
+                  className={`group relative flex flex-col justify-between rounded-2xl p-6 text-left transition-all duration-300 ${c.span} ${
                     isSelected
-                      ? "bg-[#1A3A5C] text-white shadow-xl scale-[1.02] ring-2 ring-[#C9A84C]"
-                      : "bg-white hover:bg-gray-50 text-[#1A1A2E] shadow-sm hover:shadow-md"
+                      ? "bg-[#1A3A5C] text-white shadow-xl ring-1 ring-[#C9A84C]/60"
+                      : "bg-white hover:-translate-y-0.5 text-[#1A1A2E] shadow-sm hover:shadow-md"
                   }`}
                   style={{ border: isSelected ? "none" : `1px solid ${BORDER}` }}
                 >
                   <div className="w-full">
                     <div className="flex items-center justify-between">
                       <span
-                        className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${
-                          isSelected ? "bg-white/15 text-[#C9A84C]" : "bg-[#F8F9FB] text-gray-500"
+                        className={`text-[10px] font-bold uppercase tracking-[0.14em] ${
+                          isSelected ? "text-[#C9A84C]" : "text-gray-400"
                         }`}
                       >
-                        {n.badge}
+                        Cluster
                       </span>
                       <MapPin
                         size={16}
@@ -935,52 +870,61 @@ function EastBangaloreBento({
                         }
                       />
                     </div>
-                    <h3 className="mt-4 text-lg font-extrabold tracking-tight">{n.name}</h3>
-                    <p
-                      className={`mt-2 text-xs line-clamp-2 ${isSelected ? "text-white/70" : "text-gray-500"}`}
+                    <h3
+                      className="mt-4 text-lg md:text-xl font-extrabold tracking-tight"
+                      style={{ fontFamily: "'Playfair Display', serif" }}
                     >
-                      {n.tagline}
+                      {c.name}
+                    </h3>
+                    <p
+                      className={`mt-2 text-xs leading-relaxed line-clamp-2 ${
+                        isSelected ? "text-white/70" : "text-gray-500"
+                      }`}
+                    >
+                      {c.positioning}
                     </p>
                   </div>
 
-                  <div className="mt-6 w-full pt-4 border-t border-dashed border-current/10 flex items-center justify-between">
-                    <div>
-                      <div className="text-[9px] uppercase tracking-wider opacity-60">
-                        Avg 2BHK Rent
-                      </div>
-                      <div className="text-xs font-bold mt-0.5">{n.avgRent.split(" - ")[0]}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-[9px] uppercase tracking-wider opacity-60">Demand</div>
+                  <div className="mt-6 flex flex-wrap gap-1.5">
+                    {c.localities.slice(0, 3).map((l) => (
                       <span
-                        className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded ${
+                        key={l}
+                        className={`text-[10px] font-medium px-2 py-0.5 rounded ${
                           isSelected
-                            ? "bg-white/10 text-white"
-                            : "bg-[#F8F9FB] text-emerald-600 font-semibold"
+                            ? "bg-white/10 text-white/80 border border-white/10"
+                            : "bg-[#F8F9FB] text-gray-500 border border-gray-100"
                         }`}
                       >
-                        {n.demand}
+                        {l}
                       </span>
-                    </div>
+                    ))}
+                    {c.localities.length > 3 && (
+                      <span
+                        className={`text-[10px] font-medium px-2 py-0.5 rounded ${
+                          isSelected ? "text-white/60" : "text-gray-400"
+                        }`}
+                      >
+                        +{c.localities.length - 3}
+                      </span>
+                    )}
                   </div>
                 </button>
               );
             })}
           </div>
 
-          {/* Right Column: Live Area Intelligence Portal (lg:col-span-5) */}
+          {/* Right: Cluster detail panel */}
           <div
             className="rounded-2xl p-6 md:p-8 text-white flex flex-col justify-between shadow-xl relative overflow-hidden lg:col-span-5"
-            style={{ background: "#1A3A5C" }}
+            style={{ background: NAVY }}
           >
-            {/* Background Accent */}
-            <div className="absolute right-0 top-0 -mr-16 -mt-16 h-40 w-40 rounded-full bg-[#C9A84C]/5 blur-3xl pointer-events-none" />
+            <div className="absolute right-0 top-0 -mr-16 -mt-16 h-40 w-40 rounded-full bg-[#C9A84C]/10 blur-3xl pointer-events-none" />
 
             <div>
               <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-semibold tracking-wider uppercase text-white/60">
-                  Live Area Intelligence
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C9A84C]" />
+                <span className="text-[11px] font-semibold tracking-[0.18em] uppercase text-white/60">
+                  Cluster Profile
                 </span>
               </div>
               <h3
@@ -989,137 +933,97 @@ function EastBangaloreBento({
               >
                 {selected.name}
               </h3>
-              <p className="mt-2 text-sm text-[#C9A84C] font-semibold tracking-wide">
-                {selected.tagline}
+              <p className="mt-3 text-sm text-white/75 leading-relaxed">
+                {selected.positioning}
               </p>
 
-              {/* Stats Highlights */}
-              <div className="mt-6 grid grid-cols-2 gap-4 rounded-xl bg-white/5 p-4 border border-white/10">
-                <div>
-                  <div className="text-[10px] text-white/50 uppercase tracking-wider">
-                    Avg 2BHK Rent
-                  </div>
-                  <div className="text-base font-bold text-white mt-1">{selected.avgRent}</div>
-                  <div className="text-[9px] text-[#C9A84C] font-medium mt-0.5">
-                    MoM Trend Focus
-                  </div>
-                </div>
-                <div>
-                  <div className="text-[10px] text-white/50 uppercase tracking-wider">
-                    Rental Yield
-                  </div>
-                  <div className="text-base font-bold text-[#C9A84C] mt-1">
-                    {selected.yieldRange}
-                  </div>
-                  <div className="text-[9px] text-white/50 font-medium mt-0.5">
-                    Top Tier in India
-                  </div>
-                </div>
-              </div>
-
-              {/* Interactive Metrics Scores */}
-              <div className="mt-6 space-y-4">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-white/60">
-                  Local Market Scores
-                </h4>
-
-                <div>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-white/70">Connectivity Index (Metro/ORR)</span>
-                    <span className="font-bold text-[#C9A84C]">{selected.connectivity}/100</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{ width: `${selected.connectivity}%`, backgroundColor: GOLD }}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-white/70">Tenant Demand Density</span>
-                    <span className="font-bold text-[#C9A84C]">{selected.demandScore}/100</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-emerald-400 transition-all duration-500"
-                      style={{ width: `${selected.demandScore}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-white/70">Social Infrastructure Score</span>
-                    <span className="font-bold text-[#C9A84C]">{selected.socialScore}/100</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-sky-400 transition-all duration-500"
-                      style={{ width: `${selected.socialScore}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Major Tech Parks Nearby */}
+              {/* Localities */}
               <div className="mt-6">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-white/60 mb-2">
-                  Primary IT Corridors
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/50 mb-2">
+                  Locality Grouping
                 </h4>
                 <div className="flex flex-wrap gap-1.5">
-                  {selected.parks.map((p) => (
+                  {selected.localities.map((l) => (
                     <span
-                      key={p}
-                      className="bg-white/10 text-white/90 text-[10px] font-medium px-2 py-0.5 rounded border border-white/5"
+                      key={l}
+                      className="bg-white/8 text-white/90 text-xs font-medium px-2.5 py-1 rounded-md border border-white/10"
                     >
-                      {p}
+                      {l}
                     </span>
                   ))}
                 </div>
               </div>
 
-              {/* Why We Recommend It */}
-              <div className="mt-6 space-y-2">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-white/60 mb-2">
-                  EasyFind Expert Notes
+              {/* Anchors */}
+              <div className="mt-6">
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/50 mb-2">
+                  Nearby Anchors
                 </h4>
-                {selected.perks.map((perk, i) => (
-                  <div key={i} className="flex gap-2 text-xs text-white/80 leading-relaxed">
-                    <div className="mt-1 h-1 w-1 shrink-0 rounded-full bg-[#C9A84C]" />
-                    <p>{perk}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {selected.anchors.map((a) => (
+                    <span
+                      key={a}
+                      className="text-white/70 text-[11px] font-medium px-2 py-0.5 rounded border border-white/10"
+                    >
+                      {a}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Data placeholders — to be confirmed */}
+              <div className="mt-6 grid grid-cols-1 gap-3">
+                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/60">
+                      Rent Scenarios
+                    </span>
+                    <TBCChip>To be confirmed</TBCChip>
                   </div>
-                ))}
+                  <p className="mt-1 text-[11px] text-white/50 leading-relaxed">
+                    Typical 2BHK / 3BHK bands to be published once verified with EasyFind's live
+                    listings.
+                  </p>
+                </div>
+                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/60">
+                      Demand Profile
+                    </span>
+                    <TBCChip>To be confirmed</TBCChip>
+                  </div>
+                  <p className="mt-1 text-[11px] text-white/50 leading-relaxed">
+                    Tenant mix, average days-on-market and seasonality — pending internal data.
+                  </p>
+                </div>
+                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/60">
+                      Broker Feedback
+                    </span>
+                    <TBCChip>To be confirmed</TBCChip>
+                  </div>
+                  <p className="mt-1 text-[11px] text-white/50 leading-relaxed">
+                    {selected.brokerNote}
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* CTA Actions */}
-            <div className="mt-8 pt-6 border-t border-white/10 grid grid-cols-2 gap-3">
+            {/* CTA */}
+            <div className="mt-8 pt-6 border-t border-white/10">
               <button
                 onClick={() =>
                   onSelectFormPrefill(
                     "Looking to Rent",
                     selected.name,
-                    `Hi, I am interested in viewing verified premium apartments or societies in ${selected.name}. Please contact me with curated options.`,
+                    `Hi, I'm interested in verified rental options in the ${selected.name} cluster (${selected.localities.join(", ")}). Please share curated listings.`,
                   )
                 }
-                className="w-full text-center py-2.5 px-3 rounded-lg font-bold text-xs transition-colors cursor-pointer"
+                className="w-full text-center py-3 px-4 rounded-lg font-bold text-sm transition-transform hover:scale-[1.01] cursor-pointer"
                 style={{ background: GOLD, color: NAVY }}
               >
-                Explore Properties
-              </button>
-              <button
-                onClick={() =>
-                  onSelectYieldPreset(
-                    selected.typicalPrice,
-                    selected.typicalRent,
-                    selected.typicalMaint,
-                  )
-                }
-                className="w-full text-center py-2.5 px-3 rounded-lg font-bold text-xs bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/10 flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <Calculator size={12} /> Calculate Yield
+                Talk to a specialist for this cluster
               </button>
             </div>
           </div>
