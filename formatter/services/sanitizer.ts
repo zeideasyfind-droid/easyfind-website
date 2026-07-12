@@ -1,46 +1,55 @@
 /**
  * formatter/services/sanitizer.ts
  *
- * PURPOSE: Input and output sanitization
+ * PURPOSE: Input sanitization for the EasyFind Formatter
  *
  * RESPONSIBILITY:
- * - Remove dangerous characters
  * - Normalize whitespace
- * - Escape special characters
- * - Clean user input
- * - Sanitize output before display
- *
- * FUTURE IMPLEMENTATION:
- * - Remove HTML/script tags
- * - Normalize Unicode
- * - Trim excess whitespace
- * - Escape special characters
- * - Prevent injection attacks
+ * - Clean up Unicode characters
+ * - Remove duplicate blank lines
+ * - Preserve Google Maps URLs exactly
  */
 
 /**
- * Sanitize user input
- * @param input - Raw user input
- * @returns Sanitized input
+ * Sanitizes the raw property input
  */
 export function sanitizeInput(input: string): string {
-  // TODO: Implement input sanitization
-  // 1. Remove HTML/script tags
-  // 2. Normalize whitespace
-  // 3. Escape dangerous characters
-  // 4. Return sanitized input
-  throw new Error('Not implemented yet - Phase 2');
+  if (!input) return "";
+
+  // 1. Identify and preserve Google Maps URLs
+  const mapsUrlRegex =
+    /https?:\/\/(?:www\.)?(?:google\.com\/maps|goo\.gl\/maps|maps\.app\.goo\.gl)\/\S+/g;
+  const urls: string[] = [];
+  let sanitized = input.replace(mapsUrlRegex, (match) => {
+    urls.push(match);
+    return `__GOOGLE_MAPS_URL_${urls.length - 1}__`;
+  });
+
+  // 2. Normalize whitespace and newlines
+  sanitized = sanitized
+    .replace(/\r\n/g, "\n") // Normalize line endings
+    .replace(/[ \t]+/g, " ") // Normalize horizontal whitespace
+    .replace(/\n{3,}/g, "\n\n") // Remove excessive blank lines
+    .trim();
+
+  // 3. Clean up Unicode (basic normalization)
+  sanitized = sanitized.normalize("NFKC");
+
+  // 4. Restore Google Maps URLs
+  urls.forEach((url, index) => {
+    sanitized = sanitized.replace(`__GOOGLE_MAPS_URL_${index}__`, url);
+  });
+
+  return sanitized;
 }
 
 /**
- * Sanitize output before display
- * @param output - Formatted output
- * @returns Safe output for display
+ * Sanitizes the formatted output for safety
  */
 export function sanitizeOutput(output: string): string {
-  // TODO: Implement output sanitization
-  // 1. Escape special characters
-  // 2. Validate format
-  // 3. Return safe output
-  throw new Error('Not implemented yet - Phase 2');
+  if (!output) return "";
+
+  return output
+    .replace(/[<>]/g, "") // Basic HTML tag stripping for safety
+    .trim();
 }

@@ -25,7 +25,7 @@
  */
 export function formatINR(amount: number): string {
   // TODO: Implement INR formatting
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }
 
 /**
@@ -35,7 +35,7 @@ export function formatINR(amount: number): string {
  */
 export function formatDate(date: Date | string): string {
   // TODO: Implement date formatting
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }
 
 /**
@@ -47,7 +47,7 @@ export function formatNumber(num: number): string {
   // TODO: Implement number formatting with commas
   // 1000 → "1,000"
   // 100000 → "1,00,000" (Indian format)
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }
 
 /**
@@ -57,5 +57,5 @@ export function formatNumber(num: number): string {
  */
 export function toTitleCase(str: string): string {
   // TODO: Implement title case formatting
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }

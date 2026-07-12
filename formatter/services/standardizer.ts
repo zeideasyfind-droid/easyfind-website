@@ -1,72 +1,70 @@
 /**
  * formatter/services/standardizer.ts
  *
- * PURPOSE: Standardize property fields to EasyFind format
+ * PURPOSE: Field standardization according to EasyFind SOP
  *
  * RESPONSIBILITY:
- * - Normalize furnishing (Unfurnished, Semi-furnished, Fully Furnished)
- * - Format monetary values (₹40k, ₹1.2L)
- * - Normalize bathroom count
- * - Capitalize tenant preferences
- * - Format floor information
- * - Ensure consistent field ordering
- *
- * REFERENCE: See docs/EasyFind_Property_Formatter_SOP.md
- * - Rent: ₹40k (40000), ₹1.2L (120000)
- * - Bathrooms: "bathrooms" (lowercase)
- * - Furnishing: "Unfurnished", "Semi-furnished", "Fully Furnished"
- * - Tenant: "Anyone", "Family", "Bachelor"
- * - Pets: "Allowed", "Not allowed"
+ * - Normalize furnishing status
+ * - Format monetary values (INR)
+ * - Standardize bathroom/balcony counts
+ * - Format dates and preferences
  */
 
 /**
- * Standardize furnishing field
- * @param furnishing - Raw furnishing value
- * @returns Standardized value
+ * Normalizes furnishing status
+ * Returns: Unfurnished, Semi-furnished, Fully Furnished
  */
 export function standardizeFurnishing(furnishing: string): string {
-  // TODO: Implement furnishing standardization
-  // "semi furnished" → "Semi-furnished"
-  // "fully furnished" → "Fully Furnished"
-  // "unfurnished" → "Unfurnished"
-  throw new Error('Not implemented yet - Phase 2');
+  const f = furnishing.toLowerCase();
+  if (f.includes("semi")) return "Semi-furnished";
+  if (f.includes("fully") || f.includes("full")) return "Fully Furnished";
+  if (f.includes("un")) return "Unfurnished";
+  return "Semi-furnished"; // Default to semi-furnished as per common property types
 }
 
 /**
- * Format monetary value to EasyFind format
- * @param amount - Amount in rupees
- * @returns Formatted value (₹40k, ₹1.2L, etc)
+ * Formats monetary values to EasyFind standard (₹40k, ₹1.2L)
  */
-export function formatMonetaryValue(amount: number): string {
-  // TODO: Implement monetary formatting
-  // 40000 → "₹40k"
-  // 120000 → "₹1.2L"
-  // 1200000 → "₹12L"
-  throw new Error('Not implemented yet - Phase 2');
+export function formatMonetaryValue(amount: string | number): string {
+  const num = typeof amount === "string" ? parseFloat(amount.replace(/[₹,kL\s]/gi, "")) : amount;
+  if (isNaN(num)) return "₹-";
+
+  if (num >= 100000) {
+    const lakhs = num / 100000;
+    return `₹${Number.isInteger(lakhs) ? lakhs : lakhs.toFixed(2)}L`;
+  } else if (num >= 1000) {
+    const k = num / 1000;
+    return `₹${Number.isInteger(k) ? k : k.toFixed(1)}k`;
+  }
+  return `₹${num}`;
 }
 
 /**
- * Standardize bathroom field
- * @param bathrooms - Raw bathroom value
- * @returns Standardized value ("bathrooms")
+ * Standardizes bathroom counts
  */
-export function standardizeBathrooms(bathrooms: string): string {
-  // TODO: Implement bathroom standardization
-  // "Bath" → "bathrooms"
-  // "Bathroom" → "bathrooms"
-  // "2 Baths" → "2 bathrooms"
-  throw new Error('Not implemented yet - Phase 2');
+export function standardizeBathrooms(count: string | number): string {
+  const num = typeof count === "string" ? parseInt(count, 10) : count;
+  if (isNaN(num)) return "1 bathroom";
+  return `${num} bathroom${num > 1 ? "s" : ""}`;
 }
 
 /**
- * Capitalize tenant preference
- * @param preference - Tenant preference
- * @returns Capitalized value
+ * Capitalizes tenant preferences
  */
 export function capitalizeTenantPreference(preference: string): string {
-  // TODO: Capitalize tenant preference
-  // "anyone" → "Anyone"
-  // "family" → "Family"
-  // "bachelor" → "Bachelor"
-  throw new Error('Not implemented yet - Phase 2');
+  const p = preference.toLowerCase();
+  if (p.includes("family")) return "Family";
+  if (p.includes("bachelor")) return "Bachelors";
+  if (p.includes("anyone")) return "Anyone";
+  return "Anyone";
+}
+
+/**
+ * Standardizes "Available from" date
+ */
+export function standardizeAvailableFrom(date: string): string {
+  if (!date || date.toLowerCase().includes("ready") || date.toLowerCase().includes("immediate")) {
+    return "Ready to Occupy";
+  }
+  return date;
 }

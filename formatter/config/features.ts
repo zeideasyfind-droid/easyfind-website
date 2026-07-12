@@ -15,13 +15,10 @@
 export const features = {
   // Enable AI formatting (Phase 3)
   // aiFormattingEnabled: process.env.AI_FORMATTING_ENABLED !== 'false',
-
   // Enable Google Places integration (Phase 3)
   // googlePlacesEnabled: process.env.GOOGLE_PLACES_ENABLED !== 'false',
-
   // Enable caching (optional optimization)
   // cachingEnabled: process.env.CACHING_ENABLED === 'true',
-
   // TODO: Add more feature flags as needed
 };
 
@@ -32,5 +29,5 @@ export const features = {
  */
 export function isFeatureEnabled(featureName: string): boolean {
   // TODO: Implement feature flag checking
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }

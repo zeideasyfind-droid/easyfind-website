@@ -1,59 +1,99 @@
 /**
  * formatter/services/validator.ts
  *
- * PURPOSE: Data validation service
+ * PURPOSE: Input validation for the EasyFind Formatter
  *
  * RESPONSIBILITY:
- * - Validate property details structure
- * - Check data types and formats
- * - Validate specific fields (BHK, rent, etc)
- * - Return validation errors
- *
- * FUTURE IMPLEMENTATION:
- * - Validate BHK format (1, 2, 3, 4, etc)
- * - Validate rent/maintenance are numbers
- * - Validate floor format
- * - Validate furnishing options
- * - Validate tenant preferences
- * - Validate pet policy
+ * - Validate empty input
+ * - Validate Google Maps URL format
+ * - Check for missing property details
  */
 
+export interface ValidationResult {
+  isValid: boolean;
+  errors: string[];
+}
+
 /**
- * Validate BHK format
- * @param bhk - BHK value to validate
+ * Validates the formatter input
+ */
+export function validateInput(propertyDetails: string, googleMapsUrl?: string): ValidationResult {
+  const errors: string[] = [];
+
+  // 1. Validate empty input
+  if (!propertyDetails || propertyDetails.trim().length === 0) {
+    errors.push("Property details cannot be empty");
+  }
+
+  // 2. Validate Google Maps URL if provided
+  if (googleMapsUrl && !isValidGoogleMapsUrl(googleMapsUrl)) {
+    errors.push("Invalid Google Maps URL");
+  }
+
+  // 3. Check for missing property details (basic heuristic)
+  if (propertyDetails && propertyDetails.trim().length < 10) {
+    errors.push("Property details are too short to be valid");
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors,
+  };
+}
+
+/**
+ * Validates BHK value
  */
 export function validateBHK(bhk: string): { valid: boolean; error?: string } {
-  // TODO: Validate BHK
-  // Must be 1, 2, 3, 4, or 5
-  throw new Error('Not implemented yet - Phase 2');
+  const bhkNum = parseFloat(bhk);
+  if (isNaN(bhkNum) || bhkNum <= 0 || bhkNum > 10) {
+    return { valid: false, error: "Invalid BHK value" };
+  }
+  return { valid: true };
 }
 
 /**
- * Validate rent/maintenance amount
- * @param amount - Amount to validate
+ * Validates monetary amount
  */
 export function validateAmount(amount: string): { valid: boolean; error?: string } {
-  // TODO: Validate amount
-  // Must be a valid number
-  throw new Error('Not implemented yet - Phase 2');
+  const cleanAmount = amount.replace(/[₹,kL\s]/gi, "");
+  const num = parseFloat(cleanAmount);
+  if (isNaN(num) || num < 0) {
+    return { valid: false, error: "Invalid amount" };
+  }
+  return { valid: true };
 }
 
 /**
- * Validate furnishing type
- * @param furnishing - Furnishing type to validate
+ * Validates furnishing status
  */
 export function validateFurnishing(furnishing: string): { valid: boolean; error?: string } {
-  // TODO: Validate furnishing
-  // Must be: Unfurnished, Semi-furnished, Fully Furnished
-  throw new Error('Not implemented yet - Phase 2');
+  const validStatuses = ["unfurnished", "semi-furnished", "fully furnished"];
+  if (!validStatuses.includes(furnishing.toLowerCase())) {
+    return { valid: false, error: "Invalid furnishing status" };
+  }
+  return { valid: true };
 }
 
 /**
- * Validate floor format
- * @param floor - Floor format to validate (e.g., "4/4")
+ * Validates floor information
  */
 export function validateFloor(floor: string): { valid: boolean; error?: string } {
-  // TODO: Validate floor format
-  // Format: "current/total" (e.g., "4/4", "2/10")
-  throw new Error('Not implemented yet - Phase 2');
+  if (!floor || floor.trim().length === 0) {
+    return { valid: false, error: "Floor information is missing" };
+  }
+  return { valid: true };
+}
+
+/**
+ * Internal helper to validate Google Maps URL
+ */
+function isValidGoogleMapsUrl(url: string): boolean {
+  try {
+    const parsedUrl = new URL(url);
+    const validHosts = ["maps.google.com", "www.google.com", "goo.gl", "maps.app.goo.gl"];
+    return validHosts.some((host) => parsedUrl.hostname.includes(host));
+  } catch {
+    return false;
+  }
 }

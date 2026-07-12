@@ -29,7 +29,7 @@ export function handleApiError(error: any, response: any): void {
   // 3. Format error message
   // 4. Log error for debugging
   // 5. Send error response
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }
 
 /**
@@ -41,7 +41,7 @@ export function handleApiError(error: any, response: any): void {
 export function formatErrorResponse(
   statusCode: number,
   message: string,
-  details?: Record<string, any>
+  details?: Record<string, any>,
 ): Record<string, any> {
   // TODO: Implement error response formatting
   // Return:
@@ -50,5 +50,5 @@ export function formatErrorResponse(
   //   error: { message, code: statusCode, ...details },
   //   timestamp: ISO timestamp
   // }
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }

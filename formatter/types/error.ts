@@ -2,39 +2,50 @@
  * formatter/types/error.ts
  *
  * PURPOSE: Custom error type definitions
- *
- * RESPONSIBILITY:
- * - Define custom error classes
- * - Define error codes
- * - Provide error handling
  */
 
 /**
  * Base formatter error
  */
 export class FormatterError extends Error {
-  // TODO: Implement FormatterError class
-  // constructor(message: string, public code: string) { super(message); }
+  constructor(
+    message: string,
+    public code: string = "FORMATTER_ERROR",
+  ) {
+    super(message);
+    this.name = "FormatterError";
+  }
 }
 
 /**
  * Validation error
  */
 export class ValidationError extends FormatterError {
-  // TODO: Implement ValidationError class
+  constructor(message: string) {
+    super(message, "VALIDATION_ERROR");
+    this.name = "ValidationError";
+  }
 }
 
 /**
  * API integration error
  */
 export class APIIntegrationError extends FormatterError {
-  // TODO: Implement APIIntegrationError class
-  // For Google Places or OpenAI API failures
+  constructor(
+    message: string,
+    public service: string,
+  ) {
+    super(message, "API_ERROR");
+    this.name = "APIIntegrationError";
+  }
 }
 
 /**
  * Parse error
  */
 export class ParseError extends FormatterError {
-  // TODO: Implement ParseError class
+  constructor(message: string) {
+    super(message, "PARSE_ERROR");
+    this.name = "ParseError";
+  }
 }

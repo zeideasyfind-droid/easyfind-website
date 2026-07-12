@@ -29,7 +29,7 @@ export function validateFormatterRequest(payload: any): { valid: boolean; errors
   // 3. Validate field types
   // 4. Validate field formats
   // 5. Return validation result
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }
 
 /**
@@ -39,7 +39,7 @@ export function validateFormatterRequest(payload: any): { valid: boolean; errors
 export function validatePropertyDetails(details: any): boolean {
   // TODO: Implement property details validation
   // Check: BHK format, rent format, address format, etc
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }
 
 /**
@@ -49,5 +49,5 @@ export function validatePropertyDetails(details: any): boolean {
 export function validateGoogleMapsUrl(url: string): boolean {
   // TODO: Implement Google Maps URL validation
   // Check: URL is valid and from google.com/maps
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }

@@ -53,7 +53,7 @@ export async function formatPropertyHandler(request: any, response: any): Promis
   // 3. Call formatter engine
   // 4. Transform result to standard format
   // 5. Send response
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }
 
 /**
@@ -63,5 +63,5 @@ export async function formatPropertyHandler(request: any, response: any): Promis
 export async function healthCheck(request: any, response: any): Promise<void> {
   // TODO: Implement health check
   // Return { status: 'ok', module: 'formatter' }
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }

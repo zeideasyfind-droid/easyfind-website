@@ -34,5 +34,5 @@ export function validateEnvironment(): void {
   // TODO: Implement environment validation
   // Check for required variables
   // Throw error if missing
-  throw new Error('Not implemented yet - Phase 3');
+  throw new Error("Not implemented yet - Phase 3");
 }

@@ -2,7 +2,12 @@
  * formatter/services/index.ts
  *
  * Barrel export for formatter services.
- * Lean placeholder until service implementation begins.
  */
 
-// TODO: Export only implemented services when ready.
+export * from "./formatterEngine";
+export * from "./validator";
+export * from "./sanitizer";
+export * from "./googlePlaces";
+export * from "./communityDetector";
+export * from "./standardizer";
+export * from "./aiFormatter";

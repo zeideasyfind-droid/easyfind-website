@@ -30,5 +30,5 @@ export function validateConfig(): void {
   // Check required environment variables
   // Validate config values
   // Throw error if invalid
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }

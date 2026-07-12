@@ -18,7 +18,7 @@
 export function isValidBHK(bhk: string): boolean {
   // TODO: Implement BHK validation
   // Valid: "1", "2", "3", "4", "5", "1BHK", "2 BHK", etc
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }
 
 /**
@@ -28,7 +28,7 @@ export function isValidBHK(bhk: string): boolean {
  */
 export function isValidFurnishing(furnishing: string): boolean {
   // TODO: Implement furnishing validation
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }
 
 /**
@@ -38,7 +38,7 @@ export function isValidFurnishing(furnishing: string): boolean {
  */
 export function isValidAmount(amount: string): boolean {
   // TODO: Implement amount validation
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }
 
 /**
@@ -48,5 +48,5 @@ export function isValidAmount(amount: string): boolean {
  */
 export function isValidGoogleMapsUrl(url: string): boolean {
   // TODO: Implement Google Maps URL validation
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }

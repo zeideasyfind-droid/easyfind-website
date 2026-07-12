@@ -22,7 +22,7 @@
  */
 export function parseINR(str: string): number {
   // TODO: Implement INR parsing
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }
 
 /**
@@ -37,7 +37,7 @@ export function parseINR(str: string): number {
  */
 export function parseBHK(str: string): number {
   // TODO: Implement BHK parsing
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }
 
 /**
@@ -47,5 +47,5 @@ export function parseBHK(str: string): number {
  */
 export function extractGoogleMapsUrl(text: string): string | null {
   // TODO: Extract Google Maps URL from text
-  throw new Error('Not implemented yet - Phase 2');
+  throw new Error("Not implemented yet - Phase 2");
 }

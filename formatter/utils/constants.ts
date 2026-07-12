@@ -13,28 +13,28 @@
 
 // Furnishing options (standardized)
 export const FURNISHING_OPTIONS = {
-  UNFURNISHED: 'Unfurnished',
-  SEMI_FURNISHED: 'Semi-furnished',
-  FULLY_FURNISHED: 'Fully Furnished',
+  UNFURNISHED: "Unfurnished",
+  SEMI_FURNISHED: "Semi-furnished",
+  FULLY_FURNISHED: "Fully Furnished",
 } as const;
 
 // Tenant preferences
 export const TENANT_PREFERENCES = {
-  ANYONE: 'Anyone',
-  FAMILY: 'Family',
-  BACHELOR: 'Bachelor',
+  ANYONE: "Anyone",
+  FAMILY: "Family",
+  BACHELOR: "Bachelor",
 } as const;
 
 // Pet policies
 export const PET_POLICIES = {
-  ALLOWED: 'Allowed',
-  NOT_ALLOWED: 'Not allowed',
+  ALLOWED: "Allowed",
+  NOT_ALLOWED: "Not allowed",
 } as const;
 
 // Community types
 export const COMMUNITY_TYPES = {
-  GATED: 'Gated',
-  SEMI_GATED: 'Semi-gated',
+  GATED: "Gated",
+  SEMI_GATED: "Semi-gated",
 } as const;
 
 // TODO: Add more constants as needed

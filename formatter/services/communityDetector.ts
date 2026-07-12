@@ -1,48 +1,61 @@
 /**
  * formatter/services/communityDetector.ts
  *
- * PURPOSE: Detect community type (Gated vs Semi-gated)
+ * PURPOSE: Community classification for the EasyFind Formatter
  *
  * RESPONSIBILITY:
- * - Determine if property is in gated society
- * - Determine if property is independent/landmark
- * - Use Google Places data as primary source
- * - Fall back to heuristics if Maps data unavailable
- *
- * FUTURE IMPLEMENTATION:
- * - Parse Google Maps place type
- * - Check place name against society database
- * - Use heuristics: keywords like "Prestige", "Sobha", etc
- * - Return community type classification
- *
- * REFERENCE: See docs/EasyFind_Property_Formatter_SOP.md
- * - Gated Society: Official residential society from Google Maps
- * - Semi-gated: Independent property or landmark location
+ * - Determine if a property is in a Gated or Semi-gated community
+ * - Use Google Places data as the primary source
+ * - Apply business rules from EasyFind SOP
  */
 
 /**
- * Detect community type from place details
- * @param placeName - Name from Google Maps
- * @param placeType - Type from Google Maps
- * @returns Community type: "Gated" or "Semi-gated"
+ * Detects community type based on Google Places data
+ *
+ * Rules:
+ * - Apartment, Residential Society, Housing Complex -> Community: Gated
+ * - Otherwise -> Community: Semi-gated
  */
-export function detectCommunityType(
-  placeName: string,
-  placeType: string
-): "Gated" | "Semi-gated" {
-  // TODO: Implement community type detection
-  // 1. If Google Maps identifies as residential complex → "Gated"
-  // 2. Otherwise → "Semi-gated"
-  throw new Error('Not implemented yet - Phase 2');
+export function detectCommunityType(placeName: string, placeType: string): "Gated" | "Semi-gated" {
+  const gatedIndicators = [
+    "apartment",
+    "society",
+    "complex",
+    "residency",
+    "heights",
+    "gardens",
+    "villas",
+    "enclave",
+    "estates",
+  ];
+
+  const name = placeName.toLowerCase();
+  const type = placeType.toLowerCase();
+
+  const isGated =
+    gatedIndicators.some((indicator) => name.includes(indicator)) ||
+    type.includes("premise") ||
+    type.includes("neighborhood");
+
+  return isGated ? "Gated" : "Semi-gated";
 }
 
 /**
- * Heuristic: Check if place name suggests gated society
- * @param placeName - Place name
+ * Checks if a name likely refers to a residential society
  */
 export function isSocietyName(placeName: string): boolean {
-  // TODO: Implement society name detection heuristic
-  // Check: Common society name patterns
-  // Keywords: "Prestige", "Brigade", "Sobha", "Puravankara", etc
-  throw new Error('Not implemented yet - Phase 2');
+  if (!placeName || placeName === "Landmark") return false;
+
+  const societyIndicators = [
+    "Apartment",
+    "Society",
+    "Complex",
+    "Residency",
+    "Heights",
+    "Gardens",
+    "Villas",
+  ];
+  return societyIndicators.some((indicator) =>
+    placeName.toLowerCase().includes(indicator.toLowerCase()),
+  );
 }

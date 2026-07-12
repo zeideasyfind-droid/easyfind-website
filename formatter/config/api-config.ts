@@ -44,5 +44,5 @@ export const openaiConfig = {
 export function validateApiConfig(): void {
   // TODO: Validate API keys are set
   // Throw error if missing
-  throw new Error('Not implemented yet - Phase 3');
+  throw new Error("Not implemented yet - Phase 3");
 }
