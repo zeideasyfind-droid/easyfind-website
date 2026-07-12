@@ -1,12 +1,8 @@
 /**
  * formatter/types/index.ts
  *
- * Barrel export for all TypeScript type definitions.
+ * Barrel export for formatter type definitions.
+ * Lean placeholder until types are implemented.
  */
 
-export * from './property';
-export * from './api';
-export * from './formatter';
-export * from './error';
-export * from './google-places';
-export * from './openai';
+// TODO: Export only implemented types when ready.
