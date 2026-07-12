@@ -106,7 +106,7 @@ function RootComponent() {
           />
           <meta name="twitter:image" content="https://easyfindprops.com/og-image.jpg" />
 
-          <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+          <link rel="icon" href="/easyfind-logo.webp" type="image/webp" />
           <link rel="canonical" href="https://easyfindprops.com" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
