@@ -9,6 +9,20 @@ Never add notes.
 Never add assumptions.
 Return only the final formatted property details.
 
+## GOOGLE MAPS INTEGRATION
+Google Maps is the authoritative source for property enrichment.
+Whenever a Google Maps URL is provided:
+1. Use the available Google Maps integration/connector to resolve the URL.
+2. Retrieve the official Place information.
+3. Extract:
+• Official Place Name
+• Locality
+• Place Type
+4. Use this information to determine whether the property is a Gated Society or Semi-gated.
+5. Use this information to populate the Community field, the Location field, and the official Society Name if one exists.
+6. Never infer or guess these values if the Maps data cannot be obtained.
+7. If the Maps integration is unavailable, follow the fallback rules defined in this SOP.
+
 ## WORKFLOW
 ### STEP 1
 Read and understand every property detail provided.
