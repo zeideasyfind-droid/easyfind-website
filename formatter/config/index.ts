@@ -1,10 +1,8 @@
 /**
  * formatter/config/index.ts
  *
- * Barrel export for all configuration.
+ * Barrel export for formatter configuration.
+ * Lean placeholder until configuration implementation begins.
  */
 
-export * from './config';
-export * from './environment';
-export * from './features';
-export * from './api-config';
+// TODO: Export only implemented config modules when ready.
