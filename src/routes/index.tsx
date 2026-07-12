@@ -1877,21 +1877,11 @@ function Footer() {
 }
 
 function Index() {
-  const [calcPreset, setCalcPreset] = useState<{
-    price: number;
-    rent: number;
-    maintenance: number;
-  } | null>(null);
   const [formPrefill, setFormPrefill] = useState<{
     type: string;
     location: string;
     details: string;
   } | null>(null);
-
-  const handleSelectYieldPreset = (price: number, rent: number, maintenance: number) => {
-    setCalcPreset({ price, rent, maintenance });
-    scrollToId("#yield-calculator");
-  };
 
   const handleSelectFormPrefill = (type: string, location: string, details: string) => {
     setFormPrefill({ type, location, details });
@@ -1907,15 +1897,8 @@ function Index() {
         <Services />
         <HowItWorks />
         <WhyUs />
-        <EastBangaloreBento
-          onSelectYieldPreset={handleSelectYieldPreset}
-          onSelectFormPrefill={handleSelectFormPrefill}
-        />
-        <YieldCalculator
-          preset={calcPreset}
-          clearPreset={() => setCalcPreset(null)}
-          onSelectFormPrefill={handleSelectFormPrefill}
-        />
+        <EastBangaloreBento onSelectFormPrefill={handleSelectFormPrefill} />
+        <YieldCalculator onSelectFormPrefill={handleSelectFormPrefill} />
         <Reviews />
         <LeadForm prefill={formPrefill} clearPrefill={() => setFormPrefill(null)} />
       </main>
