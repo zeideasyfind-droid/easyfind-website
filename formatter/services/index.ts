@@ -10,4 +10,5 @@ export * from "./sanitizer";
 export * from "./googlePlaces";
 export * from "./communityDetector";
 export * from "./standardizer";
-export * from "./aiFormatter";
+export * from "./propertyParser";
+export * from "./templateFormatter";

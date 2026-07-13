@@ -13,20 +13,35 @@ export interface RawProperty {
 }
 
 /**
- * Parsed and validated property details
+ * Community classification, sourced from Google Places data.
+ */
+export type CommunityType = "Gated" | "Semi-gated";
+
+/**
+ * Fields extracted deterministically (via regex/heuristics) from the raw
+ * pasted text. Every field is optional: the parser never invents a value —
+ * a field that isn't confidently detected is left undefined and rendered
+ * blank in the final template.
  */
 export interface ParsedProperty {
+  propertyType?: "Apartment" | "Villa" | "Independent House";
   bhk?: string;
-  rent?: string;
-  maintenance?: string;
-  furnishing?: string;
   bathrooms?: string;
   balcony?: string;
+  furnishing?: "Unfurnished" | "Semi-furnished" | "Fully Furnished";
+  rent?: string;
+  maintenance?: string;
+  deposit?: string;
+  sqft?: string;
   floor?: string;
+  floorTotal?: string;
+  availableFrom?: string;
+  preferredTenant?: string;
+  pets?: "Allowed" | "Not allowed";
   societyName?: string;
   locality?: string;
   googleMapsUrl?: string;
-  communityType?: "Gated" | "Semi-gated";
+  communityType?: CommunityType;
 }
 
 /**
@@ -42,7 +57,7 @@ export interface FormattedProperty {
   availableFrom: string;
   preferredTenant: string;
   pets: string;
-  community: "Gated" | "Semi-gated";
+  community: CommunityType;
   location: string;
   societyName?: string;
   googleMapsUrl?: string;

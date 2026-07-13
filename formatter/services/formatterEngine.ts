@@ -7,8 +7,10 @@
 import { validateInput } from "./validator";
 import { sanitizeInput } from "./sanitizer";
 import { resolveGoogleMapsLocation } from "./googlePlaces";
-import { detectCommunityType } from "./communityDetector";
-import { formatWithAI, getSystemPrompt } from "./aiFormatter";
+import { detectCommunityType, isSocietyName } from "./communityDetector";
+import { parseProperty } from "./propertyParser";
+import { formatWithTemplate } from "./templateFormatter";
+import { ParsedProperty } from "../types/property";
 
 export type FormatterInput = {
   propertyDetails: string;
@@ -44,26 +46,26 @@ export async function formatProperty(input: FormatterInput): Promise<FormatterRe
     // 2. Sanitize Input
     const sanitizedDetails = sanitizeInput(input.propertyDetails);
 
-    // 3. Resolve Google Maps (if provided)
+    // 3. Parse property fields deterministically from the raw text
+    const parsed: ParsedProperty = parseProperty(sanitizedDetails);
+
+    // 4. Resolve Google Maps (if provided) — authoritative source for
+    //    society name, locality, and community type
     let resolvedPlace = null;
-    let community = "Semi-gated";
+    let community: "Gated" | "Semi-gated" = "Semi-gated";
     if (input.googleMapsUrl) {
       resolvedPlace = await resolveGoogleMapsLocation(input.googleMapsUrl);
-
-      // 4. Detect Community
       community = detectCommunityType(resolvedPlace.placeName, resolvedPlace.placeType);
+      parsed.locality = resolvedPlace.locality !== "Unknown" ? resolvedPlace.locality : undefined;
+      parsed.societyName = isSocietyName(resolvedPlace.placeName)
+        ? resolvedPlace.placeName
+        : undefined;
     }
+    parsed.communityType = community;
+    parsed.googleMapsUrl = input.googleMapsUrl;
 
-    // 5. GPT Formatting
-    const systemPrompt = await getSystemPrompt();
-    const propertyData = {
-      rawDetails: sanitizedDetails,
-      googleMapsUrl: input.googleMapsUrl,
-      resolvedPlace,
-      communityType: community,
-    };
-
-    const formattedText = await formatWithAI(propertyData, systemPrompt);
+    // 5. Template Formatting (deterministic, no AI)
+    const formattedText = formatWithTemplate(parsed);
 
     return {
       success: true,
