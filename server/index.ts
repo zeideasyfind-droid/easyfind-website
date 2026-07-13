@@ -19,8 +19,11 @@ const app = createApiApp();
 app.use(express.static(distPath));
 
 // SPA fallback: any non-API route serves index.html so client-side routing works.
-app.get(/^(?!\/api\/).*/, (_req, res) => {
-  res.sendFile(path.join(distPath, "index.html"));
+app.use((req, res, next) => {
+  if (req.path.startsWith("/api/")) return next();
+  res.sendFile(path.join(distPath, "index.html"), (err) => {
+    if (err) next(err);
+  });
 });
 
 const port = Number(process.env.PORT) || 3000;
