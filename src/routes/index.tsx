@@ -351,7 +351,7 @@ function Nav() {
             style={{ background: GOLD, color: NAVY }}
           >
             <Phone size={16} />
-            {BUSINESS_CONFIG.phone}
+            Call Us
           </a>
         </div>
 
@@ -395,7 +395,7 @@ function Nav() {
                 onClick={() => setOpen(false)}
               >
                 <Phone size={20} />
-                {BUSINESS_CONFIG.phone}
+                Call Us
               </a>
             </div>
           </div>
@@ -1302,7 +1302,7 @@ function Footer() {
           style={{ borderColor: "rgba(255,255,255,0.08)" }}
         >
           <div className="text-xs font-medium text-white/50">
-            © 2026 EasyFind Property Solutions. All rights reserved.
+            © EasyFind Property Solutions. All rights reserved.
           </div>
           <div className="text-xs font-bold uppercase tracking-widest text-white/30">
             Designed for trust in Bengaluru
