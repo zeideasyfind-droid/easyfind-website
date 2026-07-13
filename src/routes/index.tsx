@@ -211,6 +211,8 @@ const WHY_US = [
 
 const NAV_LINKS = [
   { label: "Services", href: "#services" },
+  { label: "East Bangalore Hotspots", href: "#east-bangalore" },
+  { label: "Yield Calculator", href: "#yield-calculator" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "Why Choose Us", href: "#why-choose-us" },
   { label: "Reviews", href: "#reviews" },
@@ -251,7 +253,7 @@ function Logo({ light = false }: { light?: boolean }) {
         <img
           src="/easyfind-logo.jpg"
           alt="EasyFind Property Solutions"
-          className={light ? "h-11 w-auto block" : "h-10 md:h-12 lg:h-16 w-auto block"}
+          style={{ height: light ? 44 : 48, width: "auto", display: "block" }}
           loading="eager"
         />
       </span>
@@ -310,7 +312,7 @@ function Nav() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
           <Logo />
-          <nav className="hidden items-center gap-4 md:flex lg:gap-8">
+          <nav className="hidden items-center gap-8 md:flex">
             {NAV_LINKS.map((l) => (
               <a
                 key={l.href}
@@ -319,7 +321,7 @@ function Nav() {
                   e.preventDefault();
                   scrollToId(l.href);
                 }}
-                className="text-xs font-semibold transition-colors lg:text-sm"
+                className="text-sm font-medium transition-colors"
                 style={{ color: NAVY }}
               >
                 {l.label}
@@ -347,12 +349,11 @@ function Nav() {
           </div>
           <a
             href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`}
-            className="hidden items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-bold md:inline-flex lg:px-4 lg:py-2 lg:text-sm"
+            className="hidden items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold md:inline-flex"
             style={{ background: GOLD, color: NAVY }}
           >
-            <Phone size={15} />
-            <span className="hidden lg:inline">{BUSINESS_CONFIG.phone}</span>
-            <span className="inline lg:hidden">Call Us</span>
+            <Phone size={16} />
+            {BUSINESS_CONFIG.phone}
           </a>
         </div>
 
@@ -448,8 +449,8 @@ function Hero() {
           backgroundSize: "32px 32px",
         }}
       />
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 md:grid-cols-2 md:px-8 items-center">
-        <div className="flex flex-col justify-center text-center md:text-left items-center md:items-start">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 lg:grid-cols-2 md:px-8">
+        <div className="flex flex-col justify-center text-center lg:text-left items-center lg:items-start">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-white/90">
             <span className="flex h-2 w-2 rounded-full bg-green-400 animate-pulse" />
             Bangalore's Trusted Property Partner
@@ -475,7 +476,7 @@ function Hero() {
             Solutions handles it all across Bangalore. We help owners and clients move faster, avoid
             delays, and make the right decisions.
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4 md:justify-start">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
             <button
               onClick={() => scrollToId("#lead-form")}
               className="rounded-lg px-8 py-4 text-base font-bold shadow-lg transition-transform hover:-translate-y-1"
@@ -676,7 +677,7 @@ function HowItWorks() {
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <SectionLabel>The Process</SectionLabel>
         <SectionTitle>Simple. Clear. Handled.</SectionTitle>
-        <div className="relative mt-12 grid grid-cols-1 gap-12 md:grid-cols-3">
+        <div className="relative mt-12 grid grid-cols-1 gap-12 lg:grid-cols-3">
           {steps.map((s, idx) => {
             const Icon = s.icon;
             return (
@@ -697,7 +698,7 @@ function HowItWorks() {
                   {s.b}
                 </p>
                 {idx < 2 && (
-                  <div className="absolute left-full top-10 hidden w-full border-t-2 border-dashed border-gray-200 md:block" />
+                  <div className="absolute left-full top-10 hidden w-full border-t-2 border-dashed border-gray-200 lg:block" />
                 )}
               </div>
             );
@@ -736,6 +737,540 @@ function WhyUs() {
               </div>
             );
           })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+type Cluster = {
+  id: string;
+  name: string;
+  positioning: string;
+  localities: string[];
+  anchors: string[];
+  brokerNote: string;
+  span: string; // asymmetric bento sizing
+};
+
+// NOTE: Rent scenarios, demand profile, yield estimates and broker feedback
+// are intentionally left as placeholders. Cluster names, locality groupings
+// and anchors are structural — the owner should confirm & replace copy below
+// with real, verified data before publishing quantitative claims.
+const EAST_BLR_CLUSTERS: Cluster[] = [
+  {
+    id: "whitefield-itpl",
+    name: "Whitefield & ITPL Corridor",
+    positioning: "Established IT township — mature social infrastructure, premium gated societies.",
+    localities: ["Whitefield Main", "ITPL", "Kundalahalli", "Varthur Road"],
+    anchors: ["ITPL", "Brigade Tech Gardens", "Sigma Tech Park"],
+    brokerNote: "To be confirmed by EasyFind ground team.",
+    span: "sm:col-span-4",
+  },
+  {
+    id: "orr-tech-belt",
+    name: "ORR Tech Belt",
+    positioning: "Bangalore's densest office corridor — walk-to-work rentals, high tenant churn.",
+    localities: ["Bellandur", "Kadubeesanahalli", "Marathahalli", "Kaikondrahalli"],
+    anchors: ["Embassy TechVillage", "RMZ Ecospace", "Prestige Tech Park"],
+    brokerNote: "To be confirmed by EasyFind ground team.",
+    span: "sm:col-span-2",
+  },
+  {
+    id: "sarjapur-corridor",
+    name: "Sarjapur Road Corridor",
+    positioning: "Family & school belt — newer townships, villa communities, growing tech hubs.",
+    localities: ["Sarjapur Road", "Kasavanahalli", "Harlur", "Haralur Road"],
+    anchors: ["Wipro Sarjapur", "RGA Tech Park", "International Schools cluster"],
+    brokerNote: "To be confirmed by EasyFind ground team.",
+    span: "sm:col-span-3",
+  },
+  {
+    id: "hoodi-mahadevapura",
+    name: "Hoodi & Mahadevapura",
+    positioning: "Mid-premium residential pockets adjacent to Whitefield — value-focused tenants.",
+    localities: ["Hoodi", "Brookefield", "Mahadevapura", "KR Puram"],
+    anchors: ["SAP Labs", "Prestige Shantiniketan", "Purple Line Metro"],
+    brokerNote: "To be confirmed by EasyFind ground team.",
+    span: "sm:col-span-3",
+  },
+  {
+    id: "indiranagar-domlur",
+    name: "Indiranagar & Old Airport Road",
+    positioning: "Established central-east — heritage neighbourhoods, F&B destinations, boutique inventory.",
+    localities: ["Indiranagar", "Domlur", "Old Airport Road", "CV Raman Nagar"],
+    anchors: ["Diamond District", "Embassy Golf Links", "Purple Line Metro"],
+    brokerNote: "To be confirmed by EasyFind ground team.",
+    span: "sm:col-span-6",
+  },
+];
+
+function TBCChip({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full border border-dashed px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/60 border-white/20">
+      <span className="h-1.5 w-1.5 rounded-full bg-[#C9A84C]/70" />
+      {children}
+    </span>
+  );
+}
+
+function EastBangaloreBento({
+  onSelectFormPrefill,
+}: {
+  onSelectFormPrefill: (type: string, location: string, details: string) => void;
+}) {
+  const [selectedId, setSelectedId] = useState<string>(EAST_BLR_CLUSTERS[0].id);
+  const selected = EAST_BLR_CLUSTERS.find((c) => c.id === selectedId) || EAST_BLR_CLUSTERS[0];
+
+  return (
+    <section id="east-bangalore" className="py-20 md:py-28" style={{ background: SURFACE }}>
+      <div className="mx-auto max-w-7xl px-5 md:px-8">
+        <SectionLabel>East Bengaluru Focus</SectionLabel>
+        <SectionTitle>The East Bangalore Rental Map</SectionTitle>
+        <p
+          className="mx-auto mt-4 max-w-2xl text-center text-sm md:text-base leading-relaxed"
+          style={{ color: MUTED }}
+        >
+          Five curated clusters we work in every day. Rent scenarios, demand profiles and broker
+          feedback are being verified with our ground team — pick a cluster to preview the
+          structure.
+        </p>
+
+        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-12">
+          {/* Left: Bento of clusters */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-6 lg:col-span-7">
+            {EAST_BLR_CLUSTERS.map((c) => {
+              const isSelected = c.id === selectedId;
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => setSelectedId(c.id)}
+                  className={`group relative flex flex-col justify-between rounded-2xl p-6 text-left transition-all duration-300 ${c.span} ${
+                    isSelected
+                      ? "bg-[#1A3A5C] text-white shadow-xl ring-1 ring-[#C9A84C]/60"
+                      : "bg-white hover:-translate-y-0.5 text-[#1A1A2E] shadow-sm hover:shadow-md"
+                  }`}
+                  style={{ border: isSelected ? "none" : `1px solid ${BORDER}` }}
+                >
+                  <div className="w-full">
+                    <div className="flex items-center justify-between">
+                      <span
+                        className={`text-[10px] font-bold uppercase tracking-[0.14em] ${
+                          isSelected ? "text-[#C9A84C]" : "text-gray-400"
+                        }`}
+                      >
+                        Cluster
+                      </span>
+                      <MapPin
+                        size={16}
+                        className={
+                          isSelected
+                            ? "text-[#C9A84C]"
+                            : "text-gray-400 group-hover:text-[#C9A84C] transition-colors"
+                        }
+                      />
+                    </div>
+                    <h3
+                      className="mt-4 text-lg md:text-xl font-extrabold tracking-tight"
+                      style={{ fontFamily: "'Playfair Display', serif" }}
+                    >
+                      {c.name}
+                    </h3>
+                    <p
+                      className={`mt-2 text-xs leading-relaxed line-clamp-2 ${
+                        isSelected ? "text-white/70" : "text-gray-500"
+                      }`}
+                    >
+                      {c.positioning}
+                    </p>
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap gap-1.5">
+                    {c.localities.slice(0, 3).map((l) => (
+                      <span
+                        key={l}
+                        className={`text-[10px] font-medium px-2 py-0.5 rounded ${
+                          isSelected
+                            ? "bg-white/10 text-white/80 border border-white/10"
+                            : "bg-[#F8F9FB] text-gray-500 border border-gray-100"
+                        }`}
+                      >
+                        {l}
+                      </span>
+                    ))}
+                    {c.localities.length > 3 && (
+                      <span
+                        className={`text-[10px] font-medium px-2 py-0.5 rounded ${
+                          isSelected ? "text-white/60" : "text-gray-400"
+                        }`}
+                      >
+                        +{c.localities.length - 3}
+                      </span>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right: Cluster detail panel */}
+          <div
+            className="rounded-2xl p-6 md:p-8 text-white flex flex-col justify-between shadow-xl relative overflow-hidden lg:col-span-5"
+            style={{ background: NAVY }}
+          >
+            <div className="absolute right-0 top-0 -mr-16 -mt-16 h-40 w-40 rounded-full bg-[#C9A84C]/10 blur-3xl pointer-events-none" />
+
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C9A84C]" />
+                <span className="text-[11px] font-semibold tracking-[0.18em] uppercase text-white/60">
+                  Cluster Profile
+                </span>
+              </div>
+              <h3
+                className="mt-3 text-3xl font-extrabold tracking-tight"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                {selected.name}
+              </h3>
+              <p className="mt-3 text-sm text-white/75 leading-relaxed">
+                {selected.positioning}
+              </p>
+
+              {/* Localities */}
+              <div className="mt-6">
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/50 mb-2">
+                  Locality Grouping
+                </h4>
+                <div className="flex flex-wrap gap-1.5">
+                  {selected.localities.map((l) => (
+                    <span
+                      key={l}
+                      className="bg-white/8 text-white/90 text-xs font-medium px-2.5 py-1 rounded-md border border-white/10"
+                    >
+                      {l}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Anchors */}
+              <div className="mt-6">
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/50 mb-2">
+                  Nearby Anchors
+                </h4>
+                <div className="flex flex-wrap gap-1.5">
+                  {selected.anchors.map((a) => (
+                    <span
+                      key={a}
+                      className="text-white/70 text-[11px] font-medium px-2 py-0.5 rounded border border-white/10"
+                    >
+                      {a}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Data placeholders — to be confirmed */}
+              <div className="mt-6 grid grid-cols-1 gap-3">
+                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/60">
+                      Rent Scenarios
+                    </span>
+                    <TBCChip>To be confirmed</TBCChip>
+                  </div>
+                  <p className="mt-1 text-[11px] text-white/50 leading-relaxed">
+                    Typical 2BHK / 3BHK bands to be published once verified with EasyFind's live
+                    listings.
+                  </p>
+                </div>
+                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/60">
+                      Demand Profile
+                    </span>
+                    <TBCChip>To be confirmed</TBCChip>
+                  </div>
+                  <p className="mt-1 text-[11px] text-white/50 leading-relaxed">
+                    Tenant mix, average days-on-market and seasonality — pending internal data.
+                  </p>
+                </div>
+                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/60">
+                      Broker Feedback
+                    </span>
+                    <TBCChip>To be confirmed</TBCChip>
+                  </div>
+                  <p className="mt-1 text-[11px] text-white/50 leading-relaxed">
+                    {selected.brokerNote}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="mt-8 pt-6 border-t border-white/10">
+              <button
+                onClick={() =>
+                  onSelectFormPrefill(
+                    "Looking to Rent",
+                    selected.name,
+                    `Hi, I'm interested in verified rental options in the ${selected.name} cluster (${selected.localities.join(", ")}). Please share curated listings.`,
+                  )
+                }
+                className="w-full text-center py-3 px-4 rounded-lg font-bold text-sm transition-transform hover:scale-[1.01] cursor-pointer"
+                style={{ background: GOLD, color: NAVY }}
+              >
+                Talk to a specialist for this cluster
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function YieldCalculator({
+  onSelectFormPrefill,
+}: {
+  onSelectFormPrefill: (type: string, location: string, details: string) => void;
+}) {
+  // All inputs are user-provided. No fabricated benchmarks, no fake presets.
+  const [propertyValue, setPropertyValue] = useState(12000000); // ₹1.2 Cr — illustrative default
+  const [monthlyRent, setMonthlyRent] = useState(45000); // illustrative default
+  const [maintenance, setMaintenance] = useState(36000); // annual outgoings — illustrative default
+
+  const formatINR = (val: number) => {
+    if (val >= 10000000) {
+      return `₹${(val / 10000000).toFixed(2)} Crores`;
+    } else if (val >= 100000) {
+      return `₹${(val / 100000).toFixed(1)} Lakhs`;
+    }
+    return `₹${val.toLocaleString("en-IN")}`;
+  };
+
+  // Transparent math — nothing hidden, no market claims.
+  const annualRent = monthlyRent * 12;
+  const netAnnual = annualRent - maintenance;
+  const grossYield = propertyValue > 0 ? (annualRent / propertyValue) * 100 : 0;
+  const netYield = propertyValue > 0 ? (netAnnual / propertyValue) * 100 : 0;
+
+  return (
+    <section
+      id="yield-calculator"
+      className="py-20 md:py-28 bg-white border-t border-b border-gray-100"
+    >
+      <div className="mx-auto max-w-7xl px-5 md:px-8">
+        <SectionLabel>Landlord Tools</SectionLabel>
+        <SectionTitle>Landlord Rental Yield Calculator</SectionTitle>
+        <p
+          className="mx-auto mt-4 max-w-2xl text-center text-sm md:text-base leading-relaxed"
+          style={{ color: MUTED }}
+        >
+          A transparent way to check the gross and net rental yield of your property. Enter your
+          own numbers — we don't inject market averages or estimates.
+        </p>
+
+        <div className="mt-12 grid grid-cols-1 gap-8 lg:gap-12 lg:grid-cols-12">
+          {/* Left Column: Sliders (lg:col-span-6) */}
+          <div className="space-y-8 rounded-2xl bg-gray-50 p-6 md:p-8 border border-gray-200/60 lg:col-span-6">
+            <h3 className="text-lg font-bold flex items-center gap-2" style={{ color: NAVY }}>
+              <Calculator size={20} className="text-[#C9A84C]" /> Your property numbers
+            </h3>
+
+            {/* Slider 1: Property Value */}
+            <div>
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-sm font-semibold" style={{ color: NAVY }}>
+                  Property market value
+                </span>
+                <span className="text-base font-extrabold text-[#C9A84C]">
+                  {formatINR(propertyValue)}
+                </span>
+              </div>
+              <input
+                type="range"
+                min="3000000"
+                max="30000000"
+                step="250000"
+                value={propertyValue}
+                onChange={(e) => setPropertyValue(Number(e.target.value))}
+                className="w-full h-2 rounded-lg bg-gray-200 accent-[#C9A84C] cursor-pointer"
+              />
+              <div className="flex justify-between text-[10px] text-gray-400 mt-2 font-medium">
+                <span>30 Lakhs</span>
+                <span>1.5 Crores</span>
+                <span>3 Crores</span>
+              </div>
+            </div>
+
+            {/* Slider 2: Monthly Rent */}
+            <div>
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-sm font-semibold" style={{ color: NAVY }}>
+                  Expected monthly rent
+                </span>
+                <span className="text-base font-extrabold text-[#C9A84C]">
+                  ₹{monthlyRent.toLocaleString("en-IN")} / mo
+                </span>
+              </div>
+              <input
+                type="range"
+                min="10000"
+                max="150000"
+                step="1000"
+                value={monthlyRent}
+                onChange={(e) => setMonthlyRent(Number(e.target.value))}
+                className="w-full h-2 rounded-lg bg-gray-200 accent-[#C9A84C] cursor-pointer"
+              />
+              <div className="flex justify-between text-[10px] text-gray-400 mt-2 font-medium">
+                <span>₹10,000</span>
+                <span>₹80,000</span>
+                <span>₹1,50,000</span>
+              </div>
+            </div>
+
+            {/* Slider 3: Annual Maintenance */}
+            <div>
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-sm font-semibold" style={{ color: NAVY }}>
+                  Annual maintenance & outgoings
+                </span>
+                <span className="text-base font-extrabold text-gray-600">
+                  ₹{maintenance.toLocaleString("en-IN")} / yr
+                </span>
+              </div>
+              <input
+                type="range"
+                min="5000"
+                max="150000"
+                step="2500"
+                value={maintenance}
+                onChange={(e) => setMaintenance(Number(e.target.value))}
+                className="w-full h-2 rounded-lg bg-gray-200 accent-[#C9A84C] cursor-pointer"
+              />
+              <div className="flex justify-between text-[10px] text-gray-400 mt-2 font-medium">
+                <span>₹5,000 / yr</span>
+                <span>₹75,000 / yr</span>
+                <span>₹1,50,000 / yr</span>
+              </div>
+            </div>
+
+            {/* Assumptions */}
+            <div className="bg-white rounded-xl p-4 border border-gray-200 text-xs leading-relaxed text-gray-500">
+              <div className="flex items-center gap-2 mb-2">
+                <HelpCircle size={16} className="text-gray-400" />
+                <span className="font-bold uppercase tracking-[0.14em] text-[11px] text-gray-500">
+                  Assumptions
+                </span>
+              </div>
+              <ul className="space-y-1.5 list-disc pl-4">
+                <li>All three inputs are provided by you. Nothing is auto-filled from market data.</li>
+                <li>Yields assume 12 months of occupancy (no vacancy loss).</li>
+                <li>
+                  Excludes one-time costs (registration, brokerage), home-loan interest, and
+                  income tax on rental income.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Right Column: Calculations & Projections (lg:col-span-6) */}
+          <div className="space-y-8 lg:col-span-6">
+            {/* Headline Yield Card */}
+            <div className="rounded-2xl p-6 md:p-8 text-white" style={{ background: NAVY }}>
+              <div className="grid grid-cols-2 gap-4 divide-x divide-white/10 text-center">
+                <div>
+                  <div className="text-[11px] text-white/60 uppercase tracking-[0.14em]">
+                    Gross Rental Yield
+                  </div>
+                  <div className="mt-2 text-3xl md:text-4xl font-extrabold tracking-tight text-white">
+                    {grossYield.toFixed(2)}%
+                  </div>
+                  <span className="text-[10px] text-white/50 block mt-1">
+                    Annual rent ÷ property value
+                  </span>
+                </div>
+                <div>
+                  <div className="text-[11px] text-white/60 uppercase tracking-[0.14em]">
+                    Net Rental Yield
+                  </div>
+                  <div className="mt-2 text-3xl md:text-4xl font-extrabold tracking-tight text-[#C9A84C]">
+                    {netYield.toFixed(2)}%
+                  </div>
+                  <span className="text-[10px] text-white/50 block mt-1">
+                    (Annual rent − outgoings) ÷ property value
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Breakdown */}
+            <div className="rounded-2xl border border-gray-200/80 p-6 md:p-8">
+              <h4
+                className="text-[11px] font-bold uppercase tracking-[0.14em] mb-5"
+                style={{ color: NAVY }}
+              >
+                Calculation breakdown
+              </h4>
+              <dl className="space-y-3 text-sm">
+                <div className="flex items-center justify-between border-b border-dashed border-gray-200 pb-3">
+                  <dt className="text-gray-500">Annual rent</dt>
+                  <dd className="font-bold text-gray-900">
+                    ₹{annualRent.toLocaleString("en-IN")}
+                    <span className="ml-2 text-[11px] font-normal text-gray-400">
+                      = ₹{monthlyRent.toLocaleString("en-IN")} × 12
+                    </span>
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between border-b border-dashed border-gray-200 pb-3">
+                  <dt className="text-gray-500">Annual maintenance & outgoings</dt>
+                  <dd className="font-bold text-gray-900">
+                    − ₹{maintenance.toLocaleString("en-IN")}
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between border-b border-dashed border-gray-200 pb-3">
+                  <dt className="text-gray-500">Net annual income</dt>
+                  <dd className="font-bold text-gray-900">
+                    ₹{netAnnual.toLocaleString("en-IN")}
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <dt className="text-gray-500">Property value</dt>
+                  <dd className="font-bold text-gray-900">{formatINR(propertyValue)}</dd>
+                </div>
+              </dl>
+            </div>
+
+            {/* CTA */}
+            <div className="bg-[#1A3A5C]/5 rounded-2xl p-6 border border-[#1A3A5C]/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div className="max-w-md">
+                <h4 className="font-extrabold text-sm text-[#1A3A5C] mb-1">
+                  Want a specialist to review these numbers?
+                </h4>
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  Share your inputs with an EasyFind advisor — we'll pressure-test the rent
+                  assumption against comparable listings and walk you through outgoings.
+                </p>
+              </div>
+              <button
+                onClick={() =>
+                  onSelectFormPrefill(
+                    "Yield Review",
+                    "East Bangalore",
+                    `Hi, I ran the yield calculator with: Property value ${formatINR(propertyValue)}, expected rent ₹${monthlyRent.toLocaleString("en-IN")}/mo, annual outgoings ₹${maintenance.toLocaleString("en-IN")}. Please review these assumptions with me.`,
+                  )
+                }
+                className="shrink-0 rounded-lg py-2.5 px-5 text-xs font-bold shadow-sm hover:scale-[1.02] transition-transform text-center cursor-pointer"
+                style={{ background: GOLD, color: NAVY }}
+              >
+                Request a yield review
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -796,7 +1331,13 @@ function Reviews() {
   );
 }
 
-function LeadForm() {
+function LeadForm({
+  prefill,
+  clearPrefill,
+}: {
+  prefill?: { type: string; location: string; details: string } | null;
+  clearPrefill?: () => void;
+}) {
   // Independent state — never reads from or writes to the hero form.
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -807,6 +1348,19 @@ function LeadForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [highlight, setHighlight] = useState(false);
+
+  useEffect(() => {
+    if (prefill) {
+      setType(prefill.type);
+      setLocation(prefill.location);
+      setDetails(prefill.details);
+      setHighlight(true);
+      const timer = setTimeout(() => setHighlight(false), 2500);
+      if (clearPrefill) clearPrefill();
+      return () => clearTimeout(timer);
+    }
+  }, [prefill, clearPrefill]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -826,7 +1380,7 @@ function LeadForm() {
     setError(null);
     setIsSubmitting(true);
     try {
-      const res = await submitLead({
+      await submitLead({
         name: trimmedName,
         phone: digits.length === 10 ? `+91 ${digits}` : phone,
         requirement: type,
@@ -835,17 +1389,13 @@ function LeadForm() {
         details,
         source: "Website Bottom Enquiry Form",
       });
-      if (res.success) {
-        setSucceeded(true);
-        setName("");
-        setPhone("");
-        setType("Looking to Rent");
-        setLocation("");
-        setBudget("");
-        setDetails("");
-      } else {
-        setError(res.error || "Something went wrong. Please try again or call us.");
-      }
+      setSucceeded(true);
+      setName("");
+      setPhone("");
+      setType("Looking to Rent");
+      setLocation("");
+      setBudget("");
+      setDetails("");
     } catch (err) {
       console.error("Bottom form submission failed:", err);
       setError("Something went wrong. Please try again or call us.");
@@ -867,7 +1417,7 @@ function LeadForm() {
   return (
     <section id="contact" className="py-16 md:py-24" style={{ background: "#fff" }}>
       <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <div className="grid grid-cols-1 gap-16 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
           <div id="lead-form">
             <SectionLabel>Contact Us</SectionLabel>
             <h2
@@ -906,7 +1456,15 @@ function LeadForm() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} noValidate className="space-y-4">
+              <form
+                onSubmit={handleSubmit}
+                noValidate
+                className={`space-y-4 transition-all duration-700 ${
+                  highlight
+                    ? "ring-4 ring-[#C9A84C]/50 rounded-xl p-4 bg-[#C9A84C]/5 shadow-xl"
+                    : ""
+                }`}
+              >
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <input
                     type="text"
@@ -1319,6 +1877,17 @@ function Footer() {
 }
 
 function Index() {
+  const [formPrefill, setFormPrefill] = useState<{
+    type: string;
+    location: string;
+    details: string;
+  } | null>(null);
+
+  const handleSelectFormPrefill = (type: string, location: string, details: string) => {
+    setFormPrefill({ type, location, details });
+    scrollToId("#contact");
+  };
+
   return (
     <div className="min-h-screen bg-white" style={{ color: TEXT, fontFamily: "Inter, sans-serif" }}>
       <Nav />
@@ -1328,8 +1897,10 @@ function Index() {
         <Services />
         <HowItWorks />
         <WhyUs />
+        <EastBangaloreBento onSelectFormPrefill={handleSelectFormPrefill} />
+        <YieldCalculator onSelectFormPrefill={handleSelectFormPrefill} />
         <Reviews />
-        <LeadForm />
+        <LeadForm prefill={formPrefill} clearPrefill={() => setFormPrefill(null)} />
       </main>
       <Footer />
     </div>
