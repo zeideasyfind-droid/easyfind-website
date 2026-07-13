@@ -2,20 +2,10 @@
  * formatter/utils/formatters.ts
  *
  * PURPOSE: Utility functions for formatting values
- *
- * RESPONSIBILITY:
- * - Format currency (INR)
- * - Format dates
- * - Format numbers
- * - Format strings
- *
- * REFERENCE: See docs/EasyFind_Property_Formatter_SOP.md
  */
 
 /**
  * Format amount to INR with appropriate suffix
- * @param amount - Amount in rupees
- * @returns Formatted string (₹40k, ₹1.2L, etc)
  *
  * EXAMPLES:
  * 40000 → "₹40k"
@@ -24,38 +14,41 @@
  * 10000000 → "₹1Cr"
  */
 export function formatINR(amount: number): string {
-  // TODO: Implement INR formatting
-  throw new Error("Not implemented yet - Phase 2");
+  if (isNaN(amount)) return "₹-";
+  if (amount >= 10000000) {
+    const cr = amount / 10000000;
+    return `₹${Number.isInteger(cr) ? cr : parseFloat(cr.toFixed(2))}Cr`;
+  }
+  if (amount >= 100000) {
+    const l = amount / 100000;
+    return `₹${Number.isInteger(l) ? l : parseFloat(l.toFixed(2))}L`;
+  }
+  if (amount >= 1000) {
+    const k = amount / 1000;
+    return `₹${Number.isInteger(k) ? k : parseFloat(k.toFixed(1))}k`;
+  }
+  return `₹${amount}`;
 }
 
 /**
  * Format date to readable format
- * @param date - Date object or string
- * @returns Formatted date string
  */
 export function formatDate(date: Date | string): string {
-  // TODO: Implement date formatting
-  throw new Error("Not implemented yet - Phase 2");
+  const d = date instanceof Date ? date : new Date(date);
+  if (isNaN(d.getTime())) return String(date);
+  return d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 }
 
 /**
- * Format number with commas
- * @param num - Number to format
- * @returns Formatted string
+ * Format number with commas (Indian format)
  */
 export function formatNumber(num: number): string {
-  // TODO: Implement number formatting with commas
-  // 1000 → "1,000"
-  // 100000 → "1,00,000" (Indian format)
-  throw new Error("Not implemented yet - Phase 2");
+  return num.toLocaleString("en-IN");
 }
 
 /**
  * Format string to title case
- * @param str - String to format
- * @returns Title case string
  */
 export function toTitleCase(str: string): string {
-  // TODO: Implement title case formatting
-  throw new Error("Not implemented yet - Phase 2");
+  return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
 }

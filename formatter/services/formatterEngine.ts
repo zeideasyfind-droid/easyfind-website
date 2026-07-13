@@ -2,13 +2,18 @@
  * formatter/services/formatterEngine.ts
  *
  * Core orchestration for the EasyFind formatter.
+ * Version 1: Deterministic pipeline — no AI.
+ *
+ * Pipeline:
+ *   Input → Validate → Sanitize → Parse → Google Places → Community → Template → Output
  */
 
 import { validateInput } from "./validator";
 import { sanitizeInput } from "./sanitizer";
 import { resolveGoogleMapsLocation } from "./googlePlaces";
 import { detectCommunityType } from "./communityDetector";
-import { formatWithAI, getSystemPrompt } from "./aiFormatter";
+import { parsePropertyDetails } from "./propertyParser";
+import { renderTemplate } from "./templateFormatter";
 
 export type FormatterInput = {
   propertyDetails: string;
@@ -44,35 +49,37 @@ export async function formatProperty(input: FormatterInput): Promise<FormatterRe
     // 2. Sanitize Input
     const sanitizedDetails = sanitizeInput(input.propertyDetails);
 
-    // 3. Resolve Google Maps (if provided)
+    // 3. Parse property fields deterministically
+    const parsed = parsePropertyDetails(sanitizedDetails);
+
+    // 4. Resolve Google Maps (if provided)
     let resolvedPlace = null;
     let community = "Semi-gated";
     if (input.googleMapsUrl) {
       resolvedPlace = await resolveGoogleMapsLocation(input.googleMapsUrl);
 
-      // 4. Detect Community
+      // 5. Detect Community
       community = detectCommunityType(resolvedPlace.placeName, resolvedPlace.placeType);
     }
 
-    // 5. GPT Formatting
-    const systemPrompt = await getSystemPrompt();
-    const propertyData = {
-      rawDetails: sanitizedDetails,
-      googleMapsUrl: input.googleMapsUrl,
+    // 6. Render deterministic template
+    const formattedText = renderTemplate({
+      parsed,
       resolvedPlace,
       communityType: community,
-    };
-
-    const formattedText = await formatWithAI(propertyData, systemPrompt);
+      googleMapsUrl: input.googleMapsUrl,
+    });
 
     return {
       success: true,
       formattedText,
-      resolvedPlace: {
-        ...resolvedPlace,
-        community,
-        googleMapsUrl: input.googleMapsUrl,
-      },
+      resolvedPlace: resolvedPlace
+        ? {
+            ...resolvedPlace,
+            community,
+            googleMapsUrl: input.googleMapsUrl,
+          }
+        : null,
     };
   } catch (error: unknown) {
     console.error("Formatter Engine Error:", error);

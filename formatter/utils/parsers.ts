@@ -2,18 +2,12 @@
  * formatter/utils/parsers.ts
  *
  * PURPOSE: Utility functions for parsing values
- *
- * RESPONSIBILITY:
- * - Parse numbers from strings
- * - Parse dates from strings
- * - Extract values from text
- * - Parse formatting rules
  */
+
+import { parseMonetary } from "../services/propertyParser";
 
 /**
  * Parse INR amount from string
- * @param str - String containing amount
- * @returns Numeric value
  *
  * EXAMPLES:
  * "₹40k" → 40000
@@ -21,14 +15,13 @@
  * "40000" → 40000
  */
 export function parseINR(str: string): number {
-  // TODO: Implement INR parsing
-  throw new Error("Not implemented yet - Phase 2");
+  const result = parseMonetary(str);
+  if (result === undefined) throw new Error(`Could not parse INR value: "${str}"`);
+  return result;
 }
 
 /**
  * Parse BHK from string
- * @param str - String containing BHK info
- * @returns Number
  *
  * EXAMPLES:
  * "2BHK" → 2
@@ -36,16 +29,17 @@ export function parseINR(str: string): number {
  * "2" → 2
  */
 export function parseBHK(str: string): number {
-  // TODO: Implement BHK parsing
-  throw new Error("Not implemented yet - Phase 2");
+  const match = str.match(/(\d+(?:\.\d+)?)\s*(?:BHK)?/i);
+  if (!match) throw new Error(`Could not parse BHK value: "${str}"`);
+  return parseFloat(match[1]);
 }
 
 /**
  * Extract Google Maps URL from text
- * @param text - Text containing potential URL
- * @returns URL or null
  */
 export function extractGoogleMapsUrl(text: string): string | null {
-  // TODO: Extract Google Maps URL from text
-  throw new Error("Not implemented yet - Phase 2");
+  const mapsUrlRegex =
+    /https?:\/\/(?:www\.)?(?:google\.com\/maps|goo\.gl\/maps|maps\.app\.goo\.gl)\/\S+/;
+  const match = text.match(mapsUrlRegex);
+  return match ? match[0] : null;
 }
