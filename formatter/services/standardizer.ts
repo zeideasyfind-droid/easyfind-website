@@ -31,10 +31,10 @@ export function formatMonetaryValue(amount: string | number): string {
 
   if (num >= 100000) {
     const lakhs = num / 100000;
-    return `₹${Number.isInteger(lakhs) ? lakhs : lakhs.toFixed(2)}L`;
+    return `₹${Number.isInteger(lakhs) ? lakhs : parseFloat(lakhs.toFixed(2))}L`;
   } else if (num >= 1000) {
     const k = num / 1000;
-    return `₹${Number.isInteger(k) ? k : k.toFixed(1)}k`;
+    return `₹${Number.isInteger(k) ? k : parseFloat(k.toFixed(1))}k`;
   }
   return `₹${num}`;
 }

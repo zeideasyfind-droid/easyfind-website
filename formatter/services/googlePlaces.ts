@@ -1,12 +1,17 @@
 /**
  * formatter/services/googlePlaces.ts
  *
- * PURPOSE: Google Places API integration
+ * PURPOSE: Resolve a Google Maps URL into structured place data
+ *   (place name, locality, place type) that the formatter engine
+ *   can use to fill the society / location / community fields.
  *
- * RESPONSIBILITY:
- * - Resolve location from Google Maps URL
- * - Detect society name and type
- * - Extract locality information
+ * URL FORMATS HANDLED (in priority order):
+ *   1. Long URL with Place ID in data param  – google.com/maps/place/Name/@lat,lng,Xz/data=…1sChIJ…
+ *   2. Long URL without Place ID (place name in path) – google.com/maps/place/Name/@…
+ *   3. Coords-only URL   – google.com/maps/@lat,lng,Xz
+ *   4. Search / query    – google.com/maps/search/query or ?q=query
+ *   5. Short URLs        – maps.app.goo.gl/X  or  goo.gl/maps/X
+ *      → followed via HTTP redirect to recover the long URL, then re-parsed
  */
 
 import axios from "axios";
@@ -17,181 +22,324 @@ export interface GooglePlacesResult {
   placeType: string;
 }
 
+// ─────────────────────────────────────────────────────────────────
+// Regex helpers
+// ─────────────────────────────────────────────────────────────────
+
+/** Extract the Place ID embedded in the Google Maps `data=` parameter.
+ *  The Place ID starts with "ChIJ" and is encoded as "1s<placeId>!".  */
+function extractPlaceId(url: string): string | null {
+  // data=…!1sChIJxxxxxxx!…
+  const dataMatch = url.match(/[!&]1s(ChIJ[^!&]+)/);
+  if (dataMatch) return decodeURIComponent(dataMatch[1]);
+
+  // Explicit place_id= query param (rare but exists in embed URLs)
+  const paramMatch = url.match(/[?&]place_id=([A-Za-z0-9_-]+)/);
+  if (paramMatch) return paramMatch[1];
+
+  return null;
+}
+
+/** Extract the human-readable place name from the /place/<Name>/ path segment. */
+function extractPlaceNameFromPath(url: string): string | null {
+  const m = url.match(/\/place\/([^/@?]+)/);
+  if (!m) return null;
+  try {
+    return decodeURIComponent(m[1].replace(/\+/g, " ")).trim();
+  } catch {
+    return m[1].replace(/\+/g, " ").trim();
+  }
+}
+
+/** Extract lat/lng from a Google Maps URL (used as last-resort geocode). */
+function extractLatLng(url: string): { lat: string; lng: string } | null {
+  const m = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+  return m ? { lat: m[1], lng: m[2] } : null;
+}
+
+/** Extract a text search query from ?q= or /search/ path. */
+function extractSearchQuery(url: string): string | null {
+  const qParam = url.match(/[?&]q=([^&]+)/);
+  if (qParam) return decodeURIComponent(qParam[1]);
+
+  const searchPath = url.match(/\/search\/([^/@?]+)/);
+  if (searchPath) {
+    try {
+      return decodeURIComponent(searchPath[1].replace(/\+/g, " ")).trim();
+    } catch {
+      return searchPath[1].replace(/\+/g, " ").trim();
+    }
+  }
+
+  return null;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Short URL resolution
+// ─────────────────────────────────────────────────────────────────
+
+/** Follow HTTP redirects on a short URL and return the final long URL. */
+async function resolveShortUrl(shortUrl: string): Promise<string> {
+  try {
+    // Use maxRedirects: 10 and capture the final URL from the response
+    const response = await axios.get(shortUrl, {
+      maxRedirects: 10,
+      validateStatus: () => true, // never throw on status code
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (compatible; EasyFind-Formatter/1.0; +https://easyfindprops.com)",
+      },
+    });
+
+    // axios stores the final URL in response.request.res.responseUrl (Node.js)
+    const finalUrl: string =
+      (response.request as { res?: { responseUrl?: string } })?.res?.responseUrl ?? shortUrl;
+
+    return finalUrl && finalUrl !== shortUrl ? finalUrl : shortUrl;
+  } catch {
+    return shortUrl;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Places API helpers
+// ─────────────────────────────────────────────────────────────────
+
+function getLocalityFromComponents(
+  components: Array<{ types: string[]; long_name: string }>,
+): string {
+  if (!components) return "Unknown";
+  const order = ["sublocality_level_1", "sublocality", "locality"];
+  for (const type of order) {
+    const c = components.find((c) => c.types.includes(type));
+    if (c) return c.long_name;
+  }
+  return "Unknown";
+}
+
+function getLocalityFromNewComponents(
+  components: Array<{ componentType: string; longText: string }> | undefined,
+): string {
+  if (!components) return "Unknown";
+  const order = ["sublocality_level_1", "sublocality", "locality"];
+  for (const type of order) {
+    const c = components.find((c) => c.componentType === type);
+    if (c) return c.longText;
+  }
+  return "Unknown";
+}
+
+/** Look up a Place by ID using Places API (New), with legacy API fallback. */
+async function lookupByPlaceId(
+  placeId: string,
+  apiKey: string,
+): Promise<GooglePlacesResult | null> {
+  // Places API (New)
+  try {
+    const { data } = await axios.get(`https://places.googleapis.com/v1/places/${placeId}`, {
+      headers: {
+        "X-Goog-Api-Key": apiKey,
+        "X-Goog-FieldMask": "displayName,addressComponents,types",
+      },
+    });
+    if (data?.displayName) {
+      return {
+        placeName: data.displayName.text ?? "Landmark",
+        placeType: data.types?.[0] ?? "unknown",
+        locality: getLocalityFromNewComponents(data.addressComponents),
+      };
+    }
+  } catch {
+    // fall through to legacy
+  }
+
+  // Places API (Legacy)
+  try {
+    const { data } = await axios.get(
+      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,address_components,types&key=${apiKey}`,
+    );
+    if (data.status === "OK" && data.result) {
+      return {
+        placeName: data.result.name ?? "Landmark",
+        placeType: data.result.types?.[0] ?? "unknown",
+        locality: getLocalityFromComponents(data.result.address_components),
+      };
+    }
+  } catch {
+    // fall through
+  }
+
+  return null;
+}
+
+/** Text-search a query using Places API (New), with legacy / Geocoding fallbacks. */
+async function lookupByTextQuery(
+  query: string,
+  apiKey: string,
+): Promise<GooglePlacesResult | null> {
+  // Places API (New) – searchText
+  try {
+    const { data } = await axios.post(
+      "https://places.googleapis.com/v1/places:searchText",
+      { textQuery: query },
+      {
+        headers: {
+          "X-Goog-Api-Key": apiKey,
+          "X-Goog-FieldMask": "places.displayName,places.addressComponents,places.types",
+        },
+      },
+    );
+    if (data.places?.length) {
+      const p = data.places[0];
+      return {
+        placeName: p.displayName?.text ?? "Landmark",
+        placeType: p.types?.[0] ?? "unknown",
+        locality: getLocalityFromNewComponents(p.addressComponents),
+      };
+    }
+  } catch {
+    // fall through
+  }
+
+  // Geocoding API fallback
+  try {
+    const { data } = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(query)}&key=${apiKey}`,
+    );
+    if (data.status === "OK" && data.results?.[0]) {
+      const r = data.results[0];
+      return {
+        placeName: r.formatted_address.split(",")[0].trim(),
+        placeType: r.types?.[0] ?? "unknown",
+        locality: getLocalityFromComponents(r.address_components),
+      };
+    }
+  } catch {
+    // fall through
+  }
+
+  return null;
+}
+
+/** Reverse-geocode a lat/lng using Geocoding API. */
+async function lookupByLatLng(
+  lat: string,
+  lng: string,
+  apiKey: string,
+): Promise<GooglePlacesResult | null> {
+  try {
+    const { data } = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`,
+    );
+    if (data.status === "OK" && data.results?.[0]) {
+      const r = data.results[0];
+      return {
+        placeName: r.formatted_address.split(",")[0].trim(),
+        placeType: r.types?.[0] ?? "unknown",
+        locality: getLocalityFromComponents(r.address_components),
+      };
+    }
+  } catch {
+    // fall through
+  }
+  return null;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Main export
+// ─────────────────────────────────────────────────────────────────
+
+const FALLBACK: GooglePlacesResult = {
+  placeName: "Landmark",
+  locality: "Unknown",
+  placeType: "unknown",
+};
+
 /**
- * Resolve location from Google Maps URL
+ * Resolve a Google Maps URL into place name, locality, and place type.
+ * Returns a safe fallback (never throws) so the formatter can always
+ * continue even when the Maps API is unavailable.
  */
 export async function resolveGoogleMapsLocation(
   googleMapsUrl: string,
 ): Promise<GooglePlacesResult> {
   const apiKey = process.env.GOOGLE_PLACES_API_KEY;
   if (!apiKey) {
-    throw new Error("GOOGLE_PLACES_API_KEY is not set in environment variables");
+    console.error("GOOGLE_PLACES_API_KEY is not set – skipping location resolution");
+    return FALLBACK;
   }
 
   try {
-    // 1. Resolve short URL if necessary (basic follow redirect)
-    let targetUrl = googleMapsUrl;
-    if (googleMapsUrl.includes("goo.gl") || googleMapsUrl.includes("maps.app.goo.gl")) {
-      const response = await axios.get(googleMapsUrl, {
-        maxRedirects: 5,
-        validateStatus: (status) => status >= 200 && status < 400,
-      });
-      targetUrl = response.request.res.responseUrl || googleMapsUrl;
+    // Step 1: resolve short URLs to their canonical long form
+    let url = googleMapsUrl;
+    const isShort =
+      url.includes("maps.app.goo.gl") ||
+      url.includes("goo.gl/maps") ||
+      url.includes("goo.gl/");
+    if (isShort) {
+      url = await resolveShortUrl(url);
     }
 
-    // 2. Extract Place ID or Search Query from URL
-    // This is a simplified implementation for Phase 2.
-    // In production, we would use a more robust URL parser or the Maps JS SDK.
-    const placeIdMatch =
-      targetUrl.match(/place_id:([^/&]+)/) || targetUrl.match(/place\/([^/&?]+)/);
-    const queryMatch = targetUrl.match(/q=([^/&?]+)/) || targetUrl.match(/search\/([^/&?]+)/);
-
-    let placeName = "Landmark";
-    let locality = "Unknown";
-    let placeType = "unknown";
-
-    if (placeIdMatch) {
-      const placeId = placeIdMatch[1];
-      // Try Places API (New) first
-      const newPlacesUrl = `https://places.googleapis.com/v1/places/${placeId}`;
-      try {
-        const { data } = await axios.get(newPlacesUrl, {
-          headers: {
-            "Content-Type": "application/json",
-            "X-Goog-Api-Key": apiKey,
-            "X-Goog-FieldMask": "displayName,addressComponents,types",
-          },
-        });
-
-        if (data) {
-          placeName = data.displayName?.text || "Landmark";
-          placeType = data.types?.[0] || "unknown";
-          locality = getLocalityFromNewComponents(data.addressComponents);
-        }
-      } catch (e) {
-        // Fallback to Places API (Legacy)
-        const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,address_components,types&key=${apiKey}`;
-        const { data } = await axios.get(detailsUrl);
-        if (data.status === "OK" && data.result) {
-          placeName = data.result.name;
-          placeType = data.result.types?.[0] || "unknown";
-          locality = getLocalityFromComponents(data.result.address_components);
-        }
-      }
-    } else if (queryMatch) {
-      const query = decodeURIComponent(queryMatch[1]);
-      // Try Places API (New) first for text search
-      try {
-        const { data } = await axios.post(
-          "https://places.googleapis.com/v1/places:searchText",
-          {
-            textQuery: query,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "X-Goog-Api-Key": apiKey,
-              "X-Goog-FieldMask": "places.displayName,places.addressComponents,places.types",
-            },
-          },
-        );
-
-        if (data.places && data.places.length > 0) {
-          const place = data.places[0];
-          placeName = place.displayName?.text || "Landmark";
-          placeType = place.types?.[0] || "unknown";
-          locality = getLocalityFromNewComponents(place.addressComponents);
-        } else {
-          throw new Error("No places found");
-        }
-      } catch (e) {
-        // Try Geocoding API as fallback for text search
-        const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(query)}&key=${apiKey}`;
-        const { data } = await axios.get(geocodeUrl);
-
-        if (data.status === "OK" && data.results?.[0]) {
-          const result = data.results[0];
-          placeName = result.formatted_address.split(",")[0];
-          placeType = result.types?.[0] || "unknown";
-          locality = getLocalityFromComponents(result.address_components);
-        }
-      }
+    // Step 2: try Place ID (most authoritative)
+    const placeId = extractPlaceId(url);
+    if (placeId) {
+      const result = await lookupByPlaceId(placeId, apiKey);
+      if (result) return result;
     }
 
-    return { placeName, locality, placeType };
-  } catch (error: unknown) {
-    console.error("Google Places Error:", error instanceof Error ? error.message : String(error));
-    return { placeName: "Landmark", locality: "Unknown", placeType: "unknown" };
+    // Step 3: try the place name from the URL path as a text search
+    const pathName = extractPlaceNameFromPath(url);
+    if (pathName) {
+      const result = await lookupByTextQuery(pathName, apiKey);
+      if (result) return result;
+    }
+
+    // Step 4: try an explicit text query (?q= or /search/)
+    const query = extractSearchQuery(url);
+    if (query) {
+      const result = await lookupByTextQuery(query, apiKey);
+      if (result) return result;
+    }
+
+    // Step 5: reverse-geocode lat/lng as last resort
+    const coords = extractLatLng(url);
+    if (coords) {
+      const result = await lookupByLatLng(coords.lat, coords.lng, apiKey);
+      if (result) return result;
+    }
+
+    return FALLBACK;
+  } catch (error) {
+    console.error(
+      "Google Places Error:",
+      error instanceof Error ? error.message : String(error),
+    );
+    return FALLBACK;
   }
 }
 
-/**
- * Detect if location is a residential society
- */
+// ─────────────────────────────────────────────────────────────────
+// Legacy stubs (kept for backward compatibility)
+// ─────────────────────────────────────────────────────────────────
+
 export async function detectSociety(
   placeName: string,
-  placeType: string,
+  _placeType: string,
 ): Promise<{ isSociety: boolean; societyName?: string }> {
-  const societyIndicators = [
-    "Apartment",
-    "Society",
-    "Complex",
-    "Residency",
-    "Heights",
-    "Gardens",
-    "Villas",
+  const indicators = [
+    "apartment", "society", "complex", "residency", "heights",
+    "gardens", "villas", "habitat", "enclave", "estates",
+    "square", "park", "arcade", "tower", "terrace",
+    "meadows", "greens", "woods", "grove", "layout",
   ];
-  const societyTypes = ["sublocality_level_1", "neighborhood", "premise"];
-
-  const isSociety =
-    societyIndicators.some((indicator) =>
-      placeName.toLowerCase().includes(indicator.toLowerCase()),
-    ) || societyTypes.includes(placeType);
-
-  return {
-    isSociety,
-    societyName: isSociety ? placeName : undefined,
-  };
+  const isSociety = indicators.some((kw) => placeName.toLowerCase().includes(kw));
+  return { isSociety, societyName: isSociety ? placeName : undefined };
 }
 
-/**
- * Get locality name from place components
- */
-function getLocalityFromComponents(
-  components: Array<{ types: string[]; long_name: string }>,
-): string {
-  if (!components) return "Unknown";
-
-  const localityComponent = components.find(
-    (c) => c.types.includes("sublocality_level_1") || c.types.includes("locality"),
-  );
-  return localityComponent ? localityComponent.long_name : "Unknown";
+export function getLocality(_placeName: string, _placeType: string): string {
+  return "Unknown"; // use the async flow
 }
 
-/**
- * Get locality name from Places API (New) address components
- */
-function getLocalityFromNewComponents(
-  components: Array<{ types: string[]; longText: string }>,
-): string {
-  if (!components) return "Unknown";
-
-  const localityComponent = components.find(
-    (c) => c.types.includes("sublocality_level_1") || c.types.includes("locality"),
-  );
-  return localityComponent ? localityComponent.longText : "Unknown";
-}
-
-/**
- * Legacy stub for backward compatibility if needed
- */
-export function getLocality(placeName: string, placeType: string): string {
-  return "Unknown"; // Should use the async flow instead
-}
-
-/**
- * Legacy stub for backward compatibility if needed
- */
 export function initializeGooglePlacesClient(): void {
-  // No-op for axios-based implementation
+  // no-op for axios-based implementation
 }

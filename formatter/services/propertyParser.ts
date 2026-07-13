@@ -139,6 +139,14 @@ function extractPropertyType(text: string): ParsedProperty["propertyType"] | und
 }
 
 /**
+ * Exposed so formatter/utils/parsers.ts can re-use the money parser.
+ * Converts "40k" / "1.7L" / "40,000" → plain number (rupees), or null.
+ */
+export function parseMonetary(raw: string): number | null {
+  return parseMoneyToNumber(raw);
+}
+
+/**
  * Parses raw sanitized property text into structured fields.
  * Google Places-sourced fields (societyName, locality, communityType) are
  * merged in separately by the formatter engine.
