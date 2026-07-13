@@ -251,7 +251,7 @@ function Logo({ light = false }: { light?: boolean }) {
         <img
           src="/easyfind-logo.jpg"
           alt="EasyFind Property Solutions"
-          style={{ height: light ? 44 : 48, width: "auto", display: "block" }}
+          className={light ? "h-11 w-auto block" : "h-10 md:h-12 lg:h-16 w-auto block"}
           loading="eager"
         />
       </span>
@@ -310,7 +310,7 @@ function Nav() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
           <Logo />
-          <nav className="hidden items-center gap-8 md:flex">
+          <nav className="hidden items-center gap-4 md:flex lg:gap-8">
             {NAV_LINKS.map((l) => (
               <a
                 key={l.href}
@@ -319,7 +319,7 @@ function Nav() {
                   e.preventDefault();
                   scrollToId(l.href);
                 }}
-                className="text-sm font-medium transition-colors"
+                className="text-xs font-semibold transition-colors lg:text-sm"
                 style={{ color: NAVY }}
               >
                 {l.label}
@@ -347,11 +347,12 @@ function Nav() {
           </div>
           <a
             href={`tel:${BUSINESS_CONFIG.phone.replace(/\s+/g, "")}`}
-            className="hidden items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold md:inline-flex"
+            className="hidden items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-bold md:inline-flex lg:px-4 lg:py-2 lg:text-sm"
             style={{ background: GOLD, color: NAVY }}
           >
-            <Phone size={16} />
-            {BUSINESS_CONFIG.phone}
+            <Phone size={15} />
+            <span className="hidden lg:inline">{BUSINESS_CONFIG.phone}</span>
+            <span className="inline lg:hidden">Call Us</span>
           </a>
         </div>
 
@@ -447,8 +448,8 @@ function Hero() {
           backgroundSize: "32px 32px",
         }}
       />
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 lg:grid-cols-2 md:px-8">
-        <div className="flex flex-col justify-center text-center lg:text-left items-center lg:items-start">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 md:grid-cols-2 md:px-8 items-center">
+        <div className="flex flex-col justify-center text-center md:text-left items-center md:items-start">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-white/90">
             <span className="flex h-2 w-2 rounded-full bg-green-400 animate-pulse" />
             Bangalore's Trusted Property Partner
@@ -474,7 +475,7 @@ function Hero() {
             Solutions handles it all across Bangalore. We help owners and clients move faster, avoid
             delays, and make the right decisions.
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4 md:justify-start">
             <button
               onClick={() => scrollToId("#lead-form")}
               className="rounded-lg px-8 py-4 text-base font-bold shadow-lg transition-transform hover:-translate-y-1"
@@ -675,7 +676,7 @@ function HowItWorks() {
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <SectionLabel>The Process</SectionLabel>
         <SectionTitle>Simple. Clear. Handled.</SectionTitle>
-        <div className="relative mt-12 grid grid-cols-1 gap-12 lg:grid-cols-3">
+        <div className="relative mt-12 grid grid-cols-1 gap-12 md:grid-cols-3">
           {steps.map((s, idx) => {
             const Icon = s.icon;
             return (
@@ -696,7 +697,7 @@ function HowItWorks() {
                   {s.b}
                 </p>
                 {idx < 2 && (
-                  <div className="absolute left-full top-10 hidden w-full border-t-2 border-dashed border-gray-200 lg:block" />
+                  <div className="absolute left-full top-10 hidden w-full border-t-2 border-dashed border-gray-200 md:block" />
                 )}
               </div>
             );
@@ -866,7 +867,7 @@ function LeadForm() {
   return (
     <section id="contact" className="py-16 md:py-24" style={{ background: "#fff" }}>
       <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-16 md:grid-cols-2">
           <div id="lead-form">
             <SectionLabel>Contact Us</SectionLabel>
             <h2

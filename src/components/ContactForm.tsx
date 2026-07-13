@@ -96,7 +96,7 @@ const ContactForm: React.FC = () => {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="rounded-2xl bg-white p-6 shadow-xl md:p-7"
+      className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl md:p-7 mx-auto"
       aria-label="Talk to our expert"
     >
       <h3 className="mb-5 text-lg font-bold" style={{ color: NAVY }}>
