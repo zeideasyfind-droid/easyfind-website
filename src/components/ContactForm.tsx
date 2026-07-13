@@ -59,12 +59,12 @@ const ContactForm: React.FC = () => {
   };
 
   const inputBase =
-    "w-full rounded-lg border bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-transparent focus:ring-2 focus:ring-amber-400 disabled:opacity-60";
+    "w-full rounded-lg border bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-gold/80 focus:ring-2 focus:ring-brand-gold/30 disabled:opacity-60";
 
   if (succeeded) {
     return (
       <div
-        className="rounded-2xl bg-white p-8 text-center shadow-xl"
+        className="rounded-2xl bg-white p-8 text-center shadow-xl border border-brand-border"
         role="status"
         aria-live="polite"
       >
@@ -74,17 +74,14 @@ const ContactForm: React.FC = () => {
         >
           <CheckCircle2 size={30} />
         </div>
-        <h3 className="text-lg font-bold" style={{ color: NAVY }}>
-          Thank you! We'll call you shortly.
-        </h3>
+        <h3 className="text-lg font-bold text-brand-navy">Thank you! We'll call you shortly.</h3>
         <p className="mt-2 text-sm text-gray-500">
           Our team will reach out on the number you shared.
         </p>
         <button
           type="button"
           onClick={() => setSucceeded(false)}
-          className="mt-6 rounded-lg px-5 py-2 text-sm font-semibold"
-          style={{ background: GOLD, color: NAVY }}
+          className="mt-6 rounded-lg bg-brand-gold hover:bg-brand-gold-soft hover:scale-[1.02] active:scale-[0.98] transition-all px-5 py-2 text-sm font-semibold text-brand-navy"
         >
           Send another enquiry
         </button>
@@ -96,12 +93,10 @@ const ContactForm: React.FC = () => {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl md:p-7 mx-auto"
+      className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl md:p-7 mx-auto border border-brand-border"
       aria-label="Talk to our expert"
     >
-      <h3 className="mb-5 text-lg font-bold" style={{ color: NAVY }}>
-        Talk to Our Expert
-      </h3>
+      <h3 className="mb-5 text-lg font-bold text-brand-navy">Talk to Our Expert</h3>
 
       <div className="space-y-4">
         <div>
@@ -184,8 +179,7 @@ const ContactForm: React.FC = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-lg py-3.5 text-base font-bold shadow-md transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
-          style={{ background: GOLD, color: NAVY }}
+          className="w-full rounded-lg py-3.5 text-base font-bold shadow-md transition-all bg-brand-gold hover:bg-brand-gold-soft hover:-translate-y-0.5 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 text-brand-navy"
         >
           {isSubmitting ? "Sending..." : "Get a Call Back"}
         </button>
