@@ -5,7 +5,7 @@ services:
     buildCommand: npm install && npm run build
     startCommand: npm run start
     envVars:
-      - key: GEMINI_API_KEY
-        sync: false
       - key: GOOGLE_PLACES_API_KEY
+        sync: false
+      - key: SESSION_SECRET
         sync: false
